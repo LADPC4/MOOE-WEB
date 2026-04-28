@@ -11,7 +11,8 @@
       //   https://console.developers.google.com/apis/credentials?project=_
       // In your API Console project, add a JavaScript origin that corresponds
       //   to the domain where you will be running the script.
-      var clientId = '1071367696181-41hguqf1j44kmgv2opo3esu2ip4dfr05.apps.googleusercontent.com';
+      // var clientId = '1071367696181-41hguqf1j44kmgv2opo3esu2ip4dfr05.apps.googleusercontent.com';
+      var clientId = '346900031154-3quutp1o887iu7866db1qr9d0hnrqkhs.apps.googleusercontent.com';
 
       // Enter one or more authorization scopes. Refer to the documentation for
       // the API or https://developers.google.com/people/v1/how-tos/authorizing
