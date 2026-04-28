@@ -1,0 +1,184 @@
+</template>
+<!-- Login Screen -->
+<div class="card" id="my-login-screen">
+   
+      <div class="page">
+        <div class="page-content login-screen-content" style="text-align:center">
+          <!-- <p class="login-screen-title">All Good, All in</p> -->
+            <img src="images/depedlogo1.png" >
+          <div class="login-screen-title"></div>
+          
+             
+              <div class="block block-strong " class="text-align-center align-content-center" id=""> 
+               
+                  <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                  <span id="googleLogin"  class="button button-fill  align-content-center"  onclick="login()">Login With Google</span> -->
+                  <!-- <button id="sign-in-or-out-button"   style="margin-left: 25px">Sign In/Authorize</button>
+                  <button id="revoke-access-button"  style="display: none; margin-left: 25px">Revoke access</button>
+
+                  <div id="auth-status" style="display: inline; padding-left: 25px"></div><hr> -->
+
+                  <!-- <a href="/dashboard/">Login</a> -->
+                  <div class="login-form">
+                    <form onsubmit="return false;">
+                      <div class="login-form-inner">
+                        <div class="form-group">
+                          <img src="" id="login-image"/>
+                      </div>
+                      <br/> 
+                        <h2 class="text-center" id="login-heading" class="login-heading">Loading Site...</h2>
+                        <h3 class="text-center" id="login-email" class="login-email"></h2>    
+                          
+                        
+                        <div class="form-group">
+                          <button id="authorize-button" style="display: none;" class="authorize-button button button-fill" onclick="">Login</button>
+                          <button id="continue-button" style="display: none;" class="continue-button button button-fill" onclick="app.methods.signin()">Continue Sign in</button>
+                          <br/>
+                          <a href="" id="signout-button" style="display: none;" class="signout-button ">Sign in as Different User</a>
+                        </div>
+                      <!-- </div>   -->
+                        
+                    </form>
+                  
+                  
+                </div>
+
+              <div id="status"></div>
+        
+          
+        </div>
+      </div>
+</div>
+<!-- group code Screen --> 
+<div class="login-screen" id="my-divisioncode-screen">
+  <div class="view">
+    <div class="page"  id="my-addtl-form">
+      <div class="page-content login-screen-content">
+        <div class="login-screen-title">Please Provide Additional Information</div>
+        <div class="list">
+          <ul>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Select Your Role</div>
+                <div class="item-input-wrap">
+                  <input type="text" id="roledescription" name="roledescription" placeholder="Search your primary Role then use up/down and press enter to select" class="roledescription">
+                  <input type="hidden" id="roleguid" name="roleguid" class="roleguid">
+                  <input type="hidden" id="roletype" name="roletype" class="roletype">
+                  <input type="hidden" id="rolegroup" name="rolegroup" class="rolegroup">
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Select Region</div>
+                <div class="item-input-wrap">
+                  <input type="text" id="schregdescription" name="schregdescription" placeholder="Search your Division Office then use up/down and press enter to select" class="schregdescription">
+                  <input type="hidden" id="schregid" name="schregid" class="schregid">
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Select Division</div>
+                <div class="item-input-wrap">
+                  <input type="text" id="divdescription" name="divdescription" placeholder="Search your Division Office then use up/down and press enter to select" class="divdescription">
+                  <input type="hidden" id="schdivid" name="schdivid" class="schdivid">
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Select your School</div>
+                <div class="item-input-wrap">
+                  <input type="text" id="schdescription" name="schdescription" class="schdescription" placeholder="Search your School Name then use up/down and press enter to select">
+                  <input type="hidden" id="schguid" name="schguid" class="schguid">
+                  <input type="hidden" id="schguidES" name="schguidES" class="schguidES">
+                  <input type="hidden" id="schguidJHS" name="schguidJHS" class="schguidJHS">
+                  <input type="hidden" id="schguidSHS" name="schguidSHS" class="schguidSHS">
+
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title">School Level Assignment</div>
+              </div>
+            </li>
+            <li class="item-content item-input" id="ESline">
+              
+                <div class="item-inner">
+                  <div class="item-title">Elementary</div>
+                  <div class="item-after">
+                    <label class="toggle toggle-init">
+                      <input type="checkbox" name="ES" id="ES"  >
+                      <span class="toggle-icon"></span>
+                    </label>
+                  </div>
+                </div>
+             
+            </li>
+            
+            <li class="item-content item-input"  id="JHSline">
+              
+              <div class="item-inner">
+                <div class="item-title">Junior High School</div>
+                <div class="item-after">
+                  <label class="toggle toggle-init">
+                    <input type="checkbox" name="JHS"id="JHS"   >
+                    <span class="toggle-icon"></span>
+                  </label>
+                </div>
+              </div>
+           
+          </li>
+          <li class="item-content item-input" id="SHSline">
+              
+            <div class="item-inner">
+              <div class="item-title">Senior High School</div>
+              <div class="item-after">
+                <label class="toggle toggle-init">
+                  <input type="checkbox" name="SHS" id="SHS"   >
+                  <span class="toggle-icon"></span>
+                </label>
+              </div>
+            </div>
+         
+        </li>
+          </ul>
+        </div>
+        <div class="list">
+          <ul>
+            <li>
+                <span id="JoinGroup" class="button button-fill color-blue" onclick="app.methods.requestaccess();">Request Access</span>
+              <!--a href="#" class="item-link list-button login-button button-fill color-blue"" >Join Group</a-->
+            </li>
+          </ul>
+          <div class="block-footer">Please provide additional information to complete your access.<br>Click "Request Access" to continue</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</template>
+<script>
+  return {
+    data: function () {
+      return ;
+    }
+  ,
+  on :  {
+        pageInit(e, page) {
+
+          console.log('Loading list')
+         
+          // var authorizeButton = $$('#authorize-button');
+          // var signoutButton = $$('#signout-button');
+
+          // console.log(authorizeButton);
+          // console.log(signoutButton);
+        }
+  }
+  };
+</script>

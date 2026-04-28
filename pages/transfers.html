@@ -1,0 +1,744 @@
+<template>
+  <div class="page " data-name="Transfers">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">MOOE Transfers</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-newtransfer">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <button class="col button button-fill  zero-found-newtransfer-button popup-open" data-popup=".popup-newtransfer">Create new Transfer</button>
+      </div>
+      <div class="subnavbar">
+        <form class="searchbar" id="searchschool-autocomplete">
+          <div class="searchbar-inner">
+            <div class="searchbar-input-wrap">
+              <input type="search" placeholder="Search" id="srcschdescription" name="srcschdescription" class="srcschdescription">
+              <input type="hidden" id="srcschguid" name="srcschguid" class="srcschguid">
+              <i class="searchbar-icon"></i>
+              <span class="input-clear-button"></span>
+            </div>
+            <span class="searchbar-disable-button">Cancel</span>
+          </div>
+        </form>
+      </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">Division to School Fund Transfers </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">School</th>
+                    <th class="label-cell">Fund Year</th>
+                    <th class="label-cell">Fund Type</th>
+                    <th class="numeric-cell">Total Amount</th>
+                    <th class="numeric-cell">Transfer Date Date</th>
+                    <th class="numeric-cell">Confirmed</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{fundguid}}|{{fundyear}}');">
+                    <td class="label-cell">{{schoolid}} | {{schdescription}}</td>
+                    <td class="label-cell">{{fundyear}}</td>
+                    <td class="label-cell">{{papsdesc}}</td>
+                    <td class="numeric-cell">{{fnumber totalamount}}</td>
+                    <td class="numeric-cell">{{transferdate}}</td>
+                    <td class="numeric-cell">{{confirmed}}</td>
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer">
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-newtransfer" id="my-newtransfer-screen">
+      <div class="view">
+        <div class="page">
+          <div class="page-content newtransfer-screen-content">
+              
+            <div class="login-screen-title">Transfer Details</div>
+            <form class="list" id="my-newtransfer-form">
+                <div class="list">
+                    <ul >
+                      
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Select School</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="schdescription" name="schdescription" class="schdescription" required validate placeholder="Search your School Name then use up/down and press enter to select">
+                            <input type="hidden" id="schguid" name="schguid" class="schguid">
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Select From Approved Requests</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="reqdesc" name="reqdesc"   placeholder="Type to search  then use up/down and press enter to select" class="reqdesc">
+                            <input type="hidden" id="requestid" name="requestid" class="requestid">
+                            
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Select Fund Year</div>
+                            <div class="item-input-wrap">
+                              <input type="text" placeholder="Select Fund Year" required  id="fundyear" name="fundyear"/>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Select Program/Activities/Project</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="papsdesc" name="papsdesc" required validate placeholder="Type to search  then use up/down and press enter to select" class="papsdesc">
+                            <input type="hidden" id="paps" name="paps" class="paps">
+                            <input type="hidden" id="gaafield" name="gaafield" class="gaafield">
+                            <input type="hidden" id="fundguid" name="fundguid" class="fundguid">
+                            <input type="hidden" id="papsl" name="papsl" class="papsl">
+                            
+                          </div>
+                        </div>
+                      
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Select Account</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="acctdesc" name="acctdesc" required validate placeholder="Type to search  then use up/down and press enter to select" class="acctdesc">
+                            <input type="hidden" id="schacctguid" name="schacctguid" class="schacctguid">
+                            <input type="hidden" id="acctsl" name="acctsl" class="acctsl">
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Transfer Amount</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="totalamount" required validate pattern="^[0-9]*(\.[0-9]{1,2})?$" placeholder="Enter fund amount without commas" id = "totalamount">
+                            </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Transfer Date</div>
+                          <div class="item-input-wrap">
+                            <input type="text" name="transferdate" required placeholder="Pick date " id = "transferdate">
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">NCA Info</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="ncainfo" name="ncainfo" class="ncainfo" required validate placeholder="NCA Info No Type N/A if not applicable">
+                           
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">NCA Date</div>
+                          <div class="item-input-wrap">
+                            <input type="text" name="ncadate" required placeholder="NCA date " id = "ncadate" class = "ncadate">
+                          </div>
+                        </div>
+                      </li>         
+                    </ul>
+                </div>
+
+                <div class="list links-list">
+                    
+                    <ul>
+                        <li>
+                       
+                        <!--li><a href="/game/{{geventid}}/"></a></li--
+                        <td class="label-cell " >{{goptiondescription}}</td>
+                        <td class="label-cell  " >{{goptionvalue}}</td>
+                        <td class="label-cell numeric-cell " >{{goptionid}}</td-->
+                        </li>
+                     
+                     
+                    </ul>
+                   
+                  </div>  
+                
+              
+                
+  
+                <div class="list">
+                    <div class="block block-strong row">
+                        <div class="col"><a href="#" class="col button button-fill newtransfer-button">Submit</a> </div>
+                        {{ #if fundguid}}
+                        <div class="col"><a href="#" class="col button button-fill delete-button" id="delete-button" @click="delclick()">Delete</a> </div>
+                        {{/if}}
+                        <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+                      </div>
+                  
+                 
+                </div>
+              </form>
+            
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  fundguid: null,
+                  fundackid: null,
+                  fileitems : [],
+                  gameoptions : [],
+                  reqlist:[],
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    currentid:null,
+    methods: {
+      refreshpage(){
+          var self = this;
+          self.$setState({
+                      items : [],
+                      pages: null,
+                      paging: null,
+                      fundackid: null,
+                      fundguid: null,
+                      nextpage : null,
+                      lastpage: null,
+                      hasMoreItems: false,
+                      currentpage: null
+
+                                              
+                  });
+        },
+      fetchdata(schdivid,schguid) {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var udata= { 
+            schdivid:  schdivid,
+            guser: app.data.userdata.guserid,
+            schguid: schguid
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'funds/read_paging.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                var items = self.items.concat(rdata.records);
+                // var items =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            }  else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        //send and save form
+        //send and save form
+        savedata(udata) {
+            var self = this;
+            var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            
+            udata.schdivid=app.data.userdata.schdivid;
+            udata.guserid=app.data.userdata.guserid;
+            console.log(udata);
+            var apipage="create.php";
+            if (udata.fundguid!="") {
+              apipage="update.php";
+            }
+            app.preloader.show();
+            app.request.post($base_url+'funds/'+apipage+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+                result=JSON.parse(data);
+                if (result.status==1){
+                  $$('#my-newtransfer-form')[0].reset(); 
+                  app.popup.close('#my-newtransfer-screen');
+                  self.refreshpage();
+                  self.fetchdata(app.data.userdata.schdivid,"")
+                }
+                app.preloader.hide();
+                app.dialog.alert(result.message);
+                
+            });
+            
+            
+        },
+        //send and delete form
+        deletedata(udata) {
+          var self = this;
+            var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            
+            udata.schdivid=app.data.userdata.schdivid;
+            udata.guserid=app.data.userdata.guserid;
+            console.log(udata);
+            var apipage="delete.php";
+            
+            app.preloader.show();
+            app.request.post($base_url+'funds/'+apipage+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+                result=JSON.parse(data);
+                if (result.status==1){
+                  $$('#my-newtransfer-form')[0].reset(); 
+                  app.popup.close('#my-newtransfer-screen');
+                  self.refreshpage();
+                  self.fetchdata(app.data.userdata.schdivid,"")
+                }
+                app.preloader.hide();
+                app.dialog.alert(result.message);
+                
+            });
+            
+        },
+        delclick(){
+          var self = this;
+            var app = self.$app;
+          var formData = app.form.convertToData('#my-newtransfer-form');
+                console.log("delete Clicked")
+                //confirm to user
+                if (self.fundackid==null){
+                  app.dialog.confirm("Confirm Delete ?", "Delete Transfer", function () {
+                      self.deletedata(formData);
+                    });
+                } else {
+                  app.dialog.alert("Fund has already been confirmed by the school.\n " )
+                }
+        },
+        openpopup(params) {
+            
+          var self = this;
+          var app = self.$app;
+          var params = params.split('|');
+          // fundguid,papsdesc,totalamount
+          var udata= { 
+            fundguid: params[0]
+          }
+          app.preloader.show();
+          app.request.post($base_url+'funds/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                app.form.fillFromData('#my-newtransfer-form',data);
+                self.$setState({
+                  fundguid : data.fundguid,
+                  fundackid: data.fundackid
+
+                                              
+                  });
+                
+                self.fetchuploads(data.fundguid);
+            })
+          $$('#delete-button').on('click', function(){
+               
+                
+            });
+
+
+
+        },
+        fetchuploads(fundguid) {
+          // var params = params.split('|');
+          // // fundguid,papsdesc,totalamount
+          var self = this;
+          var app = self.$app;
+          var udata= { 
+            recowner: fundguid
+          }
+          // app.preloader.show();
+          app.request.post($base_url+'fileuploads/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                // app.form.fillFromData('#my-newrequest-form',data);
+                items = data.records
+                self.$setState({
+                      fileitems : items
+
+                                              
+                  })
+                app.popup.open("#my-newtransfer-screen")
+                app.preloader.hide();
+            })
+
+
+
+           
+           //update form data 
+        },
+            fetchshools: function (schdivid,idel,descel) {
+          //continue to dashboard
+          app.preloader.show();
+          var udata= { 
+            "schdivid":schdivid,        
+          }
+          
+          app.request.post($base_url+'schools/schools_by_div.php' ,  JSON.stringify(udata) , (data)=> {
+            data=JSON.parse(data)
+            // app.$setState({
+            //   sdolist: data   
+            // })
+            //  app.data.sdolist=data;
+            app.data.schlist=data;
+            var sdolistel = app.autocomplete.create({
+              inputEl: '.'+descel,
+              openIn: 'dropdown',
+              valueProperty: 'id',
+              textProperty: 'name',
+              closeOnSelect: true,
+              source: function (query, render) {
+                var results = [];
+                //  if (query.length === 0) {
+                //    render(results);
+                //    return;
+                //  }
+                
+                $$('#'+idel)[0].value="";
+                schlist=app.data.schlist.records;
+                //  console.log(schlist);
+                for (var i = 0; i < schlist.length; i++) {
+                  if (schlist[i].schdescription.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+                    results.push({ "id": schlist[i].schguid,
+                              "name": schlist[i].schoolid +" | " + schlist[i].schdescription,
+                              "ES" : schlist[i].ES, 
+                              "JHS" : schlist[i].JHS,
+                              "SHS" : schlist[i].SHS 
+                  
+                                } ); //
+                      
+                    
+                  }
+                }
+                
+                render(results);
+              },
+              on: {
+                change: function (value) {
+                  var itemText = [],
+                      inputValue = [];
+                  for (var i = 0; i < value.length; i++) {
+                    // itemText.push(value[i].name);
+                    // inputValue.push(value[i].id);
+                    $$('#'+descel)[0].value=value[i].name;
+                    $$('#'+idel)[0].value=value[i].id;
+                    app.methods.fetchschrequests(value[i].id) 
+                    
+                    var es=value[i].ES;
+                    var jhs=value[i].JHS;
+                    var shs=value[i].SHS;
+                    app.methods.fetchaccounts(value[i].id,es,jhs,shs);
+                    app.methods.fetchpaplist(false,es,jhs,shs);
+                
+                  }
+                  
+                },
+              },  
+              });
+            // console.log(sdolistel);
+            app.preloader.hide();
+          });
+          
+        },
+        
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        self.fetchdata(app.data.userdata.schdivid,"");
+
+
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            
+            // console.log(self)
+            self.$setState({
+                  //  currentid: groupid   
+                });
+            //initialize fund years 
+    
+            app.methods.createfundyear('#fundyear');
+            //initialize pap list
+            // app.methods.fetchpaplist();
+            
+            //load schools menus 
+            self.fetchshools(app.data.userdata.schdivid,'schguid','schdescription');
+            //create date picker 
+            app.methods.createdatepicker(today,'#transferdate');
+            app.methods.createdatepicker(today,'#ncadate');
+            
+            self.fetchdata(app.data.userdata.schdivid,"");
+
+            app.methods.fetchshools(app.data.userdata.schdivid,'srcschguid','srcschdescription');
+            $$('#srcschdescription').on("change",function(){
+              var value= $$('#srcschdescription')[0].value;
+              // var value=obj.value;
+              // return;
+              // change: function (value) {
+              var itemText = [],
+                  inputValue = [];
+              // console.log('change triggered' );
+              console.log("selected " + value);
+              
+             
+                
+              // }
+              // console.log($$('#schguid')[0].value);
+              // if (value!=""){
+                self.refreshpage();
+               
+                self.fetchdata(app.data.userdata.schdivid,value);
+              // }
+              
+              return;
+            })
+            // $$('#schguid').on("change",function(){
+            //   var value= $$('#schguid')[0].value;
+            //   console.log(value)
+            //   app.methods.fetchaccounts(value);
+              
+            //   return;
+            // })
+
+            
+            
+            $$('.popup-newtransfer').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-newtransfer-form')[0].reset(); 
+                $$('#my-newtransfer-form [name="fundguid"]')[0].value="";
+                $$("#acctsl")[0].value="";
+                $$("#papsl")[0].value="";
+                self.$setState({
+                  fundguid : null,
+                  fundackid: null,
+                  reqlist:[],
+
+                                              
+                  });
+              // }
+            });
+            $$('#delete-button').on('click', function(){
+                  var formData = app.form.convertToData('#my-newtransfer-form');
+                  console.log("delete Clicked")
+                  //confirm to user
+                  if (self.fundackid==null){
+                    app.dialog.confirm("Confirm Delete ?", "Delete Transfer", function () {
+                        self.deletedata(formData);
+                      });
+                  } else {
+                    app.dialog.alert("Fund has already been confirmed by the school.\n " )
+                  }
+                  
+              });
+
+            $$('.newtransfer-button').on('click', function(){
+              var formData = app.form.convertToData('#my-newtransfer-form');
+
+              var va1=$$('#my-newtransfer-form [name="totalamount"]')[0].checkValidity();
+              var va2=$$('#my-newtransfer-form [name="papsdesc"]')[0].checkValidity();
+              var va3=$$('#my-newtransfer-form [name="schdescription"]')[0].checkValidity();
+              var va4=$$('#my-newtransfer-form [name="transferdate"]')[0].value!="";
+
+              var va5=$$('#my-newtransfer-form [name="paps"]')[0].value!="";
+              var va6=$$('#my-newtransfer-form [name="schguid"]')[0].value!="";
+              var va7=$$('#my-newtransfer-form [name="fundyear"]')[0].value!="";
+              var va8=true;
+              var ErrorMessage="";
+              
+
+              if (va1==false){
+                ErrorMessage=ErrorMessage + "Invalid Amount<br>";
+              }
+              if (va2==false){
+                ErrorMessage=ErrorMessage + "Select Program/Activities/Projects <br>";
+              }
+              if (va3==false){
+                ErrorMessage=ErrorMessage + "Please Select School<br>";
+              }
+              if (va4==false){
+                ErrorMessage=ErrorMessage + "Please provide Transfer/Bank Deposit Date<br>";
+              }
+              if (va5==false){
+                ErrorMessage=ErrorMessage + "Select Program/Activities/Projects <br>";
+              }
+              if (va6==false){
+                ErrorMessage=ErrorMessage + "Please Select School<br>";
+              }
+              if (va7==false){
+                ErrorMessage=ErrorMessage + "Please Select Fund Year<br><br>";
+              }
+              if ($$("#acctsl")[0].value.indexOf($$("#papsl")[0].value)<0){
+                va8=false;
+                ErrorMessage= ErrorMessage + "Selected Account is invalid for this program <br>";
+              }
+              if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8) {
+                self.savedata(formData);
+              } else {
+                app.dialog.alert(ErrorMessage);
+              }
+              
+              });
+
+              app.preloader.hide();
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

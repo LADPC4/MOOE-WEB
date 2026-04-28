@@ -1,0 +1,484 @@
+<template>
+  <div class="page " data-name="wffields">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">Enable Workflow Fields</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-wffielddetails">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <button class="col button button-fill  zero-found-wffielddetails-button popup-open" data-popup=".popup-wffielddetails">Add Flow Field</button>
+      </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">Workflow Fields </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">Worklfow ID</th>
+                    <th class="label-cell">Description</th>
+                    <th class="label-cell">Field</th>
+                   
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <!-- wfguid, `type`, `status`, order, description, completed, rectimestamp -->
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{wffguid}}|{{description}}|{{wfdesc}}');">
+                   
+                    <td class="label-cell">{{wfguid}}</td>
+                    <td class="label-cell">{{description}}</td>
+                    <td class="label-cell">{{wffield}}</td>
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer"  >
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-wffielddetails" id="my-wffielddetails-screen" >
+      <div class="view">
+        <div class="page">
+          <div class="page-content wffielddetails-screen-content">
+              
+            <div class="login-screen-title">Work Flow Field Details</div>
+            <form class="list" id="my-wffielddetails-form">
+                <div class="list">
+                    
+                  <div class="block block-strong row">
+                    <div class="col"><a href="#" class="col button button-fill wffielddetails-button">Submit</a> </div>
+                    <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+                  </div>
+              
+                </div>
+                <div class="list">
+                    <ul >   
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">Workflow</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="description" required validate  id = "description" class="description">
+                              <input type="hidden" id="wfguid" name="wfguid" class="wfguid">
+                              <input type="hidden" id="wffguid" name="wffguid" class="wffguid">
+                            </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Field ID</div>
+                          <div class="item-input-wrap">
+                            <input type="text" name="wffield" required validate placeholder="Enter Fieled ID " id = "wffield" class = "wffield">
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Field Description</div>
+                          <div class="item-input-wrap">
+                            <input type="text" name="wffielddesc" required validate placeholder="Enter Field Description" id = "wffielddesc" class = "wffielddesc">
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                </div>
+                
+                
+
+               
+                
+  
+                
+              </form>
+            
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  statusitems: [],
+                  wfitems: [],
+                  gameoptions : [],
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    methods: {
+          refreshpage(){
+            var self = this;
+            self.$setState({
+                        items : [],
+                        pages: null,
+                        paging: null,
+                        nextpage : null,
+                        lastpage: null,
+                        hasMoreItems: false,
+                        currentpage: null
+
+                                                
+                    });
+          },
+          fetchdata(schguid) {
+
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var udata= { 
+            schguid:  schguid,
+            guser: app.data.userdata.guserid
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'wffields/read_paging.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                var items = self.items.concat(rdata.records);
+                // var items =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+          
+        fetchflowlist: function () {
+          // continue to dashboard
+          var udata= { 
+            
+            roleguid: app.data.userdata.roleguid   
+            
+          }
+          app.preloader.show();
+          app.request.post($base_url+'workflow/read_paging.php',JSON.stringify(udata) ,(data)=> {
+            data=JSON.parse(data)
+            // app.$setState({
+            //   flowtypelist: data   
+            // })
+            app.data.flowtypelist=data;
+            var ftlistel = app.autocomplete.create({
+              inputEl: '.description',
+              openIn: 'dropdown',
+              valueProperty: 'id',
+              textProperty: 'name',
+              closeOnSelect: true,
+              source: function (query, render) {
+                var results = [];
+                // if (query.length === 0) {
+                //   render(results);
+                //   return;
+                // }
+                // Find matched items
+                // $$('#divdescription')[0].value="";
+                $$('#wfguid')[0].value="";
+                list=app.data.flowtypelist.records;
+                for (var i = 0; i < list.length; i++) {
+                  if (list[i].description.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+                    results.push({ "id": list[i].wfguid,"name": list[i].description }); //
+                    
+                    
+                  }
+                }
+                // Render items by passing array with result items
+                //  console.log(results)
+                render(results);
+              },
+              on: {
+                change: function (value) {
+                  var itemText = [],
+                      inputValue = [];
+                  for (var i = 0; i < value.length; i++) {
+                    // itemText.push(value[i].name);
+                    // inputValue.push(value[i].id);
+                    $$('#description')[0].value=value[i].name;
+                    $$('#wfguid')[0].value=value[i].id;
+                    // $$('#roletype')[0].value=value[i].tag;
+                    //populate schools 
+                  
+                  }
+                  
+                },
+              },  
+              });
+            // console.log(sdolistel);
+            app.preloader.hide();
+          });
+        },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        self.fetchdata(app.data.userdata.schguid);
+
+
+        },
+        //send and save form
+        savedata(udata) {
+            // return;
+            var self = this;
+            var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            
+            // udata.schdivid=app.data.userdata.schdivid;
+            udata.guserid=app.data.userdata.guserid;
+            udata.schguid=app.data.userdata.schguid;
+            console.log(udata);
+            apipage="update";
+            if (udata.wffguid=="") {
+              apipage="create";
+            }
+            app.preloader.show();
+            app.request.post($base_url+'wffields/'+ apipage +'.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+                result=JSON.parse(data);
+                app.dialog.alert(result.message);
+
+                $$('#my-wffielddetails-form')[0].reset(); 
+                self.refreshpage();
+                self.fetchdata(app.data.userdata.schguid);
+                app.preloader.hide();
+                app.popup.close('#my-wffielddetails-screen');
+            });
+            
+        },
+        //send and delete form
+        openpopup(params) {
+          var params = params.split('|');
+          // {{id}}|{{name}}|{{order}}|{{show}}
+          var udata= { 
+            wffguid: params[0]
+          }
+          // console.log(udata);
+          app.preloader.show();
+          app.request.post($base_url+'wffields/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+              
+              // return;
+              result=JSON.parse(data);
+              //iterate from records 
+              // var udata=result.records
+              // for (var i = 0; i < list.length; i++) {
+              //   // Pre select saved data 
+              //   $$('#my-wffielddetails-form [value="'+list[i].wfstatus+'"]')[0].checked=true;
+              // }
+              app.form.fillFromData('#my-wffielddetails-form',result);
+              app.preloader.hide();
+              app.popup.open("#my-wffielddetails-screen")
+          });
+          
+           
+           //update form data 
+        },
+        deletedata(udata) {
+           
+        },
+        CreateSubmitData(self) {
+          
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+
+
+            
+            // self.fetchstatuslist();
+            self.fetchflowlist();
+            self.fetchdata(app.data.userdata.schguid);
+           
+
+
+            $$('.popup-wffielddetails').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-wffielddetails-form')[0].reset(); 
+                $$('#my-wffielddetails-form [name="wffguid"]')[0].value="";
+                $$('#my-wffielddetails-form [name="wfguid"]')[0].value="";
+                self.$setState({
+                      fileitems : []
+
+                                              
+                  })
+              // }
+            });
+            
+            $$('.wffielddetails-button').on('click', function(){
+              
+              var formData = app.form.convertToData('#my-wffielddetails-form');
+              // var va1=$$('#my-wffielddetails-form [name="name"]')[0].flowtype!="";
+              var va1=$$('#my-wffielddetails-form [name="description"]')[0].checkValidity();
+              var va2=$$('#my-wffielddetails-form [name="wfguid"]')[0].value!="";
+              // var va4=$$('#my-wffielddetails-form [name="status"]')[0].value!="";
+              // var va4=$$('#my-wffielddetails-form [name="receivercontact"]')[0].value!="";
+
+
+              var ErrorMessage="";
+              
+              if (va1==false){
+                ErrorMessage=ErrorMessage + "Please provide Workflow<br>";
+              }
+              if (va2==false){
+                ErrorMessage=ErrorMessage + "Please provide Field ID<br>";
+              }
+              
+
+              if ( va1 && va2 ) {
+                self.savedata(formData);
+              } else {
+                app.dialog.alert(ErrorMessage);
+              }
+              
+              });
+            
+
+            
+
+            app.preloader.hide();
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

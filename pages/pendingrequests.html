@@ -1,0 +1,664 @@
+<template>
+  <div class="page " data-name="Requests">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">Pending Requests</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-newrequest">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <!-- <button class="col button button-fill  zero-found-newrequest-button popup-open" data-popup=".popup-newrequest">Create new request</button> -->
+      </div>
+      <div class="subnavbar">
+        <form class="searchbar" id="searchschool-autocomplete">
+          <div class="searchbar-inner">
+            <div class="searchbar-input-wrap">
+              <input type="search" placeholder="Search" id="srcschdescription" name="srcschdescription" class="srcschdescription">
+              <input type="hidden" id="schguid" name="schguid" class="schguid">
+              <i class="searchbar-icon"></i>
+              <span class="input-clear-button"></span>
+            </div>
+            <span class="searchbar-disable-button">Cancel</span>
+          </div>
+        </form>
+      </div>
+      </div> 
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">School to Division Fund Requests </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">School</th>
+                    <th class="label-cell">Fund Type</th>
+                    <th class="numeric-cell">Total Amount</th>
+                    <th class="numeric-cell">Request Date</th>
+                    <th class="numeric-cell">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{requestid}}|{{reqstatus}}');">
+                    <td class="label-cell">{{schoolid}} | {{schdescription}}</td>
+                    <td class="label-cell">{{papsdesc}}</td>
+                    <td class="numeric-cell">{{fnumber totalamount}}</td>
+                    <td class="numeric-cell">{{rectimestamp}}</td>
+                    <td class="numeric-cell">{{wfstatusdesc}}</td>
+                    
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer"  >
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-newrequest" id="my-newrequest-screen">
+      <div class="view">
+        <div class="page">
+          <div class="page-content newrequest-screen-content">
+              
+            <div class="login-screen-title">Request Details</div>
+            <form class="list" id="my-newrequest-form" enctype="multipart/form-data"  class="form-ajax-submit">
+              <ul>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">School </div>
+                      <div class="item-input-wrap">
+                        <input type="text" id="schdescription" name="schdescription" readonly class="schdescription">
+                       
+                      </div>
+                    </div>
+                  </div>
+                </li>
+    
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Program/Activities/Project</div>
+                    <div class="item-input-wrap">
+                      <input type="text" id="papsdesc" name="papsdesc" readonly class="papsdesc">
+                      
+                      <input type="hidden" id="requestid" name="requestid" class="requestid">
+                      <input type="hidden" id="wfguid" name="wfguid" class="wfguid">
+                      
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Select Account</div>
+                    <div class="item-input-wrap">
+                      <input type="text" id="acctdesc" name="acctdesc" readonly class="acctdesc">
+                      <input type="hidden" id="schacctguid" name="schacctguid" class="schacctguid">
+                     
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Period Covered</div>
+                      <div class="item-input-wrap">
+                        <!-- pattern="^(?!.*  )(?=.*[\w-])[\w -]{23}$"  -->
+                        <input type="text" name="periodcovered"  readonly placeholder="Period covered" id="periodcovered" >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Total Amount</div>
+                      <div class="item-input-wrap">
+                        <input type="text" name="totalamount"  readonly >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Update Status</div>
+                    <div class="item-input-wrap">
+                      <a class="item-link smart-select smart-select-init" data-open-in="popover">
+                        <select name="wfstatus" required validate>
+                          <option value="" selected>Select Status</option>
+                          {{#each succitems}}
+                          <option value="{{wfstatus}}" >{{name}}</option>
+                          {{/each}}
+                        </select>
+                        <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title">Select Status</div>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Remarks</div>
+                      <div class="item-input">
+                        <textarea class="resizable" name="remarks"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+               
+               
+              </ul>
+              
+
+              <div class="row margin-horizontal margin-bottom">
+                <div class="col-100 tablet-33 margin-top">
+                  <div class="card">
+                    <div class="card-header">Uploaded Files</div>
+                    <div class="card-content card-content-padding scrollable">
+                      <div class="list media-list">
+                        <ul>
+                          {{#each fileitems}}
+                          <li class="item-content clickable-row" data-href='#' @click="openfile('{{fileguid}}|{{filename}}');" >
+                            <div class="item-media">
+                              <i class="icon f7-icons text-color-teal">document_text_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">{{filename}}</div>
+                                <div class="item-after">{{rectimestamp}}</div>
+                              </div>
+                              <div class="item-text">Size: {{fnumber filesize}}</div>
+                            </div>
+                          </li>
+                          {{/each}}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               
+              
+              </div>
+              <div class="block block-strong row">
+                <div class="col"><a href="#" class="col button button-fill submit-button" >Submit</a> </div>
+                <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+              </div>
+              </form>
+            
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  fileitems : [],
+                  succitems:[],
+                  gameoptions : [],
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    currentid:null,
+
+    methods: {
+        refreshpage(){
+          var self = this;
+          self.$setState({
+                      items : [],
+                      pages: null,
+                      paging: null,
+                      nextpage : null,
+                      lastpage: null,
+                      hasMoreItems: false,
+                      currentpage: null
+
+                                              
+                  });
+        },
+        fetchdata(schguid) {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          // console.log($$('#schguid')[0].value);
+          var udata= { 
+            schdivid:  app.data.userdata.schdivid,
+            roleguid: app.data.userdata.roleguid,
+            schguid: schguid
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'mooerequests/read_pending.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                // var items = self.items.concat(rdata.records);
+                
+                var items = self.items.concat(rdata.records);
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        //send and save form
+        savedata(udata,file) {
+            var self = this;
+            var app = self.$app;
+            //append udata 
+            udata.schguid=app.data.userdata.schguid;
+            udata.schpayee=app.data.userdata.schpayee;
+            udata.schregid=app.data.userdata.schregid;
+            udata.guserid=app.data.userdata.guserid;
+
+            //
+            // console.log(udata);
+
+            //modified post for sending json and file upload
+            var FData = new FormData();
+            FData.append('file',file);                // this is main row
+            FData.append('data',JSON.stringify(udata));
+            var apipage="submitstatus.php";
+            // if (udata.mooedisid!="") {
+            //   apipage="update.php";
+            // }
+            app.preloader.show();
+            app.request({
+                    url: $base_url+'mooerequests/'+apipage+$base_param, 
+                    method: 'POST', 
+                    data: FData,
+                    cache: false, 
+                    dataType: 'application/json',
+                    crossDomain: true, 
+                    contentType: 'multipart/form-data',
+                    processData: true, 
+                    success: function (data){
+                          result=JSON.parse(data);
+                          app.dialog.alert(result.message);
+                          $$('#my-newrequest-form')[0].reset(); 
+                          self.refreshpage();
+                          self.fetchdata("");
+                          app.popup.close('#my-newrequest-screen');
+                          app.preloader.hide();
+                      }
+            });
+
+
+
+
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            // app.preloader.show();
+            
+            // if (this.currentid=='new') {
+            //   // console.log(self.currentid)
+            //    //append udata with group id for new record
+            //    //udata
+            //    udata.ggroup=app.root.userdata.groupid;
+              //  app.request.post($base_url+'mooerequests/create.php'+$base_param, udata ,(data)=> {
+                  
+              //     result=JSON.parse(data);
+              //     app.dialog.alert(result.message);
+              //     //console.log(group);
+                  
+              //     //preload form
+              //     app.preloader.hide();
+              //     app.views.main.router.back();
+              // })
+            // } else {
+            //   // console.log(udata)
+            //    app.request.post($base_url+'gamegroups/update.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+            //       result=JSON.parse(data);
+            //       app.dialog.alert(result.message);
+            //       //console.log(group);
+                  
+            //       //preload form
+            //       app.preloader.hide();
+            //       app.views.main.router.back({force:true});
+            //   })
+            // }
+            
+        },
+        //send and delete form
+        //send and delete form
+        openpopup(params) {
+          var self = this;
+          var app = self.$app;
+          var params = params.split('|');
+          // fundguid,papsdesc,totalamount
+          var udata= { 
+            requestid: params[0]
+          }
+          app.preloader.show();
+          $$('#my-newrequest-form [name="wfstatus"]')[0].value="";
+          app.request.post($base_url+'mooerequests/read_pendone.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                app.form.fillFromData('#my-newrequest-form',data);
+                self.fetchsucc(data.wfguid);
+                self.fetchuploads(data.requestid);
+            })
+
+
+
+           
+           //update form data 
+        },
+        fetchuploads(requestid) {
+          // var params = params.split('|');
+          // // fundguid,papsdesc,totalamount
+          var self = this;
+          var app = self.$app;
+          var udata= { 
+            recowner: requestid
+          }
+          // app.preloader.show();
+          app.request.post($base_url+'fileuploads/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                // app.form.fillFromData('#my-newrequest-form',data);
+                items = data.records
+                self.$setState({
+                      fileitems : items
+
+                                              
+                  })
+                app.popup.open("#my-newrequest-screen")
+                app.preloader.hide();
+            })
+        //update form data 
+        },
+        fetchsucc(workflow) {
+          // var params = params.split('|');
+          // // fundguid,papsdesc,totalamount
+          var self = this;
+          var app = self.$app;
+          var udata= { 
+            workflow: workflow
+          }
+          // app.preloader.show();
+          app.request.post($base_url+'wfnextstatus/read_successions.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                // app.form.fillFromData('#my-newrequest-form',data);
+                items = data.records
+                // console.log(items)
+                self.$setState({
+                    succitems : items                                              
+                  })
+                app.popup.open("#my-newrequest-screen")
+                app.preloader.hide();
+            })
+        //update form data 
+        },
+        deletedata(udata) {
+           
+        },
+        openfile(params) {
+
+          var self = this;
+          var app = self.$app;
+          var params = params.split('|');
+          // fundguid,papsdesc,totalamount
+          var fileguid=params[0];
+
+          downloadfile=$base_url+"fileuploads/download.php?schregid="+app.data.userdata.schregid+"&fileguid="+fileguid
+
+          window.open(downloadfile);
+         
+          
+        },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        // self.fetchdata($$('#schguid')[0].value)
+        self.fetchdata("");
+
+
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            
+            // console.log(self)
+            self.$setState({
+                  //  currentid: groupid   
+                });
+            //load requests
+            self.fetchdata("");
+            //create date picker 
+            app.methods.fetchshools(app.data.userdata.schdivid,'schguid','srcschdescription');
+            app.methods.createdatepicker(today,'#request-date');
+            app.preloader.hide();   
+            //initialize date range 
+            var calendarRange = app.calendar.create({
+              // containerEl: "#my-daterange-screen",
+              inputEl: '#periodcovered',
+              dateFormat: 'yyyy-mm-dd',
+              rangePicker: true
+            });
+            //initialize pap list 
+
+            app.methods.fetchpaplist();
+            //inititalize save button
+            $$('.popup-newrequest').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-newrequest-form')[0].reset(); 
+                $$('#my-newrequest-form [name="requestid"]')[0].value="";
+                $$('#my-newrequest-form [name="wfstatus"]')[0].value="";
+                app.smartSelect.get('.smart-select').valueEl.textContent="Select Status";
+                self.$setState({
+                      fileitems : [],
+                      succitems:[]
+
+                                              
+                  })
+              // }
+            });
+            $$('#srcschdescription').on("change",function(){
+              var value= $$('#srcschdescription')[0].value;
+              // var value=obj.value;
+              // return;
+              // change: function (value) {
+              var itemText = [],
+                  inputValue = [];
+              // console.log('change triggered' );
+              console.log("selected " + value);
+              
+              // $$('#papsdesc')[0].value="";
+              // $$('#schguid')[0].value="";
+              // for (var i = 0; i < value.length; i++) {
+              //   // itemText.push(value[i].name);
+              //   // inputValue.push(value[i].id);
+              //   $$('#srcschdescription')[0].value=value[i].name;
+              //   $$('#schguid')[0].value=value[i].id;
+                
+              //   // } 
+                
+              // }
+              // console.log($$('#schguid')[0].value);
+              // if (value!=""){
+                self.refreshpage();
+                self.fetchdata(value);
+              // }
+              
+              return;
+            })
+            $$('.submit-button').on('click', function(){
+              var formData = app.form.convertToData('#my-newrequest-form');
+              var file = null;
+
+              var va1=$$('#my-newrequest-form [name="wfstatus"]')[0].value!="";
+              var ErrorMessage="";
+              var va2=true;
+              var va3=true;
+
+              if (va1==false)  ErrorMessage="Please update the status<br>";
+              // if ($$('#my-newrequest-form [name="periodcovered"]')[0].value.length!=23) {
+              //   $$('#my-newrequest-form [name="periodcovered"]')[0].className="input-invalid item-input-invalid";
+              //   va2=false;
+              //   ErrorMessage= ErrorMessage + "Select correct period range <br>";
+              // }
+              // if ($$('#my-newrequest-form [name="periodcovered"]')[0].value=="") {
+              //   va3=false;
+              //   ErrorMessage= ErrorMessage + "Select Program/Activities/Projects <br>";
+              // }
+              
+              if (va1) {
+                // return 
+                self.savedata(formData,file);
+              } else {
+                app.dialog.alert(ErrorMessage);
+              }
+              
+              });
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

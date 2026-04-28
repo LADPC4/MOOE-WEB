@@ -1,0 +1,874 @@
+<template>
+  <div class="page " data-name="Disbursements">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">Void Disbursements</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-newDisbursement">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <!-- <button class="col button button-fill  zero-found-newDisbursement-button popup-open" data-popup=".popup-newDisbursement">Create new Disbursement</button> -->
+        </div>
+        <div class="subnavbar">
+          <form class="searchbar" id="searchschool-autocomplete">
+          <div class="searchbar-inner">
+            <div class="searchbar-input-wrap">
+              <input type="search" placeholder="Check Number" id="disreferenceno" name="disreferenceno" class="disreferenceno">
+            </div>
+            <span class="searchbar-disable-button">Cancel</span>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">Void Disbursements</div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">Disbursement Date</th>
+                    <th class="label-cell">Fund Source</th>
+                    <th class="label-cell">Account Title</th>
+                    <!-- <th class="label-cell">Cheque</th>
+                    <th class="numeric-cell">Check Date</th> -->
+                    <th class="numeric-cell">Net Amount</th>
+                    <th class="label-cell">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{mooedisid}}|{{papsdescription}}|{{fnumber totalamount}}');" >
+                    <td class="label-cell">{{rectimestamp}}</td>
+                    <td class="label-cell">{{papsdescription}}</td>
+                    <td class="label-cell">{{coadesc}}</td>
+                    <!-- <td class="numeric-cell">{{disreferenceno}}</td>
+                    <td class="numeric-cell">{{disrefdate}}</td> -->
+                    <td class="numeric-cell">{{fnumber netamount}}</td>
+                    <td class="label-cell">{{description}}</td>
+                    
+                    
+
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer">
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-newDisbursement" id="my-newDisbursement-screen" >
+      <div class="view">
+        <div class="page">
+          <div class="page-content newDisbursement-screen-content">
+            <form class="list" id="my-newDisbursement-form">
+
+            <div class="card data-table">
+              <div class="card-header">Disbursement Details</div>
+              <div class="card-content">
+                  <div class="list">
+                      <ul >
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Select Funds Source(Transfer Date | Fund Type)</div>
+                            <div class="item-input-wrap">
+                              
+                              <input type="hidden" id="mooedisid" name="mooedisid" class="mooedisid">
+                              <input type="text" id="papsdescription" readonly name="papsdescription" class="papsdescription">
+                              <input type="hidden" id="fundguid" name="fundguid" class="fundguid">
+                              <input type="hidden" id="fundyear" name="fundyear" class="fundyear">
+                            </div>
+                          </div>
+                        </li>
+                        
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Disbursement Voucher</div>
+                              <div class="item-input-wrap">
+                                <input type="text" name="disreferenceno" readonly  id = "disreferenceno" placeholder="Provide DV Ref No ">
+                              </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Cheque Date</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="disrefdate" readonly placeholder="Pick date " id = "disrefdate" class = "disrefdate">
+                            </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Disburserment Month</div>
+                            <div class="item-input-wrap">
+                              <input type="text" id="monthdesc" readonly name="monthdesc" class="monthdesc">
+                              <input type="hidden" id="dismonth" name="dismonth" class="dismonth">
+                            </div>
+                          </div>
+                        </li>   
+                      </ul>
+                  </div>    
+              </div>
+            </div>
+            <div class="card data-table">
+              <div class="card-header">Payee Information</div>
+              <div class="card-content">
+                  <div class="list">
+                      <ul >
+                       
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Payee Name</div>
+                              <div class="item-input-wrap">
+                                <input type="text" name="payee" readonly id = "payee">
+                              </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Payee TIN</div>
+                              <div class="item-input-wrap">
+                                <input type="text" name="payeetin" readonly id = "payeetin"  pattern="[0-9]*" >
+                              </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">ORS/BURS No.</div>
+                              <div class="item-input-wrap">
+                                <input type="text" name="orbursno" readonly id = "orbursno">
+                              </div>
+                          </div>
+                        </li>
+                      </ul>
+                  </div>    
+               
+              </div>
+            </div>
+            <div class="card data-table">
+              <div class="card-header">Payment Information</div>
+              <div class="card-content">
+                  <div class="list">
+                      <ul >
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Account Title</div>
+                            <div class="item-input-wrap">
+                              <input type="text" id="coadesc" readonly name="coadesc" class="coadesc">
+                              <input type="hidden" id="coaguid" name="coaguid" class="coaguid">
+                            </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Transaction Type</div>
+                            <div class="item-input-wrap">
+                              <input type="text" id="trandesc" readonly name="trandesc" class="trandesc">
+                              <input type="hidden" id="trantype" name="trantype" class="trantype">
+                              <input type="hidden" id="taxoverride" name="taxoverride" class="taxoverride">
+                            </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">VAT Type</div>
+                            <div class="item-input-wrap">
+                              <input type="text" id="vatdesc" readonly name="vatdesc" class="vatdesc">
+                              <input type="hidden" id="vattype" name="vattype" class="vattype">
+                            </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Particulars</div>
+                              <div class="item-input-wrap">
+                                <input type="text" name="particulars" readonly id = "particulars">
+                              </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Gross Amount</div>
+                              <div class="item-input-wrap">
+                                <input type="number" name="grossamount" readonly id="grossamount" @blur="computenetamt()" step="0.01" > <!--  /^(\d+(?:[\.\,]\d{2})?)$/  ^[0-9]*(\.[0-9]{1,2})?$    (?=.*?\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?$ -->
+                              </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">NET VAT</div>
+                              <div class="item-input-wrap">
+                                <input type="number" name="netvat" readonly required  id = "netvat" @blur="computenetamt()" validate step="0.01">
+                              </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">BIR FORM 2306</div>
+                              <div class="item-input-wrap">
+                                <input type="number" name="bir2306" readonly required  id = "bir2306" @blur="computenetamt()" validate step="0.01">
+                              </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">BIR FORM 2307</div>
+                              <div class="item-input-wrap">
+                                <input type="number" name="bir2307" readonly required  id = "bir2307" @blur="computenetamt()" validate step="0.01">
+                              </div>
+                          </div>
+                        </li>
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Net Amount</div>
+                              <div class="item-input-wrap">
+                                <input type="number" name="netamount" readonly required id = "netamount" validate>
+                              </div>
+                          </div>
+                        </li>
+                        <!-- <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Update Status</div>
+                            <div class="item-input-wrap">
+                              <a class="item-link smart-select smart-select-init" data-open-in="popover">
+                                <select name="disstatus" required validate>
+                                  <option value="" selected>Select Status</option>
+                                  {{#each succitems}}
+                                  <option value="{{wfstatus}}" >{{name}}</option>
+                                  {{/each}}
+                                </select>
+                                <div class="item-content">
+                                  <div class="item-inner">
+                                    <div class="item-title">Select Status</div>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        </li> -->
+                        <!-- {{#if schtypeiu}}
+                        <li class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title">Liquidated</div>
+                            <div class="item-after">
+                              <label class="toggle toggle-init">
+                                <input type="checkbox" name="liquidated"  >
+                                <span class="toggle-icon"></span>
+                              </label>
+                            </div>
+                          </div>
+                        </li>
+                        {{/if}} -->
+                        <!-- <li>
+                          <div class="item-content item-input">
+                            <div class="item-inner">
+                              <div class="item-title item-label">Attachments</div>
+                              <div class="item-input">
+                                <input class="button button-big button-fill" type="file" name="Select Attachment" placeholder="Upload Zip File">
+                              </div>
+                            </div>
+                          </div>
+                        </li> -->
+                      </ul>
+                  </div>    
+               
+              </div>
+            </div>
+            
+            <div class="col-100 tablet-33 margin-top">
+              <div class="card">
+                <div class="card-header">Uploaded Files</div>
+                <div class="card-content card-content-padding scrollable">
+                  <div class="list media-list">
+                    <ul>
+                      {{#each fileitems}}
+                      <li class="item-content item-content clickable-row" data-href='#' @click="openfile('{{fileguid}}|{{filename}}');">
+                        <div class="item-media">
+                          <i class="icon f7-icons text-color-teal">document_text_fill</i>
+                        </div>
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">{{filename}}</div>
+                            <div class="item-after">{{rectimestamp}}</div>
+                          </div>
+                          <div class="item-text">Size: {{fnumber filesize}}</div>
+                        </div>
+                      </li>
+                      {{/each}}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+           
+          
+          
+            <div class="list">
+              <div class="block block-strong row">
+                  
+                  <div class="col"><a href="#" class="col button button-fill newDisbursement-button">Void</a> </div>
+                  
+                  <!-- {{ #if wfprint}}
+                  <div class="col"><a href="#" class="col button button-fill printDV-button">Print</a></div>
+                  {{/if}} -->
+                  <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+
+                </div>
+              </div>
+            </form>
+            
+            
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+
+                  items : [],
+                  fileitems : [],
+                  succitems : [],
+                  gameoptions : [],
+                  pages : null,
+                  schtypeiu : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                  mooedisid: null,
+                  dvdetails: null
+                }
+            },
+    methods: {
+          refreshpage(){
+            var self = this;
+            self.$setState({
+                        items : [],
+                        wffields : [],
+                        pages: null,
+                        paging: null,
+                        nextpage : null,
+                        lastpage: null,
+                        hasMoreItems: false,
+                        currentpage: null,
+                        mooedisid: null,
+                        dvdetails: null,
+                        wfprint:null,
+                        wfedit:null
+
+                                                
+                    });
+          },
+          fetchdata(schguid) {
+          var disreferenceno= $$('#disreferenceno')[0].value;
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var udata= { 
+            schguid:  app.data.userdata.schguid,
+            disreferenceno: disreferenceno,
+            guser: app.data.userdata.guserid,
+            roleguid: app.data.userdata.roleguid,
+            es: app.data.userdata.ES,
+            jhs: app.data.userdata.JHS,
+            shs: app.data.userdata.SHS
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'mooedisbursements/read_paging.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                // var items = self.items.concat(rdata.records);
+                var items = self.items.concat(rdata.records);
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                console.log(lhasMoreItems)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        self.fetchdata(app.data.userdata.schguid);
+
+
+        },
+        //send and save form
+        deletedata(udata) {
+            // return;
+            var self = this;
+            var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            
+            // udata.schdivid=app.data.userdata.schdivid;
+            udata.guserid=app.data.userdata.guserid;
+            udata.schguid=app.data.userdata.schguid;
+            udata.schregid=app.data.userdata.schregid; 
+            // console.log(udata);
+
+            //
+            // console.log(udata);
+            app.preloader.show();
+            //modified post for sending json and file upload
+
+
+            app.request.post($base_url+'mooedisbursements/delete.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+              result=JSON.parse(data)
+              if (result.status==1) {
+                            
+                $$('#my-newDisbursement-form')[0].reset(); 
+                self.refreshpage();
+                self.fetchdata(app.data.userdata.schguid);
+              }
+              app.dialog.alert(result.message);
+              app.popup.close('#my-newDisbursement-screen');
+              
+               // $$('.printDV-button')[0].style.display = "block";
+
+           })
+
+           
+            
+        },
+        //send and delete form
+        openpopup(params) {
+          var self = this;
+          var app = self.$app;
+          var params = params.split('|');
+          // fundguid,papsdesc,totalamount
+          var udata= { 
+            mooedisid: params[0]
+          }
+         
+          $$('#netvat')[0].value=0;
+            $$('#bir2306')[0].value=0;
+            $$('#bir2307')[0].value=0;
+          app.preloader.show();
+          app.request.post($base_url+'mooedisbursements/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                
+                data.fullname= app.data.userdata.gfirstname  + ' ' +   app.data.userdata.gmiddlename + ' ' +   app.data.userdata.glastname;
+                data.roledescription= app.data.userdata.roledescription;
+                data.divdescription=app.data.userdata.divdescription;           
+                
+                app.form.fillFromData('#my-newDisbursement-form',data);
+                // self.fetchfields(data.wfguid);
+                self.fetchuploads(data.mooedisid);
+                // self.fetchsucc(data.wfguid);
+                self.$setState({
+                  mooedisid: data.mooedisid,
+                  dvdetails: data,
+                  wfprint: data.wfprint,
+                  wfedit: data.wfedit
+                });
+                // $$('.printDV-button')[0].style.display = "block";
+
+            })
+
+
+
+           
+           //update form data 
+        },
+        openfile(params) {
+
+              var self = this;
+              var app = self.$app;
+              var params = params.split('|');
+              // fundguid,papsdesc,totalamount
+              var fileguid=params[0];
+
+              downloadfile=$base_url+"fileuploads/download.php?schregid="+app.data.userdata.schregid+"&fileguid="+fileguid
+
+              window.open(downloadfile);
+              
+
+        },
+        fetchuploads(recowner) {
+          // var params = params.split('|');
+          // // fundguid,papsdesc,totalamount
+          var self = this;
+          var app = self.$app;
+          var udata= { 
+            recowner: recowner
+          }
+          // app.preloader.show();
+          app.request.post($base_url+'fileuploads/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                // app.form.fillFromData('#my-newDisbursement-form',data);
+                items = data.records
+                self.$setState({
+                      fileitems : items
+
+                                              
+                  })
+                  app.popup.open("#my-newDisbursement-screen")
+                app.preloader.hide();
+            })
+
+
+
+           
+           //update form data 
+        },
+        fetchsucc(workflow) {
+          // var params = params.split('|');
+          // // fundguid,papsdesc,totalamount
+          var self = this;
+          var app = self.$app;
+          var udata= { 
+            workflow: workflow
+          }
+          // app.preloader.show();
+          app.request.post($base_url+'wfnextstatus/read_successions.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                // app.form.fillFromData('#my-newDisbursement-form',data);
+                items = data.records
+                // console.log(items)
+                self.$setState({
+                    succitems : items                                              
+                  })
+                app.popup.open("#my-newDisbursement-screen")
+                app.preloader.hide();
+            })
+        //update form data 
+        },
+        fetchfields(workflow) {
+          // var params = params.split('|');
+          // // fundguid,papsdesc,totalamount
+          var self = this;
+          var app = self.$app;
+          var udata= { 
+            wfguid: workflow
+          }
+          // app.preloader.show();
+          app.request.post($base_url+'wffields/read_fields.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                // app.form.fillFromData('#my-newDisbursement-form',data);
+                items = data.records
+                // console.log(items)
+                for (var i = 0; i < items.length; i++) {
+                  // Pre select saved data 
+                  // console.log( $$('#my-newDisbursement-form [name="'+items[i].wffield+'"]')[0]);
+                  $$('#my-newDisbursement-form [name="'+items[i].wffield+'"]')[0].readOnly=false;
+                  $$('#my-newDisbursement-form [name="'+items[i].wffield+'"]')[0].required=true;
+
+                }
+                self.$setState({
+                  wffields : items                                              
+                })
+                app.popup.open("#my-newDisbursement-screen")
+                app.preloader.hide();
+            })
+        //update form data 
+        },
+       
+        computenetamt(){
+          var self = this;
+          var app = self.$app;
+          // console.log('Computing net value')
+          var va1=$$('#my-newDisbursement-form [name="grossamount"]')[0].checkValidity();
+          var va2=$$('#my-newDisbursement-form [name="vattype"]')[0].checkValidity();
+          var va3=$$('#my-newDisbursement-form [name="trantype"]')[0].checkValidity();
+          var va4=$$('#my-newDisbursement-form [name="netvat"]')[0].checkValidity();
+          var va5=$$('#my-newDisbursement-form [name="bir2306"]')[0].checkValidity();
+          var va6=$$('#my-newDisbursement-form [name="bir2307"]')[0].checkValidity();
+
+          
+          if (va1 && va2 && va3 && va4 && va5 && va6) {
+            var val1=$$('#my-newDisbursement-form [name="grossamount"]')[0].value;
+            var val2=$$('#my-newDisbursement-form [name="vattype"]')[0].value;
+            var val3=$$('#my-newDisbursement-form [name="trantype"]')[0].value;
+            var val4=$$('#my-newDisbursement-form [name="netvat"]')[0].value;
+            var val5=$$('#my-newDisbursement-form [name="bir2306"]')[0].value;
+            var val6=$$('#my-newDisbursement-form [name="bir2307"]')[0].value;
+            // console.log(app.data.vatmatrix[val3][val2]);
+            var vatmtrix=app.data.vatmatrix[val3][val2];
+            // var netvat=0;
+            // var bir2306=0;
+            // var bir2307=0;
+            
+            if ($$('#taxoverride')[0].value=='N'){
+                netvat=val1 / vatmtrix.vatvalue;
+                bir2306=netvat * vatmtrix.bir2306;
+                bir2307=netvat * vatmtrix.bir2307;
+            } else {
+                netvat=parseFloat(val4);
+                bir2306=parseFloat(val5);
+                bir2307=parseFloat(val6);
+            }
+            
+            var netamount=parseFloat(val1) - parseFloat(bir2306) - parseFloat(bir2307);
+
+            if (netamount<0) {
+              var toastCenter = app.toast.create({
+                text: 'Total is less than 0',
+                position: 'center',
+                closeTimeout: 2000,
+              });
+              toastCenter.open();
+            }
+
+            if ($$('#taxoverride')[0].value=='N'){
+              $$('#my-newDisbursement-form [name="netvat"]')[0].value=netvat.toFixed(2);
+              $$('#my-newDisbursement-form [name="bir2306"]')[0].value=bir2306.toFixed(2);
+              $$('#my-newDisbursement-form [name="bir2307"]')[0].value=bir2307.toFixed(2);
+            }
+
+            $$('#my-newDisbursement-form [name="netamount"]')[0].value=netamount.toFixed(2);
+
+          }
+          
+        },
+        
+        CreateSubmitData(self) {
+          
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            self.$setState({
+                schtypeiu : app.data.userdata.schtypeiu
+                                              
+            });
+            
+
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+            self.fetchdata(app.data.userdata.schguid);
+            
+            //populate dropdown inputs
+            app.methods.createdatepicker(today,'#disrefdate');
+            // app.methods.createmonthlist('#monthdesc');
+            // app.methods.fetchfundsourcelist('#papsdescription');
+            // app.methods.fetchcoalist('#coadesc');
+            // app.methods.fetchtranlist('#trandesc');
+            // app.methods.fetchvatlist('#vatdesc');
+            // app.methods.fetchvatmatrix();
+
+            
+            
+            $$('.popup-newDisbursement').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-newDisbursement-form')[0].reset(); 
+                $$('#my-newDisbursement-form [name="mooedisid"]')[0].value="";
+                self.$setState({
+                      fileitems : [],
+                      wffields:[],
+                      succitems:[],
+                      mooedisid: null,
+                      wfprint: null,
+                      wfedit: null,
+                      dvdetails: null    
+
+                  })
+              // }
+            }); 
+            $$('.popup-newDisbursement').on('popup:open', function (e) {
+              if (self.mooedisid!=null) {
+                // $$('.printDV-button')[0].style.display = "none";
+                $$('.printDV-button').on('click', function(){
+                    // console.log(self.dvdetails);
+                    // generateBlob(self.dvdetails);
+                    // app.views.main.router.navigate('/dv/')
+                    var netamount=parseFloat(self.dvdetails.netamount);
+
+                    self.dvdetails.gamtwords=app.methods.toWords(netamount.toFixed(2));
+                    self.dvdetails.schdescription=app.data.userdata.schdescription;
+                    window.window.open("./forms/dv/dv.html?data=" + encodeURIComponent(JSON.stringify(self.dvdetails)) , '_blank' ,"toolbar=no,scrollbars=yes,resizable=yes,fullscreen=yes,menubar=no,location=no");
+                 }); 
+              }
+              
+            }); 
+
+            $$('#disreferenceno').on("blur",function(){
+              // var value= $$('#schguid')[0].value;
+              var value2= $$('#disreferenceno')[0].value;
+              // var value=obj.value;
+              // return;
+              // change: function (value) {
+              var itemText = [],
+                  inputValue = [];
+              // console.log('change triggered' );
+              // console.log( value);
+              self.refreshpage();
+              self.fetchdata(app.data.userdata.schguid,value2);
+              return;
+              // $$('#papsdesc')[0].value="";
+              $$('#schguid')[0].value="";
+              for (var i = 0; i < value.length; i++) {
+                // itemText.push(value[i].name);
+                // inputValue.push(value[i].id);
+                $$('#schdescription')[0].value=value[i].name;
+                $$('#schguid')[0].value=value[i].id;
+                
+                // } 
+                
+              }
+            })
+           //create new disbursement button
+
+           
+            
+            $$('.newDisbursement-button').on  ('click', function(){
+              
+              var formData = app.form.convertToData('#my-newDisbursement-form');
+              //get file 
+              app.dialog.confirm("Confirm Delete ?", "Delete Disbursement", function () {
+                        self.deletedata(formData);
+              });
+             
+
+             
+            });
+
+            
+
+            app.preloader.hide();
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

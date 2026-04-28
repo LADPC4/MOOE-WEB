@@ -1,0 +1,730 @@
+<template>
+  <div class="page " data-name="Requests">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">MOOE Requests</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-newrequest">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <button class="col button button-fill  zero-found-newrequest-button popup-open" data-popup=".popup-newrequest">Create new request</button>
+      </div>
+      </div> 
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">School to Division Fund Requests </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">Fund Type</th>
+                    <th class="numeric-cell">Total Amount</th>
+                    <th class="numeric-cell">Request Date</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{requestid}}|{{papsdesc}}');">
+                    <td class="label-cell">{{papsdesc}}</td>
+                    <td class="numeric-cell">{{fnumber totalamount}}</td>
+                    <td class="numeric-cell">{{rectimestamp}}</td>
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer"  >
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-newrequest" id="my-newrequest-screen">
+      <div class="view">
+        <div class="page">
+          <div class="page-content newrequest-screen-content">
+              
+            <div class="login-screen-title">Request Details</div>
+            <form class="list" id="my-newrequest-form" enctype="multipart/form-data"  class="form-ajax-submit">
+              <ul>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title ">School Information </div>
+                      <div class="item-title ">
+                        {{this.$app.data.userdata.schdescription}}
+                      </div>
+                      <div class="item-title ">
+                        School ID : {{this.$app.data.userdata.schoolid}}
+                      </div>
+                      <div class="item-title ">
+                        School District: {{this.$app.data.userdata.divdescription}}
+                      </div>
+                      <div class="item-title ">
+                        Payee: {{this.$app.data.userdata.schpayee}}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+    
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Select Program/Activities/Project</div>
+                    <div class="item-input-wrap">
+                      <input type="text" id="papsdesc" name="papsdesc" required validate placeholder="Type to search  then use up/down and press enter to select" class="papsdesc">
+                      <input type="hidden" id="paps" name="paps" class="paps">
+                      <input type="hidden" id="requestid" name="requestid" class="requestid">
+                      <input type="hidden" id="papsl" name="papsl" class="papsl">
+
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Select Account</div>
+                    <div class="item-input-wrap">
+                      <input type="text" id="acctdesc" name="acctdesc" required validate placeholder="Type to search  then use up/down and press enter to select" class="acctdesc">
+                      <input type="hidden" id="schacctguid" name="schacctguid" class="schacctguid">
+                      <input type="hidden" id="acctsl" name="acctsl" class="acctsl">
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Period Covered</div>
+                      <div class="item-input-wrap">
+                        <!-- pattern="^(?!.*  )(?=.*[\w-])[\w -]{23}$"  -->
+                        <input type="text" name="periodcovered"  validate placeholder="Period covered" id="periodcovered" >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Total Amount</div>
+                      <div class="item-input-wrap">
+                        <input type="text" name="totalamount" required validate pattern="^[0-9]*(\.[0-9]{1,2})?$" placeholder="Enter total amount without commas" data-error-message="Invalid amount.">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Attachments</div>
+                      <div class="item-input">
+                        <input class="button button-big button-fill" type="file" name="Select Attachment" placeholder="Upload Zip File">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+               
+               
+              </ul>
+              
+
+              <div class="row margin-horizontal margin-bottom">
+                <div class="col-100 tablet-33 margin-top">
+                  <div class="card">
+                    <div class="card-header">Uploaded Files</div>
+                    <div class="card-content card-content-padding scrollable">
+                      <div class="list media-list">
+                        <ul>
+                          {{#each fileitems}}
+                          <li class="item-content clickable-row" data-href='#' @click="openfile('{{fileguid}}|{{filename}}');" >
+                            <div class="item-media">
+                              <i class="icon f7-icons text-color-teal">document_text_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">{{filename}}</div>
+                                <div class="item-after">{{rectimestamp}}</div>
+                              </div>
+                              <div class="item-text">Size: {{fnumber filesize}}</div>
+                            </div>
+                          </li>
+                          {{/each}}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin-horizontal margin-bottom">
+                <div class="col-100 tablet-33 margin-top">
+                  <div class="card">
+                    <div class="card-header">Transaction Timeline</div>
+                    <div class="timeline medium-sides no-margin no-padding">
+                      {{#each timelines}}
+                      <div class="timeline-item">
+                        <div class="timeline-item-date"> <small> {{transactiondate}}</small> </div>
+                        <div class="timeline-item-divider"></div>
+                        <div class="timeline-item-content"> <small> {{name}} : {{remarks}}</small>
+                          
+                        </div>
+                      </div>
+                      {{/each}}
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="block block-strong row">
+                {{ #if wfedit}}
+                
+                <div class="col"><a href="#" class="col button button-fill submit-button" @click="submitrequest()" >Submit</a> </div>
+                {{/if}}
+               
+                {{ #if wdelete}}
+                <div class="col" id="delete-button"><a href="#" class="col button button-fill delete-button" >Delete </a> </div>
+                {{/if}}
+                <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+               
+              </div>
+              </form>
+            
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  fileitems : [],
+                  timelines : [],
+                  transferred: [],
+                  wfedit: true,
+                  wdelete: true,
+                  completed: null,
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    currentid:null,
+
+    methods: {
+        refreshpage(){
+          var self = this;
+          self.$setState({
+                      items : [],
+                      fileitems : [],
+                      timelines : [],
+                      pages: null,
+                      paging: null,
+                      wfedit: true,
+                      wdelete: true,
+                      completed: null,
+                      nextpage : null,
+                      lastpage: null,
+                      hasMoreItems: false,
+                      currentpage: null
+
+                                              
+                  });
+        },
+        fetchdata(schguid) {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var udata= { 
+            schguid:  schguid,
+            guser: app.data.userdata.guserid,
+            es: app.data.userdata.ES,
+            jhs: app.data.userdata.JHS,
+            shs: app.data.userdata.SHS
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'mooerequests/read_paging.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                // var items = self.items.concat(rdata.records);
+                
+                var items = self.items.concat(rdata.records);
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.timelines) {
+              
+              var timelines = rdata.timelines;
+              self.$setState({
+                    timelines : timelines                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        //send and save form
+        savedata(udata,file) {
+            var self = this;
+            var app = self.$app;
+            //append udata 
+            udata.schguid=app.data.userdata.schguid;
+            udata.schpayee=app.data.userdata.schpayee;
+            udata.schregid=app.data.userdata.schregid;
+            udata.guserid=app.data.userdata.guserid;
+
+            //
+            // console.log(udata);
+
+            //modified post for sending json and file upload
+            var FData = new FormData();
+            FData.append('file',file);                // this is main row
+            FData.append('data',JSON.stringify(udata));
+            var apipage="create.php";
+            if (udata.requestid!="") {
+              apipage="update.php";
+            }
+            app.preloader.show();
+            app.request({
+                    url: $base_url+'mooerequests/'+apipage+$base_param, 
+                    method: 'POST', 
+                    data: FData,
+                    cache: false, 
+                    dataType: 'application/json',
+                    crossDomain: true, 
+                    contentType: 'multipart/form-data',
+                    processData: true, 
+                    success: function (data){
+                          result=JSON.parse(data);
+                          app.dialog.alert(result.message);
+                          $$('#my-newrequest-form')[0].reset(); 
+                          self.refreshpage();
+                          self.fetchdata(app.data.userdata.schguid);
+                          app.preloader.hide();
+                          app.popup.close('#my-newrequest-screen');
+                      }
+            });
+
+
+
+
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            // app.preloader.show();
+            
+            // if (this.currentid=='new') {
+            //   // console.log(self.currentid)
+            //    //append udata with group id for new record
+            //    //udata
+            //    udata.ggroup=app.root.userdata.groupid;
+              //  app.request.post($base_url+'mooerequests/create.php'+$base_param, udata ,(data)=> {
+                  
+              //     result=JSON.parse(data);
+              //     app.dialog.alert(result.message);
+              //     //console.log(group);
+                  
+              //     //preload form
+              //     app.preloader.hide();
+              //     app.views.main.router.back();
+              // })
+            // } else {
+            //   // console.log(udata)
+            //    app.request.post($base_url+'gamegroups/update.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+            //       result=JSON.parse(data);
+            //       app.dialog.alert(result.message);
+            //       //console.log(group);
+                  
+            //       //preload form
+            //       app.preloader.hide();
+            //       app.views.main.router.back({force:true});
+            //   })
+            // }
+            
+        },
+        //send and delete form
+        //send and delete form
+        openpopup(params) {
+          var self = this;
+          var app = self.$app;
+          var params = params.split('|');
+          // fundguid,papsdesc,totalamount
+          var udata= { 
+            requestid: params[0]
+          }
+          app.preloader.show();
+          app.request.post($base_url+'mooerequests/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                app.form.fillFromData('#my-newrequest-form',data);
+                self.fetchuploads(data.requestid);  
+                self.fetchtimelines(data.requestid);  
+                var transferred=true;
+               console.log(data.wfedit);
+                self.$setState({
+                      wfedit : data.wfedit,
+                      transferred: data.transferred,
+                      wdelete: true
+                                              
+                  });
+                
+                
+
+
+            });
+
+
+
+           
+           //update form data 
+        },
+        fetchuploads(requestid) {
+          // var params = params.split('|');
+          // // fundguid,papsdesc,totalamount
+          var self = this;
+          var app = self.$app;
+          var udata= { 
+            recowner: requestid
+          }
+          // app.preloader.show();
+          app.request.post($base_url+'fileuploads/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                // app.form.fillFromData('#my-newrequest-form',data);
+                items = data.records
+                self.$setState({
+                      fileitems : items
+
+                                              
+                  })
+                app.popup.open("#my-newrequest-screen")
+                app.preloader.hide();
+            })
+
+
+
+           
+           //update form data 
+        },
+        fetchtimelines(requestid) {
+          // var params = params.split('|');
+          // // fundguid,papsdesc,totalamount
+          var self = this;
+          var app = self.$app;
+          var udata= { 
+            recowner: requestid
+          }
+          // app.preloader.show();
+          app.request.post($base_url+'transactions/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                // app.form.fillFromData('#my-newrequest-form',data);
+                items = data.records
+                self.$setState({
+                      timelines : items
+
+                                              
+                  })
+                app.popup.open("#my-newrequest-screen")
+                app.preloader.hide();
+            })
+
+
+
+           
+           //update form data 
+        },
+        deletedata(udata) {
+          var self = this;
+            var app = self.$app;
+            //append udata 
+            udata.schguid=app.data.userdata.schguid;
+            udata.schpayee=app.data.userdata.schpayee;
+            udata.schregid=app.data.userdata.schregid;
+            udata.guserid=app.data.userdata.guserid;
+
+            //
+            // console.log(udata);
+
+            //modified post for sending json and file upload
+            app.request.post($base_url+'mooerequests/delete.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+               data=JSON.parse(data)
+               // app.form.fillFromData('#my-newrequest-form',data);
+               self.refreshpage();
+              self.fetchdata(app.data.userdata.schguid);
+              app.preloader.hide();
+              app.popup.close('#my-newrequest-screen');
+           })
+
+
+
+        },
+        openfile(params) {
+
+          var self = this;
+          var app = self.$app;
+          var params = params.split('|');
+          // fundguid,papsdesc,totalamount
+          var fileguid=params[0];
+
+          downloadfile=$base_url+"fileuploads/download.php?schregid="+app.data.userdata.schregid+"&fileguid="+fileguid
+
+          window.open(downloadfile);
+         
+          
+        },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        // self.fetchdata($$('#schguid')[0].value)
+        self.fetchdata(app.data.userdata.schguid);
+
+
+        },
+        submitrequest(){
+          var self = this;
+        var app = self.$app;
+          // $$('.submit-button').on('click', function(){
+              var formData = app.form.convertToData('#my-newrequest-form');
+              var file = Dom7('#my-newrequest-form').find('input[type="file"]')[0].files[0]
+
+              var va1=$$('#my-newrequest-form [name="totalamount"]')[0].checkValidity();
+              var ErrorMessage="";
+              var va2=true;
+              var va3=true;
+              var va4=true
+
+              if (va1==false)  ErrorMessage="Invalid Amount<br>";
+              if ($$('#my-newrequest-form [name="periodcovered"]')[0].value.length!=23) {
+                $$('#my-newrequest-form [name="periodcovered"]')[0].className="input-invalid item-input-invalid";
+                va2=false;
+                ErrorMessage= ErrorMessage + "Select correct period range <br>";
+              }
+              if ($$('#my-newrequest-form [name="paps"]')[0].value=="") {
+                va3=false;
+                ErrorMessage= ErrorMessage + "Select Program/Activities/Projects <br>";
+              }
+              if ($$("#acctsl")[0].value.indexOf($$("#papsl")[0].value)<0){
+                va4=false;
+                ErrorMessage= ErrorMessage + "Selected Account is invalid for this program <br>";
+              }
+              if (va1 && va2 && va3 && va4) {
+                self.savedata(formData,file);
+              } else {
+                app.dialog.alert(ErrorMessage);
+              }
+              
+              // });
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            
+            // console.log(self)
+            self.$setState({
+                  //  currentid: groupid   
+                });
+            //load requests
+            self.fetchdata(app.data.userdata.schguid);
+            //create date picker 
+            app.methods.createdatepicker(today,'#request-date');
+            app.preloader.hide();   
+            //initialize date range 
+            var calendarRange = app.calendar.create({
+              // containerEl: "#my-daterange-screen",
+              inputEl: '#periodcovered',
+              dateFormat: 'yyyy-mm-dd',
+              rangePicker: true
+            });
+            //initialize pap list 
+
+            app.methods.fetchpaplist();
+            app.methods.fetchaccounts();
+            //inititalize save button
+            $$('.popup-newrequest').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-newrequest-form')[0].reset(); 
+                $$('#my-newrequest-form [name="requestid"]')[0].value="";
+                $$('.delete-button').off('click')
+                self.$setState({
+                      fileitems : [],
+                      timelines : [],
+                      wfedit:true,
+                      wdelete: true,
+                      transferred: null,
+                      completed: null
+                      
+                                              
+                  })
+              // }
+            });
+            $$('.popup-newrequest').on('popup:open', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                var wdelete=true;
+                if ($$('#my-newrequest-form [name="requestid"]')[0].value=="") wdelete="";;
+                console.log($$('#my-newrequest-form [name="requestid"]')[0].value)
+                
+                self.$setState({
+                     
+                      // wfedit:true,
+                      // transferred: true,
+                      wdelete: wdelete,
+                      completed: null
+                      
+                                              
+                  })
+              // }
+            });
+
+            
+
+              $$('#delete-button').on('click', function(){
+                  var formData = app.form.convertToData('#my-newrequest-form');
+                  console.log("delete Clicked")
+                  //confirm to user
+                  if (self.transferred=="N"){
+                    app.dialog.confirm("Confirm Delete ?", "Delete Request", function () {
+                        self.deletedata(formData);
+                      });
+                  } else {
+                    app.dialog.alert("Delete of Requests is not allowed. Fund was already be transferred. \n " )
+                  }
+                  
+              });
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

@@ -1,0 +1,628 @@
+<template>
+  <div class="page " data-name="usertocluster">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">Assign User to Cluster</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-usertoclusterdetails">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <!-- <button class="col button button-fill  zero-found-usertoclusterdetails-button popup-open" data-popup=".popup-usertoclusterdetails">Create Flow Succession</button> -->
+      </div>
+      <div class="subnavbar">
+        <form class="searchbar" id="searchschool-autocomplete">
+          <div class="searchbar-inner">
+            <div class="searchbar-input-wrap">
+              <input type="search" placeholder="Search" id="searchname" name="searchname" class="searchname" @blur="fetchdata(1)">
+              <i class="searchbar-icon"></i>
+              <span class="input-clear-button"></span>
+            </div>
+            <span class="searchbar-disable-button">Cancel</span>
+          </div>
+        </form>
+      </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">Cluster Users </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">Last Name</th>
+                    <th class="label-cell">First Name</th>
+                   
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <!-- wfguid, `type`, `status`, order, description, completed, rectimestamp -->
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{gsysuserid}}|{{glastname}} {{gfirstname}}');">
+                   
+                    <td class="label-cell">{{glastname}}</td>
+                    <td class="label-cell">{{gfirstname}}</td>
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer"  >
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-usertoclusterdetails" id="my-usertoclusterdetails-screen" >
+      <div class="view">
+        <div class="page">
+          <div class="page-content usertoclusterdetails-screen-content">
+              
+            <div class="login-screen-title">{{fullname}} Assignment Details</div>
+            <form class="list" id="my-usertoclusterdetails-form">
+                <div class="list">
+                    
+                  <div class="block block-strong row">
+                    <div class="col"><a href="#" class="col button button-fill usertoclusterdetails-button">Submit</a> </div>
+                    <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+                  </div>
+              
+                </div>
+
+                <div class="list">
+                    <ul >   
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">Select School</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="schdescription" required validate  id = "schdescription" class="schdescription">
+                              <input type="hidden" id="schguid" value="" name="schguid">
+                              <input type="hidden" id="guserid" value="{{guserid}}" name="guserid" class="guserid">
+                              <div class="col"><a href="#" class="col button button-fill " @click="assignschool()">Assign</a></div>
+                            </div>
+                        </div>
+                      </li>
+                     
+                     
+                      
+                    </ul>
+                    
+
+                </div>
+                <div class="col-100 margin-top">
+                  <div class="card data-table">
+                    <div class="card-content">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th class="label-cell">School</th>
+                            <th class="label-cell">Action</th>
+                            
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {{#each clusterschools}}
+                          <!-- wfguid, `type`, `status`, order, description, completed, rectimestamp -->
+                          <tr class=''>
+                          
+                          
+                            <td class="label-cell">{{schdescription}}<input type="hidden" name="schguid" value="{{schguid}}" ></td>
+                            <td class="numeric-cell"><div class="col"><a href="#" class="col button button-fill " @click="removeschool('{{schguid}}')">Remove</a></div></td>
+                            
+                          </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>  
+            </form>
+            
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  statusitems: [],
+                  wfitems: [],
+                  gameoptions : [],
+                  pages : null,
+                  guserid: [],
+                  gullname: [],
+                  clusterschools: [],
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    methods: {
+          refreshpage(){
+            var self = this;
+            self.$setState({
+                        items : [],
+                        pages: null,
+                        paging: null,
+                        nextpage : null,
+                        clusterschools: [],
+                        lastpage: null,
+                        hasMoreItems: false,
+                        currentpage: null,
+                        
+
+                                                
+                    });
+          },
+          fetchdata(refreshpage) {
+
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          if (refreshpage==1) self.refreshpage();
+          var searchname=$$('#searchschool-autocomplete [name="searchname"]')[0].value;
+          var udata= { 
+            gdivision: app.data.userdata.schdivid,
+            cluster:'Y',
+            searchname: searchname
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'sysdivusers/read_records.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                var items = self.items.concat(rdata.records);
+                // var items =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+          fetchstatuslist() {
+
+            var self = this;
+            var app = self.$app;
+            // var fetchpage = 0;
+            var udata= { 
+              
+              guser: app.data.userdata.guserid
+            }
+            app.preloader.show();
+            
+
+            //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+            app.request.post($base_url+'wfstatus/read_all.php'+$base_param , JSON.stringify(udata), (rdata) => {
+              rdata=JSON.parse(rdata);
+              if (rdata.records) {
+                  var statusitems =rdata.records;
+                  // var items =rdata.records;
+                 
+                  //console.log(items)
+                  self.$setState({
+                        statusitems : statusitems
+
+                                                
+                    })
+                  // console.log(self.paging)
+              }
+              
+              
+              //get next page  
+            //console.log(self.items);
+            app.preloader.hide();
+            })  
+        },
+        fetchflowlist: function () {
+          // continue to dashboard
+          var udata= { 
+            
+            roleguid: app.data.userdata.roleguid   
+            
+          }
+          app.preloader.show();
+          app.request.post($base_url+'workflow/read_paging.php',JSON.stringify(udata) ,(data)=> {
+            data=JSON.parse(data)
+            // app.$setState({
+            //   flowtypelist: data   
+            // })
+            app.data.flowtypelist=data;
+            var ftlistel = app.autocomplete.create({
+              inputEl: '.description',
+              openIn: 'dropdown',
+              valueProperty: 'id',
+              textProperty: 'name',
+              closeOnSelect: true,
+              source: function (query, render) {
+                var results = [];
+                // if (query.length === 0) {
+                //   render(results);
+                //   return;
+                // }
+                // Find matched items
+                // $$('#divdescription')[0].value="";
+                $$('#workflow')[0].value="";
+                list=app.data.flowtypelist.records;
+                for (var i = 0; i < list.length; i++) {
+                  if (list[i].description.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+                    results.push({ "id": list[i].wfguid,"name": list[i].description }); //
+                    
+                    
+                  }
+                }
+                // Render items by passing array with result items
+                //  console.log(results)
+                render(results);
+              },
+              on: {
+                change: function (value) {
+                  var itemText = [],
+                      inputValue = [];
+                  for (var i = 0; i < value.length; i++) {
+                    // itemText.push(value[i].name);
+                    // inputValue.push(value[i].id);
+                    $$('#description')[0].value=value[i].name;
+                    $$('#workflow')[0].value=value[i].id;
+                    // $$('#roletype')[0].value=value[i].tag;
+                    //populate schools 
+                  
+                  }
+                  
+                },
+              },  
+              });
+            // console.log(sdolistel);
+            app.preloader.hide();
+          });
+        },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        self.fetchdata(app.data.userdata.schguid);
+
+
+        },
+        //send and save form
+        savedata(udata) {
+            // return;
+            var self = this;
+            var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // return ;
+            
+            udata.schdivid=app.data.userdata.schdivid;
+            udata.clusterschools=self.clusterschools;
+            udata.guserid=udata.guserid;
+            // udata.schguid=app.data.userdata.schguid;
+            console.log(udata);
+            apipage="update";
+            // if (udata.wfguid=="") {
+            //   apipage="create";
+            // }
+            app.preloader.show();
+            app.request.post($base_url+'usertocluster/'+ apipage +'.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+                result=JSON.parse(data);
+                app.dialog.alert(result.message);
+
+                $$('#my-usertoclusterdetails-form')[0].reset(); 
+                self.refreshpage();
+                self.fetchdata(app.data.userdata.schguid);
+                app.preloader.hide();
+                app.popup.close('#my-usertoclusterdetails-screen');
+            });
+            
+        },
+        //send and delete form
+        openpopup(params) {
+          var self = this;
+            var app = self.$app;
+          var params = params.split('|');
+          // {{id}}|{{name}}|{{order}}|{{show}}
+          var udata= { 
+            guserid: params[0],
+            schdivid: app.data.userdata.schdivid
+          }
+          self.$setState({
+                      
+                      guserid:params[0],
+                      fullname:params[1]
+                                              
+                  })
+          // console.log(udata);
+          app.preloader.show();
+          app.request.post($base_url+'usertocluster/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+              
+              // return;
+              result=JSON.parse(data);
+              //iterate from records 
+              if (typeof result.records !== 'undefined'){
+                var list=result.records
+                 self.$setState({
+                clusterschools :  list
+                                              
+                  });
+              } 
+             
+              // app.form.fillFromData('#my-usertoclusterdetails-form',udata);
+              app.preloader.hide();
+              app.popup.open("#my-usertoclusterdetails-screen")
+          });
+          
+           
+           //update form data 
+        },
+        removeschool(schguid) {
+          var self = this;
+          // the code you're looking for
+          var obj=self.clusterschools;;
+          // iterate over each element in the array
+          for (var i = 0; i < obj.length; i++){
+            // look for the entry with a matching `code` value
+            if ((obj[i].schguid == schguid) ){
+              // we found it
+              // obj[i].name is the matched result
+              // return true;
+              obj.splice(i,1)
+            }
+          }
+          self.$setState({
+                  clusterschools :  obj                                 
+            });
+          // return false
+        },
+        assignschool() {
+          
+          var self = this;
+          var app = self.$app;
+          var schdescription= $$('#my-usertoclusterdetails-form [name="schdescription"]')[0].value;
+          var schguid= $$('#my-usertoclusterdetails-form [name="schguid"]')[0].value;
+          console.log(schguid);
+          if (schguid==""){
+              app.dialog.alert("Please select a school to add.")
+              return;
+          }
+          var school ={
+            schguid: schguid,
+            schdescription: schdescription
+          }
+          // console.log(self.clusterschools);
+
+          if (self.searchschool(schguid)==true){
+            var toastCenter = app.toast.create({
+                text: 'School was already added!',
+                position: 'center',
+                closeTimeout: 2000,
+            });
+            toastCenter.open();
+          } else {
+            var list;
+            list = self.clusterschools.concat(school);
+            self.$setState({
+                  clusterschools :  list                                 
+            });
+          }
+          // console.log(self.clusterschools)
+        },
+        searchschool(schguid){
+          var self = this;
+          // the code you're looking for
+          
+          var obj=self.clusterschools;
+          try {
+            if (typeof(obj) == 'undefined') return false;
+          } catch (e) {
+            return false;
+          }
+
+          
+          // iterate over each element in the array
+          for (var i = 0; i < obj.length; i++){
+            // look for the entry with a matching `code` value
+            if ((obj[i].schguid == schguid) ){
+              // we found it
+              // obj[i].name is the matched result
+              return true;
+            }
+          }
+          return false
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+
+
+            
+            app.methods.fetchshools(app.data.userdata.schdivid,'schguid','schdescription');
+            self.fetchdata(app.data.userdata.schguid);
+           
+
+
+            $$('.popup-usertoclusterdetails').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-usertoclusterdetails-form')[0].reset(); 
+                // $$('#my-usertoclusterdetails-form [name="wfguid"]')[0].value="";
+                self.$setState({
+                      fileitems : [],
+                      guserid:[],
+                      fullname:[]
+                                              
+                  })
+              // }
+            });
+            
+            $$('.usertoclusterdetails-button').on('click', function(){
+              
+              var formData = app.form.convertToData('#my-usertoclusterdetails-form');
+              var va1=self.clusterschools.length==0;
+              // var va1=$$('#my-usertoclusterdetails-form [name="description"]')[0].checkValidity();
+              // var va2=$$('#my-usertoclusterdetails-form [name="workflow"]')[0].value!="";
+              // var va4=$$('#my-usertoclusterdetails-form [name="status"]')[0].value!="";
+              // var va4=$$('#my-usertoclusterdetails-form [name="receivercontact"]')[0].value!="";
+
+              if (self.clusterschools.length==0){
+                
+              }
+
+              var ErrorMessage="";
+              
+              if (va1==true){
+                ErrorMessage=ErrorMessage + "Please add one or more schools.<br>";
+              }
+              
+              
+
+              if ( va1==false  ) {
+                self.savedata(formData);
+              } else {
+                app.dialog.alert(ErrorMessage);
+              }
+              
+              });
+            
+
+            
+
+            app.preloader.hide();
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

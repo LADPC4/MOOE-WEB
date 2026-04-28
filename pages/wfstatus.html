@@ -1,0 +1,437 @@
+<template>
+  <div class="page " data-name="wfstatus">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">MOOE Workflow Status List</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-workflowstatusdetails">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <button class="col button button-fill  zero-found-workflowstatusdetails-button popup-open" data-popup=".popup-workflowstatusdetails">Create New Status</button>
+      </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">Workflow Status List </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">Name</th>
+                    <th class="label-cell">Order</th>
+                    <th class="label-cell">Show</th>
+                    <th class="numeric-cell">Date/Time</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <!-- wfguid, `type`, `status`, order, description, completed, rectimestamp -->
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{id}}|{{name}}|{{gorder}}|{{gshow}}');">
+                    <td class="label-cell">{{name}}</td>
+                    <td class="numeric-cell">{{gorder}}</td>
+                    <td class="numeric-cell">{{gshow}}</td>
+                    <td class="numeric-cell">{{rectimestamp}}</td>
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer"  >
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-workflowstatusdetails" id="my-workflowstatusdetails-screen" >
+      <div class="view">
+        <div class="page">
+          <div class="page-content workflowstatusdetails-screen-content">
+              
+            <div class="login-screen-title">Status Details</div>
+            <form class="list" id="my-workflowstatusdetails-form">
+                <div class="list">
+                    <ul >
+                      <!-- <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Select Fund Year</div>
+                            <div class="item-input-wrap">
+                              <input type="text" placeholder="Select Fund Year" required readonly="readonly" id="fundyear" name="fundyear"/>
+                            </div>
+                          </div>
+                        </div>
+                      </li> -->
+                      
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Name</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="name" required validate  id = "name" class="name">
+                              <input type="hidden" id="id" name="id" class="id">
+                            </div>
+                        </div>
+                      </li>
+                      
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Order</div>
+                          <div class="item-input-wrap">
+                            <input type="number" id="gorder" required validate name="gorder" class="gorder"  placeholder="workflow order">
+                           
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title">Show</div>
+                          <div class="item-after">
+                            <label class="toggle toggle-init">
+                              <input type="checkbox" name="gshow"  >
+                              <span class="toggle-icon"></span>
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                      
+                            
+                    </ul>
+                </div>
+
+                <div class="list links-list">
+                    
+                    <ul>
+                        <li>
+                       
+                        <!--li><a href="/game/{{schguid}}/"></a></li--
+                        <td class="label-cell " >{{goptiondescription}}</td>
+                        <td class="label-cell  " >{{goptionvalue}}</td>
+                        <td class="label-cell numeric-cell " >{{goptionid}}</td-->
+                        </li>
+                     
+                     
+                    </ul>
+                   
+                  </div>  
+                
+              
+                
+  
+                <div class="list">
+                    <div class="block block-strong row">
+                        <div class="col"><a href="#" class="col button button-fill workflowstatusdetails-button">Submit</a> </div>
+                        <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+                      </div>
+                  
+                 
+                </div>
+              </form>
+            
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  gameoptions : [],
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    methods: {
+          refreshpage(){
+            var self = this;
+            self.$setState({
+                        items : [],
+                        pages: null,
+                        paging: null,
+                        nextpage : null,
+                        lastpage: null,
+                        hasMoreItems: false,
+                        currentpage: null
+
+                                                
+                    });
+          },
+          fetchdata(schguid) {
+
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var udata= { 
+            schguid:  schguid,
+            guser: app.data.userdata.guserid
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'wfstatus/read_paging.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                var items = self.items.concat(rdata.records);
+                // var items =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        self.fetchdata(app.data.userdata.schguid);
+
+
+        },
+        //send and save form
+        savedata(udata) {
+            // return;
+            var self = this;
+            var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            
+            // udata.schdivid=app.data.userdata.schdivid;
+            udata.guserid=app.data.userdata.guserid;
+            udata.schguid=app.data.userdata.schguid;
+            console.log(udata);
+            apipage="update";
+            if (udata.id=="") {
+              apipage="create";
+            }
+            app.preloader.show();
+            app.request.post($base_url+'wfstatus/'+ apipage +'.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+                result=JSON.parse(data);
+                app.dialog.alert(result.message);
+
+                $$('#my-workflowstatusdetails-form')[0].reset(); 
+                self.refreshpage();
+                self.fetchdata(app.data.userdata.schguid);
+                app.preloader.hide();
+                app.popup.close('#my-workflowstatusdetails-screen');
+            });
+            
+        },
+        //send and delete form
+        openpopup(params) {
+          var params = params.split('|');
+          // {{id}}|{{name}}|{{order}}|{{show}}
+          var udata= { 
+            id: params[0],
+            name: params[1],
+            gorder: params[2],
+            gshow: params[3]
+          }
+          // console.log(udata);
+          app.form.fillFromData('#my-workflowstatusdetails-form', udata);
+           app.popup.open("#my-workflowstatusdetails-screen")
+           //update form data 
+        },
+        deletedata(udata) {
+           
+        },
+        CreateSubmitData(self) {
+          
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+
+
+            // app.methods.fetchstatuslist();
+            // app.methods.fetchflowtypes();
+
+            self.fetchdata(app.data.userdata.schguid);
+            // app.methods.fetchctmor();
+            // app.methods.createdatepicker(today,'#ackdate');
+
+
+            $$('.popup-workflowstatusdetails').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-workflowstatusdetails-form')[0].reset(); 
+                $$('#my-workflowstatusdetails-form [name="id"]')[0].value="";
+                self.$setState({
+                      fileitems : []
+
+                                              
+                  })
+              // }
+            });
+            
+            $$('.workflowstatusdetails-button').on('click', function(){
+              
+              var formData = app.form.convertToData('#my-workflowstatusdetails-form');
+              // var va1=$$('#my-workflowstatusdetails-form [name="name"]')[0].flowtype!="";
+              var va1=$$('#my-workflowstatusdetails-form [name="name"]')[0].checkValidity();
+              var va2=$$('#my-workflowstatusdetails-form [name="gorder"]')[0].checkValidity();
+              // var va4=$$('#my-workflowstatusdetails-form [name="status"]')[0].value!="";
+              // var va4=$$('#my-workflowstatusdetails-form [name="receivercontact"]')[0].value!="";
+
+
+              var ErrorMessage="";
+              
+              if (va1==false){
+                ErrorMessage=ErrorMessage + "Please provide status description<br>";
+              }
+              if (va2==false){
+                ErrorMessage=ErrorMessage + "Please provide status order<br>";
+              }
+              
+
+              if ( va1 && va2 ) {
+                self.savedata(formData);
+              } else {
+                app.dialog.alert(ErrorMessage);
+              }
+              
+              });
+            
+
+            
+
+            app.preloader.hide();
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

@@ -1,0 +1,108 @@
+// Promise is not defined in IE so xlsx-populate uses a polyfill via JSZip.
+var Promise = XlsxPopulate.Promise;
+
+// var radioBlank = document.getElementById("radio-blank");
+// var radioAjax = document.getElementById("radio-ajax");
+// var radioLocal = document.getElementById("radio-local");
+var urlInput = "./forms/dv.xlsx";  // document.getElementById("url-input");
+// var fileInput = document.getElementById("file-input");
+
+function getWorkbook() {
+        
+        return new Promise(function (resolve, reject) {
+            var req = new XMLHttpRequest();
+            var url = "./forms/dv.xlsx";
+            req.open("GET", url, true);
+            req.responseType = "arraybuffer";
+            req.onreadystatechange = function () {
+                if (req.readyState === 4){
+                    if (req.status === 200) {
+                        resolve(XlsxPopulate.fromDataAsync(req.response));
+                    } else {
+                        reject("Received a " + req.status + " HTTP code.");
+                    }
+                }
+            };
+
+            req.send();
+        });
+    
+}
+
+function generate(data) {
+    var type=""
+    return getWorkbook()
+        .then(function (workbook) {
+            // console.log(workbook.property("protect"));
+            //populate fields in xlsx
+            workbook.sheet(0).cell("AB4").value(data.papsdescription);
+            workbook.sheet(0).cell("AB5").value("Date: " + data.disrefdate);
+            workbook.sheet(0).cell("AB6").value("DV No.: " + data.disreferenceno);
+            workbook.sheet(0).cell("E11").value(data.payee);
+            workbook.sheet(0).cell("S12").value( data.payeetin);
+            workbook.sheet(0).cell("AB12").value( data.orbursno);
+            workbook.sheet(0).cell("I16").value( data.particulars);
+            workbook.sheet(0).cell("A17").value( data.trantype);
+            workbook.sheet(0).cell("I18").value( data.vatdesc);
+
+            var netvat=parseFloat(data.netvat);
+            var bir2306=parseFloat(data.bir2306);
+            var bir2307=parseFloat(data.bir2307);
+            var grossamount=parseFloat(data.grossamount);
+            var netamount=parseFloat(data.netamount);
+
+            var gamtwords=app.methods.toWords(netamount.toFixed(2));
+            workbook.sheet(0).cell("A3").value( data.divdescription);
+            workbook.sheet(0).cell("C19").value( app.methods.numberWithCommas(netvat.toFixed(2)));
+            workbook.sheet(0).cell("C20").value(  app.methods.numberWithCommas(bir2306.toFixed(2)));
+            workbook.sheet(0).cell("C21").value(  app.methods.numberWithCommas(bir2307.toFixed(2)));
+            workbook.sheet(0).cell("AB16").value(  app.methods.numberWithCommas(grossamount.toFixed(2)));
+            workbook.sheet(0).cell("AB22").value(  app.methods.numberWithCommas(netamount.toFixed(2)));
+            workbook.sheet(0).cell("S35").value( gamtwords );
+            
+            workbook.sheet(0).cell("B25").value( data.fullname );
+            workbook.sheet(0).cell("W44").value( data.fullname );
+            workbook.sheet(0).cell("W46").value( data.roledescription );
+
+            return workbook.outputAsync({ type: type });
+        });
+}
+
+function generateBlob(data) {
+    return generate(data)
+        .then(function (blob) {
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(blob, "dv.xlsx");
+            } else {
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement("a");
+                // console.log(url);
+                document.body.appendChild(a);
+                a.href = url;
+                a.className="link external";
+                a.download = "dv.xlsx";
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }
+        })
+        .catch(function (err) {
+            alert(err.message || err);
+            throw err;
+        });
+}
+
+function generateBase64() {
+    return generate("base64")
+        .then(function (base64) {
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                throw new Error("Navigating to data URI is not supported in IE.");
+            } else {
+                location.href = "data:" + XlsxPopulate.MIME_TYPE + ";base64," + base64;
+            }
+        })
+        .catch(function (err) {
+            alert(err.message || err);
+            throw err;
+        });
+}

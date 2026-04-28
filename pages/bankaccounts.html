@@ -1,0 +1,623 @@
+<template>
+  <div class="page " data-name="schdivaccounts">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">Manage Bank Accounts</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-workflowdetails">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <button class="col button button-fill  zero-found-schdivaccountsetails-button popup-open" data-popup=".popup-schdivaccountsdetails">Create new Account</button>
+      </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">Bank Accounts </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">Account Number</th>
+                    <th class="label-cell">Bank</th>
+                    <th class="label-cell">Maintaining Balance</th>
+                    {{#if showshlvl}}
+                    <th class="label-cell">ES</th>
+                    <th class="numeric-cell">JHS</th>
+                    <th class="numeric-cell">SHS</th>
+                    {{/if}}
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <!-- ejsguid, schdivguid, schaccount, schbank, maintbal, es, jhs, shs, -->
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{ejsguid}}|{{schdivguid}}|{{schaccount}}|{{schbank}}|{{maintbal}}|{{es}}|{{jhs}}|{{shs}}');">
+                    <td class="label-cell">{{schaccount}}</td>
+                    <td class="numeric-cell">{{schbank}}</td>
+                    <td class="numeric-cell">{{maintbal}}</td>
+                    
+                    <td class="numeric-cell">{{es}}</td>
+                    <td class="numeric-cell">{{jhs}}</td>
+                    <td class="numeric-cell">{{shs}}</td>
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer"  >
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-schdivaccountsdetails" id="my-schdivaccountsdetails-screen" >
+      <div class="view">
+        <div class="page">
+          <div class="page-content schdivaccountsdetails-screen-content">
+              
+            <div class="login-screen-title">Account Details</div>
+            <form class="list" id="my-schdivaccountsdetails-form">
+                <div class="list">
+                    <ul >
+                      <!-- <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Select Fund Year</div>
+                            <div class="item-input-wrap">
+                              <input type="text" placeholder="Select Fund Year" required readonly="readonly" id="fundyear" name="fundyear"/>
+                            </div>
+                          </div>
+                        </div>
+                      </li> -->
+                      
+                      
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Account Number</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="schaccount" required validate  id = "schaccount">
+                              <input type="hidden" name="guserguid"  id = "guserguid" value="{{guserid}}">
+                              <input type="hidden" name="schdivguid"  id = "schdivguid">
+                              <input type="hidden" name="ejsguid"  id = "ejsguid">
+                              
+                              
+                            </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Bank</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="schbank" required validate  id = "schbank">
+                            </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Maintaining Balance</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="maintbal" id="maintbal" required validate pattern="^[0-9]*(\.[0-9]{1,2})?$" placeholder="Enter total amount without commas" data-error-message="Invalid amount.">
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input" id="SAline">
+                        <div class="item-inner">
+                          <div class="item-title">School Level Assignment</div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input" id="ESline">
+                      
+                        <div class="item-inner">
+                          <div class="item-title">Elementary</div>
+                          <div class="item-after">
+                            <label class="toggle toggle-init">
+                              <input type="checkbox" name="es" id="es"  >
+                              <span class="toggle-icon"></span>
+                            </label>
+                          </div>
+                        </div>
+                     
+                    </li>
+                    
+                    <li class="item-content item-input" id="JHSline">
+                      
+                      <div class="item-inner">
+                        <div class="item-title">Junior High School</div>
+                        <div class="item-after">
+                          <label class="toggle toggle-init">
+                            <input type="checkbox" name="jhs"id="jhs"   >
+                            <span class="toggle-icon"></span>
+                          </label>
+                        </div>
+                      </div>
+                   
+                  </li>
+                 
+                  <li class="item-content item-input" id="SHSline">
+                      
+                    <div class="item-inner">
+                      <div class="item-title">Senior High School</div>
+                      <div class="item-after">
+                        <label class="toggle toggle-init">
+                          <input type="checkbox" name="shs" id="shs"   >
+                          <span class="toggle-icon"></span>
+                        </label>
+                      </div>
+                    </div>
+                 
+                  </li>
+                      
+                            
+                    </ul>
+                </div>
+
+                <div class="list links-list">
+                    
+                    <ul>
+                        <li>
+                       
+                        <!--li><a href="/game/{{schguid}}/"></a></li--
+                        <td class="label-cell " >{{goptiondescription}}</td>
+                        <td class="label-cell  " >{{goptionvalue}}</td>
+                        <td class="label-cell numeric-cell " >{{goptionid}}</td-->
+                        </li>
+                     
+                     
+                    </ul>
+                   
+                  </div>  
+                
+              
+                
+  
+                <div class="list">
+                    <div class="block block-strong row">
+                        <div class="col"><a href="#" class="col button button-fill schdivaccountsdetails-button">Submit</a> </div>
+                        <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+                      </div>
+                  
+                 
+                </div>
+              </form>
+            
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  gameoptions : [],
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                  orgtable: 'S',
+                  orgidfld: null,
+                  showshlvl: false
+                }
+            },
+    methods: {
+          refreshpage(){
+            var self = this;
+            
+            self.$setState({
+                        items : [],
+                        guserid: app.data.userdata.guserid  ,
+                        pages: null,
+                        paging: null,
+                        nextpage : null,
+                        lastpage: null,
+                        hasMoreItems: false,
+                        currentpage: null
+
+                                                
+                    });
+                    
+            if (app.data.userdata.roletype=='S') {
+              $$('#my-schdivaccountsdetails-form [name="schdivguid"]')[0].value=app.data.userdata.schguid;
+            
+              if (app.data.userdata.ES=='N'){
+                $$('#ESline')[0].style.display='none';
+              }
+              if (app.data.userdata.JHS=='N'){
+                $$('#JHSline')[0].style.display='none';
+              }
+              if (app.data.userdata.SHS=='N'){
+                $$('#SHSline')[0].style.display='none';
+              }
+              self.$setState({
+                  showshlvl: true
+
+                                                
+                    });
+            } else {
+                // $$('#my-schdivaccountsdetails-form [name="schdivguid"]')[0].value=app.data.userdata.schguid;
+                // if (app.data.userdata.rolegroup=='R') {
+                //   $$('#my-schdivaccountsdetails-form [name="schdivguid"]')[0].value=app.data.userdata.schregid;
+                // } else {
+                $$('#my-schdivaccountsdetails-form [name="schdivguid"]')[0].value=app.data.userdata.schdivid;
+                // }
+                $$('#SAline')[0].style.display='none';
+                $$('#ESline')[0].style.display='none';
+                $$('#JHSline')[0].style.display='none';
+                $$('#SHSline')[0].style.display='none';
+                $$('#my-schdivaccountsdetails-form [name="es"]')[0].checked=true;
+                $$('#my-schdivaccountsdetails-form [name="jhs"]')[0].checked=true;
+                $$('#my-schdivaccountsdetails-form [name="shs"]')[0].checked=true;
+                
+                self.$setState({
+                  orgtable: "D"
+
+                                                
+                    });
+              
+            }
+          },
+          fetchdata(orgtable) {
+
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var schdivguid=$$('#my-schdivaccountsdetails-form [name="schdivguid"]')[0].value
+          var udata= { 
+            schdivguid:  schdivguid,
+            guser: app.data.userdata.guserid,
+            es: app.data.userdata.ES,
+            jhs: app.data.userdata.JHS,
+            shs: app.data.userdata.SHS,
+            orgtable: orgtable
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+
+          app.request.post($base_url+'schdivaccounts/read_paging.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                var items = self.items.concat(rdata.records);
+                // var items =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        self.fetchdata(self.orgtable);
+
+
+        },
+        //send and save form
+        savedata(udata) {
+            // return;
+            var self = this;
+            var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            
+            // udata.schdivid=app.data.userdata.schdivid;
+            udata.guserid=app.data.userdata.guserid;
+            udata.schguid=app.data.userdata.schguid;
+            console.log(udata);
+            apipage="saveaccount";
+            
+            app.preloader.show();
+            app.request.post($base_url+'schdivaccounts/'+ apipage +'.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+                result=JSON.parse(data);
+                app.dialog.alert(result.message);
+                if (result.status=='0'){
+                  app.preloader.hide();
+                   return ;
+                }
+                $$('#my-schdivaccountsdetails-form')[0].reset(); 
+                self.refreshpage();
+                self.fetchdata(self.orgtable);
+                
+                app.preloader.hide();
+                app.popup.close('#my-schdivaccountsdetails-screen');
+            });
+            
+        },
+        //send and delete form
+        openpopup(params) {
+          var params = params.split('|');
+          console.log(params)
+          // {{ejsguid}}|{{schdivguid}}|{{schaccount}}|{{schbank}}|{{maintbal}}|{{es}}|{{jhs}}|{{name}}|{{shs}}
+          if (params[5]=='Y'){
+             params[5]=array("on");
+          }
+          if (params[6]=='Y'){
+             params[6]=array("on");
+          }
+          if (params[7]=='Y'){
+             params[7]=array("on");
+          }
+          var udata= { 
+            ejsguid: params[0],
+            schdivguid: params[1],
+            schaccount: params[2],
+            schbank: params[3],
+            maintbal: params[4],
+            es: params[5],
+            jhs:  params[6],
+            shs:  params[7]
+          }
+          // console.log(udata);
+          app.form.fillFromData('#my-schdivaccountsdetails-form', udata);
+           app.popup.open("#my-schdivaccountsdetails-screen")
+           //update form data 
+        },
+        deletedata(udata) {
+           
+        },
+        CreateSubmitData(self) {
+          
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+
+
+            // app.methods.fetchstatuslist();
+            // app.methods.fetchflowtypes();
+
+            // app.methods.fetchctmor();
+            // app.methods.createdatepicker(today,'#ackdate');
+
+            //set account school/div owner 
+            
+
+            var orgtable="S";
+            var showshlvl=true;
+            if (app.data.userdata.roletype=='S') {
+              $$('#my-schdivaccountsdetails-form [name="schdivguid"]')[0].value=app.data.userdata.schguid;
+              if (app.data.userdata.ES=='N'){
+                $$('#ESline')[0].style.display='none';
+              }
+              if (app.data.userdata.JHS=='N'){
+                $$('#JHSline')[0].style.display='none';
+              }
+              if (app.data.userdata.SHS=='N'){
+                $$('#SHSline')[0].style.display='none';
+              }
+            } else {
+                // $$('#my-schdivaccountsdetails-form [name="schdivguid"]')[0].value=app.data.userdata.schguid;
+                // if (app.data.userdata.rolegroup=='R') {
+                //   $$('#my-schdivaccountsdetails-form [name="schdivguid"]')[0].value=app.data.userdata.schregid;
+                // } else {
+                $$('#my-schdivaccountsdetails-form [name="schdivguid"]')[0].value=app.data.userdata.schdivid;
+                orgtable="D";
+                // }
+                $$('#SAline')[0].style.display='none';
+                $$('#ESline')[0].style.display='none';
+                $$('#JHSline')[0].style.display='none';
+                $$('#SHSline')[0].style.display='none';
+                $$('#my-schdivaccountsdetails-form [name="es"]')[0].checked=true;
+                $$('#my-schdivaccountsdetails-form [name="jhs"]')[0].checked=true;
+                $$('#my-schdivaccountsdetails-form [name="shs"]')[0].checked=true;
+                showshlvl=true;
+              
+            }
+            self.$setState({
+                guserid :  app.data.userdata.guserid ,
+                showshlvl: showshlvl,   
+                orgtable: orgtable                              
+            });
+
+            self.fetchdata(orgtable);
+        
+
+            $$('.popup-schdivaccountsdetails').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-schdivaccountsdetails-form')[0].reset(); 
+                $$('#my-schdivaccountsdetails-form [name="ejsguid"]')[0].value="";
+                self.$setState({
+                      fileitems : []
+
+                                              
+                  })
+              // }
+            });
+            
+            $$('.schdivaccountsdetails-button').on('click', function(){
+              var orgtable="S";
+            
+              if (app.data.userdata.roletype!='S') {
+                $$('#my-schdivaccountsdetails-form [name="es"]')[0].checked=true;
+                $$('#my-schdivaccountsdetails-form [name="jhs"]')[0].checked=true;
+                $$('#my-schdivaccountsdetails-form [name="shs"]')[0].checked=true;
+                orgtable="D";
+            
+              }
+              $$('#my-schdivaccountsdetails-form [name="shs"]')[0].value=orgtable;
+              
+              var formData = app.form.convertToData('#my-schdivaccountsdetails-form');
+              var va1=$$('#my-schdivaccountsdetails-form [name="schaccount"]')[0].flowtype!="";
+              var va2=$$('#my-schdivaccountsdetails-form [name="schbank"]')[0].checkValidity();
+              var va3=$$('#my-schdivaccountsdetails-form [name="maintbal"]')[0].checkValidity();
+              var va4=$$('#my-schdivaccountsdetails-form [name="es"]')[0].checked!=false;
+              var va5=$$('#my-schdivaccountsdetails-form [name="jhs"]')[0].checked!=false;
+              var va6=$$('#my-schdivaccountsdetails-form [name="shs"]')[0].checked!=false;
+              // var va4=$$('#my-workflowdetails-form [name="receivercontact"]')[0].value!="";
+
+              var va7=( va4 || va5 || va6 );
+              var ErrorMessage="";
+              
+              if (va1==false){
+                ErrorMessage=ErrorMessage + "Please Provide Account number<br>";
+              }
+              if (va2==false){
+                ErrorMessage=ErrorMessage + "Please provide bank name<br>";
+              }
+              if (va3==false){
+                ErrorMessage=ErrorMessage + "Please define maintaining balance amount<br>";
+              }
+              if (app.data.userdata.roletype=='S') {
+                if (( va4 || va5 || va6 ) ==false ){
+                ErrorMessage=ErrorMessage + "Please select account school level assignment<br>";
+                }
+              } else {
+                va7=true;
+                
+              }
+              
+
+              if ( va1 && va2 && va3 && va7) {
+                self.savedata(formData);
+              } else {
+                app.dialog.alert(ErrorMessage);
+              }
+              
+              });
+            
+
+            
+
+            app.preloader.hide();
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

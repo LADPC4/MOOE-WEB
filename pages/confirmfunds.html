@@ -1,0 +1,467 @@
+<template>
+  <div class="page " data-name="Confirmations">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">MOOE Confirmation</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-newConfirmation">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <!-- <button class="col button button-fill  zero-found-newConfirmation-button popup-open" data-popup=".popup-newConfirmation">Create new Confirmation</button> -->
+      </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">Fund for Confirmation </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">Fund Type</th>
+                    <th class="label-cell">Fund Year</th>
+                    <th class="numeric-cell">Bank Account</th>
+                    <th class="numeric-cell">Total Amount</th>
+                    <th class="numeric-cell">Transfer Date</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{fundguid}}|{{papsdescription}}|{{totalamount}}|{{acctdesc}}');">
+                    <td class="label-cell">{{papsdescription}}</td>
+                    <td class="numeric-cell">{{fundyear}}</td>
+                    <td class="numeric-cell">{{acctdesc}}</td>
+                    <td class="numeric-cell">{{fnumber totalamount}}</td>
+                    <td class="numeric-cell">{{transferdate}}</td>
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer"  >
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-newConfirmation" id="my-newConfirmation-screen" >
+      <div class="view">
+        <div class="page">
+          <div class="page-content newConfirmation-screen-content">
+              
+            <div class="login-screen-title">Confirmation Details</div>
+            <form class="list" id="my-newConfirmation-form">
+                <div class="list">
+                    <ul >
+                      <!-- <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Select Fund Year</div>
+                            <div class="item-input-wrap">
+                              <input type="text" placeholder="Select Fund Year" required readonly="readonly" id="fundyear" name="fundyear"/>
+                            </div>
+                          </div>
+                        </div>
+                      </li> -->
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Program/Activities/Project</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="papsdesc" readonly name="papsdesc" class="papsdesc">
+                            <input type="hidden" id="fundguid" name="fundguid" class="fundguid">
+                          </div>
+                        </div>
+                      </li>
+                      
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Total Amount</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="totalamount" readonly id = "totalamount">
+                            </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Bank Account</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="acctdesc" name="acctdesc" readonly  class="acctdesc">
+                            
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Method of Reciept</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="mordesc" name="mordesc" class="mordesc" required validate placeholder="Search then use up/down and press enter to select">
+                            <input type="hidden" id="morguid" name="morguid" class="morguid">
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Reciever Name</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="receivername" name="receivername" class="receivername" required validate placeholder="Reciever Name Type N/A if not applicable">
+                           
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Reciever Contact No</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="receivercontact" name="receivercontact" class="receivercontact" required validate placeholder="Reciever Contact No Type N/A if not applicable">
+                           
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Confirmation Date</div>
+                          <div class="item-input-wrap">
+                            <input type="text" name="ackdate" required placeholder="Pick date " id = "ackdate" class = "ackdate">
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">NCA Info</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="ncainfo" name="ncainfo" class="ncainfo" required validate placeholder="NCA Info No Type N/A if not applicable">
+                           
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">NCA Date</div>
+                          <div class="item-input-wrap">
+                            <input type="text" name="ncadate" required placeholder="NCA date " id = "ncadate" class = "ncadate">
+                          </div>
+                        </div>
+                      </li>   
+                    </ul>
+                </div>
+
+                <div class="list links-list">
+                    
+                    <ul>
+                        <li>
+                       
+                        <!--li><a href="/game/{{schguid}}/"></a></li--
+                        <td class="label-cell " >{{goptiondescription}}</td>
+                        <td class="label-cell  " >{{goptionvalue}}</td>
+                        <td class="label-cell numeric-cell " >{{goptionid}}</td-->
+                        </li>
+                     
+                     
+                    </ul>
+                   
+                  </div>  
+                
+              
+                
+  
+                <div class="list">
+                    <div class="block block-strong row">
+                        <div class="col"><a href="#" class="col button button-fill newConfirmation-button">Submit</a> </div>
+                        <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+                      </div>
+                  
+                 
+                </div>
+              </form>
+            
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  gameoptions : [],
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    methods: {
+          refreshpage(){
+            var self = this;
+            self.$setState({
+                        items : [],
+                        pages: null,
+                        paging: null,
+                        nextpage : null,
+                        lastpage: null,
+                        hasMoreItems: false,
+                        currentpage: null
+
+                                                
+                    });
+          },
+          fetchdata(schguid) {
+
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var udata= { 
+            schguid:  schguid,
+            guser: app.data.userdata.guserid,
+            es: app.data.userdata.ES,
+            jhs: app.data.userdata.JHS,
+            shs: app.data.userdata.SHS
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'funds/read_unconfirmedfunds.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                var items = self.items.concat(rdata.records);
+                // var items =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        self.fetchdata(app.data.userdata.schguid);
+
+
+        },
+        //send and save form
+        savedata(udata) {
+            // return;
+            var self = this;
+            var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            
+            // udata.schdivid=app.data.userdata.schdivid;
+            udata.guserid=app.data.userdata.guserid;
+            udata.schguid=app.data.userdata.schguid;
+            console.log(udata);
+            app.request.post($base_url+'fundconfirm/create.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+                result=JSON.parse(data);
+                app.dialog.alert(result.message);
+
+                $$('#my-newConfirmation-form')[0].reset(); 
+                self.refreshpage();
+                self.fetchdata(app.data.userdata.schguid);
+                app.popup.close('#my-newConfirmation-screen');
+            });
+            
+        },
+        //send and delete form
+        openpopup(params) {
+          var params = params.split('|');
+          // fundguid,papsdesc,totalamount
+          var udata= { 
+            fundguid: params[0],
+            papsdesc: params[1],
+            totalamount: params[2],
+            acctdesc: params[3]
+          }
+          // console.log(udata);
+          app.form.fillFromData('#my-newConfirmation-form', udata);
+           app.popup.open("#my-newConfirmation-screen")
+           //update form data 
+        },
+        deletedata(udata) {
+           
+        },
+        CreateSubmitData(self) {
+          
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+            self.fetchdata(app.data.userdata.schguid);
+            app.methods.fetchctmor();
+            app.methods.createdatepicker(today,'#ackdate');
+            app.methods.createdatepicker(today,'#ncadate');
+            
+            $$('.newConfirmation-button').on('click', function(){
+              
+              var formData = app.form.convertToData('#my-newConfirmation-form');
+              var va1=$$('#my-newConfirmation-form [name="receivername"]')[0].value!="";
+              var va2=$$('#my-newConfirmation-form [name="ackdate"]')[0].value!="";
+              var va3=$$('#my-newConfirmation-form [name="morguid"]')[0].value!="";
+              var va4=$$('#my-newConfirmation-form [name="receivercontact"]')[0].value!="";
+
+
+              var ErrorMessage="";
+              
+              if (va1==false){
+                ErrorMessage=ErrorMessage + "Please provide Reciever Name<br>";
+              }
+              if (va2==false){
+                ErrorMessage=ErrorMessage + "Please provide Confirmation/Bank Deposit Date<br>";
+              }
+              if (va3==false){
+                ErrorMessage=ErrorMessage + "Please provide Method of Receipt<br>";
+              }
+              if (va4==false){
+                ErrorMessage=ErrorMessage + "Please provide receiver contact no<br>";
+              }
+
+              if ( va1 && va2 && va3 && va4) {
+                self.savedata(formData);
+              } else {
+                app.dialog.alert(ErrorMessage);
+              }
+              
+              });
+            
+
+            
+
+            app.preloader.hide();
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

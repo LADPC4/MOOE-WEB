@@ -1,0 +1,520 @@
+﻿<template>
+
+
+
+  <table border=0 cellpadding=0 cellspacing=0  style='border-collapse: 
+ collapse;' id="rptoutput">
+ <col class=x410  style='mso-width-source:userset;width:18pt'>
+ <col class=x410  style='mso-width-source:userset;width:161.25pt'>
+ <col class=x410  style='mso-width-source:userset;width:42pt'>
+ <col class=x397  style='mso-width-source:userset;width:104.25pt'>
+ <col class=x428  style='mso-width-source:userset;width:99pt'>
+ <col class=x428  span=2 style='mso-width-source:userset;width:66.75pt'>
+ <tr height=17 class=x396 style='mso-height-source:userset;height:12.75pt' id='r0'>
+<td colspan=2 height=17 class=x396  style='mso-ignore:colspan;height:12.75pt;'><a name="PRINT_TITLES" ><span style='font-size:10pt;color:#000000;font-weight:700;text-decoration:none;text-line-through:none;font-family:"Arial Narrow";'>DEPARTMENT OF EDUCATION</span></a></td>
+<td class=x396  style='width:42pt;'></td>
+<td class=x397  style='width:104.25pt;'></td>
+{{#each coarows}}
+<td >  </td>
+{{/each}}
+<td class=x397  style='width:66.75pt;'></td>
+<td class=x397  style='width:66.75pt;'></td>
+ </tr>
+
+ <tr height=17 class=x396 style='mso-height-source:userset;height:12.75pt' id='r1'>
+<td colspan=4 height=17 class=x396 style='mso-ignore:colspan;height:12.75pt;'>STATUS OF SCHOOL MOOE UTILIZATION By Object of Expenditures</td>
+{{#each coarows}}
+<td >  </td>
+{{/each}}
+<td class=x397></td>
+<td class=x397></td>
+ </tr>
+ <tr height=17 class=x396 style='mso-height-source:userset;height:12.75pt' id='r2'>
+{{#with data}}
+<td colspan=2 height=17 class=x396 style='mso-ignore:colspan;height:12.75pt;'>{{schregdescription}}</td>
+{{/with}}
+<td class=x396></td>
+<td class=x397></td>
+{{#each coarows}}
+<td >  </td>
+{{/each}}
+<td class=x397></td>
+<td class=x397></td>
+ </tr>
+
+ <tr height=17 class=x396 style='mso-height-source:userset;height:12.75pt' id='r3'>
+<td colspan=2 height=17 class=x396 style='mso-ignore:colspan;height:12.75pt;'>As of April 30, 2022</td>
+<td class=x396></td>
+<td class=x397></td>
+{{#each coarows}}
+<td >  </td>
+{{/each}}
+<td class=x397></td>
+<td class=x397></td>
+ </tr>
+
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r4'>
+  <td height=17 class=x410 style='height:12.75pt'></td>
+  <td class=x410></td>
+  <td class=x410></td>
+  <td class=x397></td>
+  {{#each coarows}}
+<td >  </td>
+{{/each}}
+  
+ </tr>
+
+ <tr height=18 class=x399 style='mso-height-source:userset;height:13.5pt' id='r5'>
+<td colspan=3 height=16 class=x457 style='border-right:1px solid windowtext;border-bottom:1px solid windowtext;height:12pt;'>Division and Division Code</td>
+<td class=x462 style='overflow:hidden;'> Total Utilization to Date </td>
+{{#each coarows}}
+<td class=x455> {{desc}} </td>
+{{/each}}
+<td class=x451></td>
+<td class=x454></td>
+ </tr>
+
+ <tr height=17 class=x400 style='mso-height-source:userset;height:12.75pt' id='r6'>
+<td colspan=3 height=15 class=x457 style='border-bottom:1px solid windowtext;height:11.25pt;'></td>
+<td class=x460></td>
+{{#each coarows}}
+<td class=x450>{{coacode}}</td>
+{{/each}}
+<td class=x452></td>
+<td class=x453></td>
+ </tr>
+ <tr height=17 class=x396 style='mso-height-source:userset;height:12.75pt' id='r7'>
+<td colspan=2 height=15 class=x401 style='mso-ignore:colspan;height:11.25pt;'>Elementary Schools</td>
+<td class=x403></td>
+<td class=x439></td>
+<td class=x449></td>
+<td class=x440></td>
+<td class=x440></td>
+ </tr>
+ {{#each es}}
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r8'>
+<td height=15 class=x405 style='text-align:right;height:11.25pt;'>{{recctr}}</td>
+<td class=x405>{{schdescription}}</td>
+<td class=x405 style='text-align:right;'>{{schoolid}}</td>
+<td class=x444 align=right x:num="1000" x:fmla="=SUM(E9:G9)">{{fnumber total_utils}}</td>
+{{#each coa}}
+<td class=x438 align=right x:num="1000">{{fnumber amount}}</td>
+{{/each}}
+<td class=x409></td>
+<td class=x431></td>
+ </tr>
+ {{/each}}
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r9'>
+<td height=15 class=x413 style='height:11.25pt;'></td>
+<td class=x411></td>
+<td class=x412></td>
+<td class=x444></td>
+<td class=x438></td>
+<td class=x409></td>
+<td class=x431></td>
+ </tr>
+ <tr height=17 class=x396 style='mso-height-source:userset;height:12.75pt' id='r10'>
+<td height=15 class=x414 style='height:11.25pt;'></td>
+<td class=x415>Total</td>
+<td class=x416></td>
+<td class=x417 align=right x:num="1000" x:fmla="=SUM(D9:D10)" style='text-align:right;'>{{fnumber etotals}}</td>
+{{#each estotals}}
+<td class=x417 align=right x:num="1000" x:fmla="=SUM(E9:E10)" style='text-align:right;'>{{fnumber this}}</td>
+{{/each}}
+<td class=x417 align=right x:num="0" x:fmla="=SUM(F9:F10)" style='text-align:right;'>-</td>
+<td class=x417></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r11'>
+<td height=15 class=x418 style='height:11.25pt;'></td>
+<td class=x419></td>
+<td class=x420></td>
+<td class=x417></td>
+<td class=x408></td>
+<td class=x408></td>
+<td class=x408></td>
+ </tr>
+ <tr height=17 class=x396 style='mso-height-source:userset;height:12.75pt' id='r12'>
+<td colspan=2 height=15 class=x401 style='mso-ignore:colspan;height:11.25pt;'>Secondary Schools (Non-IUs)</td>
+<td class=x403></td>
+<td class=x439></td>
+<td class=x439></td>
+<td class=x404></td>
+<td class=x404></td>
+ </tr>
+ {{#each jhs}}
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r8'>
+<td height=15 class=x405 style='text-align:right;height:11.25pt;'>{{recctr}}</td>
+<td class=x405>{{schdescription}}</td>
+<td class=x405 style='text-align:right;'>{{schoolid}}</td>
+<td class=x444 align=right x:num="1000" x:fmla="=SUM(E9:G9)">{{fnumber total_utils}}</td>
+{{#each coa}}
+<td class=x438 align=right x:num="1000">{{fnumber amount}}</td>
+{{/each}}
+<td class=x409></td>
+<td class=x431></td>
+ </tr>
+ {{/each}}
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r9'>
+<td height=15 class=x413 style='height:11.25pt;'></td>
+<td class=x411></td>
+<td class=x412></td>
+<td class=x444></td>
+<td class=x438></td>
+<td class=x409></td>
+<td class=x431></td>
+ </tr>
+ <tr height=17 class=x396 style='mso-height-source:userset;height:12.75pt' id='r10'>
+<td height=15 class=x414 style='height:11.25pt;'></td>
+<td class=x415>Total</td>
+<td class=x416></td>
+<td class=x417 align=right x:num="1000" x:fmla="=SUM(D9:D10)" style='text-align:right;'>{{fnumber jtotals}}</td>
+{{#each jhstotals}}
+<td class=x417 align=right x:num="1000" x:fmla="=SUM(E9:E10)" style='text-align:right;'>{{fnumber this}}</td>
+{{/each}}
+<td class=x417 align=right x:num="0" x:fmla="=SUM(F9:F10)" style='text-align:right;'>-</td>
+<td class=x417></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r11'>
+<td height=15 class=x418 style='height:11.25pt;'></td>
+<td class=x419></td>
+<td class=x420></td>
+<td class=x417></td>
+<td class=x408></td>
+<td class=x408></td>
+<td class=x408></td>
+ </tr>
+ <tr height=18 class=x396 style='mso-height-source:userset;height:13.5pt' id='r18'>
+<td colspan=2 height=16 class=x401 style='mso-ignore:colspan;height:12pt;'>Senior High School</td>
+<td class=x403></td>
+<td class=x439></td>
+<td class=x436></td>
+<td class=x404></td>
+<td class=x404></td>
+ </tr>
+ {{#each shs}}
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r8'>
+<td height=15 class=x405 style='text-align:right;height:11.25pt;'>{{recctr}}</td>
+<td class=x405>{{schdescription}}</td>
+<td class=x405 style='text-align:right;'>{{schoolid}}</td>
+<td class=x444 align=right x:num="1000" x:fmla="=SUM(E9:G9)">{{fnumber total_utils}}</td>
+{{#each coa}}
+<td class=x438 align=right x:num="1000">{{fnumber amount}}</td>
+{{/each}}
+<td class=x409></td>
+<td class=x431></td>
+ </tr>
+ {{/each}}
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r9'>
+<td height=15 class=x413 style='height:11.25pt;'></td>
+<td class=x411></td>
+<td class=x412></td>
+<td class=x444></td>
+<td class=x438></td>
+<td class=x409></td>
+<td class=x431></td>
+ </tr>
+ <tr height=17 class=x396 style='mso-height-source:userset;height:12.75pt' id='r10'>
+<td height=15 class=x414 style='height:11.25pt;'></td>
+<td class=x415>Total</td>
+<td class=x416></td>
+<td class=x417 align=right x:num="1000" x:fmla="=SUM(D9:D10)" style='text-align:right;'>{{fnumber stotals}}</td>
+{{#each jhstotals}}
+<td class=x417 align=right x:num="1000" x:fmla="=SUM(E9:E10)" style='text-align:right;'>{{fnumber this}}</td>
+{{/each}}
+<td class=x417 align=right x:num="0" x:fmla="=SUM(F9:F10)" style='text-align:right;'>-</td>
+<td class=x417></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r11'>
+<td height=15 class=x418 style='height:11.25pt;'></td>
+<td class=x419></td>
+<td class=x420></td>
+<td class=x417></td>
+<td class=x408></td>
+<td class=x408></td>
+<td class=x408></td>
+ </tr>
+ <tr height=17 class=x396 style='mso-height-source:userset;height:12.75pt' id='r23'>
+<td height=15 class=x401 style='height:11.25pt;'></td>
+<td class=x402 >Grand Total</td>
+
+<td class=x417></td>
+<td class=x417 style='text-align:right;'>{{fnumber gtotals}}</td>
+{{#each gttotals}}
+<td class=x417 align=right x:num="1000" x:fmla="=SUM(E9:E10)" style='text-align:right;'>{{fnumber this}}</td>
+{{/each}}
+<td class=x427 align=right x:num="3000" x:fmla="=+E11+E17+E22" style='text-align:right;'></td>
+<td class=x427 align=right x:num="0" x:fmla="=+F11+F17+F22" style='text-align:right;'>-</td>
+<td class=x427></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r24'>
+  <td height=17 class=x410 style='height:12.75pt'></td>
+  <td class=x410></td>
+  <td class=x410></td>
+  <td class=x397></td>
+  <td class=x428></td>
+  
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r25'>
+<td height=17 class=x410 style='height:12.75pt;'></td>
+<td class=x396>Prepared by:</td>
+<td class=x410></td>
+<td class=x397></td>
+<td class=x428></td>
+<td class=x428></td>
+<td class=x428></td>
+ </tr>
+ <tr height=34 style='mso-height-source:userset;height:25.5pt;mso-xlrowspan:2' id='r26'>
+  <td height=34 class=x410 style='height:25.5pt'></td>
+  <td class=x410></td>
+  <td class=x410></td>
+  <td class=x397></td>
+  <td class=x428></td>
+  
+ </tr>
+ {{#with data}}
+ <tr height=17 class=x396 style='mso-height-source:userset;height:12.75pt' id='r27'>
+<td height=17 class=x396 style='height:12.75pt;'></td>
+<td class=x442>{{adas3}}</td>
+<td class=x446></td>
+<td class=x446></td>
+<td class=x446></td>
+<td class=x442></td>
+<td class=x446></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r28'>
+<td height=17 class=x410 style='height:12.75pt;'></td>
+<td class=x443>Administrative Assistant III</td>
+<td class=x447></td>
+<td class=x448></td>
+<td class=x448></td>
+<td class=x443></td>
+<td class=x447></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r29'>
+  <td height=17 class=x410 style='height:12.75pt'></td>
+  <td class=x410></td>
+  <td class=x410></td>
+  <td class=x397></td>
+  <td class=x428></td>
+  
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r30'>
+<td height=17 class=x410 style='height:12.75pt;'></td>
+<td class=x397> Certified Correct: </td>
+<td class=x428></td>
+<td class=x428></td>
+<td class=x410></td>
+<td class=x428></td>
+<td class=x429></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r31'>
+<td height=17 class=x410 style='height:12.75pt;'></td>
+<td class=x397></td>
+<td class=x428></td>
+<td class=x428></td>
+<td class=x410></td>
+<td class=x428></td>
+<td class=x430></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r32'>
+<td height=17 class=x410 style='height:12.75pt;'></td>
+<td class=x397></td>
+<td class=x428></td>
+<td class=x428></td>
+<td class=x410></td>
+<td class=x428></td>
+<td class=x430></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r33'>
+<td height=17 class=x442 style='height:12.75pt;'></td>
+<td class=x442>{{acct3}}</td>
+<td class=x410></td>
+<td class=x410></td>
+<td class=x410></td>
+<td class=x446></td>
+<td class=x398></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r34'>
+<td height=17 class=x443 style='height:12.75pt;'></td>
+<td class=x441> Accountant III </td>
+<td class=x410></td>
+<td class=x410></td>
+<td class=x410></td>
+<td class=x448></td>
+<td class=x430></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r35'>
+  <td height=17 class=x410 style='height:12.75pt'></td>
+  <td class=x410></td>
+  <td class=x410></td>
+  <td class=x397></td>
+  <td class=x428></td>
+  
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r36'>
+<td height=17 class=x410 style='height:12.75pt;'></td>
+<td class=x456>Noted by:</td>
+<td class=x410></td>
+<td class=x397></td>
+<td class=x428></td>
+<td class=x428></td>
+<td class=x428></td>
+ </tr>
+ <tr height=34 style='mso-height-source:userset;height:25.5pt;mso-xlrowspan:2' id='r37'>
+  <td height=34 class=x410 style='height:25.5pt'></td>
+  <td class=x410></td>
+  <td class=x410></td>
+  <td class=x397></td>
+  <td class=x428></td>
+  
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r38'>
+<td height=17 class=x410 style='height:12.75pt;'></td>
+<td class=x442>{{sdo}}</td>
+<td class=x442></td>
+<td class=x442></td>
+<td class=x442></td>
+<td class=x442></td>
+<td class=x442></td>
+ </tr>
+ {{/with}}
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r39'>
+<td height=17 class=x410 style='height:12.75pt;'></td>
+<td class=x443>Schools Division Superitendent</td>
+<td class=x443></td>
+<td class=x443></td>
+<td class=x443></td>
+<td class=x443></td>
+<td class=x443></td>
+ </tr>
+ <tr height=17 style='mso-height-source:userset;height:12.75pt' id='r39'>
+  <td height=17 class=x410 style='height:12.75pt;'></td>
+  <td class=x443></td>
+  <td class=x443></td>
+  <td class=x443></td>
+  <td class=x443></td>
+  <td class=x443></td>
+  <td class=x443></td>
+   </tr>
+
+</table>
+
+
+
+</template>
+<script>
+ return {  
+      data() {
+                  return {
+                    dooedata : [],
+                    totals : [],
+                    data:[],
+                    es:[],
+                    jhs:[],
+                    shs:[]
+                   
+                    
+                  }
+              },
+      methods: {
+        refreshpage(){
+            // var self = this;
+            // self.$setState({
+            //             items : [],
+            //             pages: null,
+            //             paging: null,
+            //             fundackid: null,
+            //             fundguid: null,
+             //             nextpage : null,
+            //             lastpage: null,
+            //             hasMoreItems: false,
+            //             currentpage: null
+  
+                                                
+            //         });
+          },
+        fetchdata(schregid,fundyear ) {
+            var self = this;
+            var app = self.$app;
+            var fetchpage = 0;
+            var udata= { 
+                schregid: schregid,
+                fundyear: fundyear
+            }
+            app.preloader.show();
+           
+  
+            //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+            app.request.post($base_url+'mooedisbursements/gen_rooe.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+              rdata=JSON.parse(rdata);
+              if (rdata) {
+                  // console.log(rdata.schinfo.schacctinfo[0].schbank);
+                  self.$setState({
+                        
+                        dooedata: rdata.DOOE,
+                        es: rdata.DOOE.ES,
+                        jhs: rdata.DOOE.JHS,
+                        shs: rdata.DOOE.SHS,
+                        totals: rdata.totals,
+                        coarows: rdata.coarows,
+                        estotals: rdata.totals.stotals.ES,
+                        jhstotals: rdata.totals.stotals.JHS,
+                        shstotals: rdata.totals.stotals.SHS,
+                        gttotals: rdata.totals.gtotals,
+                        etotals: rdata.ltotals.ES,
+                        jtotals: rdata.ltotals.JHS,
+                        stotals: rdata.ltotals.SHS,
+                        gtotals: rdata.ltotals.GT,
+
+  
+                                                
+                    })
+                  
+                  console.log(self.coarows)
+              }  else {
+              
+                
+              }
+              
+              
+            app.preloader.hide();
+            });  
+          },
+      },
+      on: {
+          pageInit(e, page) {
+            
+            console.log("ok here ")
+              var self = this;
+              var app = self.$app;
+              var today = new Date();
+              var dd = String(today.getDate()).padStart(2, '0');
+              var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+              var yyyy = today.getFullYear();
+  
+            //   getdata 
+            var SearchString = window.location.search.substring(1);
+            var arr = SearchString.split('&');
+            var param= decodeURIComponent(arr[0].split('=')[1]);
+            var data = JSON.parse(param);
+            console.log(data);
+            today = yyyy + '-' + mm + '-' + dd;
+            data.today=today
+            data.year=yyyy;
+            self.$setState({
+                        
+                        data: data
+  
+                                                
+                    })
+              
+         
+              self.fetchdata( data.schregid, data.fundyear);
+              
+                
+          },
+      },
+    };
+  
+    
+</script>

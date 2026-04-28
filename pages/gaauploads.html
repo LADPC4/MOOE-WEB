@@ -1,0 +1,748 @@
+<template>
+  <div class="page " data-name="Requests">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">GAA Uploads</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-upload">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <button class="col button button-fill  zero-found-upload-button popup-open" data-popup=".popup-upload">Upload new file</button>
+      </div>
+      </div> 
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">Previous Uploads </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">File Type</th>
+                    <th class="numeric-cell">Upload date</th>
+                    <th class="numeric-cell">Status</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{requestid}}|{{filetypedesc}}');">
+                    <td class="label-cell">{{filetypedesc}}</td>
+                    <td class="numeric-cell">{{fnumber totalamount}}</td>
+                    <td class="numeric-cell">{{rectimestamp}}</td>
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer"  >
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-upload" id="my-upload-screen">
+      <div class="view">
+        <div class="page">
+          <div class="page-content upload-screen-content">
+              
+            <div class="login-screen-title">Upload GAA</div>
+            <form class="list" id="my-upload-form" enctype="multipart/form-data"  class="form-ajax-submit">
+              <ul>
+               
+                <li class="item-content item-input">
+                  <!-- <div class="item-inner">
+                    <div class="item-title item-label">Select Year</div>
+                    <div class="item-input-wrap">
+                      <input type="text" id="filetypedesc" name="filetypedesc" required validate placeholder="Type to search  then use up/down and press enter to select" class="filetypedesc">
+                      <input type="hidden" id="filetypeguid" name="filetypeguid" class="filetypeguid">
+                      <input type="hidden" id="deleterecords" name="deleterecords" class="deleterecords">
+                    </div>
+                  </div> -->
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Select Fund Year</div>
+                      <div class="item-input-wrap">
+                        <input type="text" placeholder="Select Fund Year" required  id="fundyear" name="fundyear"/>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </li>
+               
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">GAA File</div>
+                      <div class="item-input">
+                        <a href="./forms/import_template.xlsx" class='external link' >Download File Upload Template</a>
+                        <input class="button button-big button-fill" type="file" name="fileupload" id="fileupload" placeholder="Upload File" >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+               
+               
+              </ul>
+              
+
+            
+
+              <div class="block block-strong row">
+               
+                
+                <div class="col"><a href="#" class="col button button-fill submit-button" @click="uploadfile()" >Submit</a> </div>
+              
+                <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+
+                {{#if uploadcomplete}}
+
+                <div class="col"><a href="#" class="col button button-fill submit-button" @click="finalize()" >Finalize</a> </div>
+
+                {{/if}}
+               
+              </div>
+
+              <!-- <div class="block block-strong row">
+                <p>Upload Status: {{uploadedLines}}/{{uploadLines}}</p>
+                <div class="progressbar color-blue" data-progress="" id="uploadprogress">
+                  <span></span>
+                </div>
+              </div> -->
+               
+              <div class="block block-strong row">
+
+               
+                
+                
+              </div>
+             
+              </form>
+              <div class="data-table">
+                {{UploadMsgs}}
+                <table>
+                  <thead>
+                    <tr>
+                      <th class="label-cell">Sheet</th>
+                      <th class="label-cell">Row</th>
+                      <th class="label-cell">Desc</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each ErrMsgs}}
+                    <tr class="">
+                      <td class="label-cell">{{sheetId}}</td>
+                      <td class="label-cell">{{rowId}}</td>
+                      <td class="label-cell">{{message}}</td>
+                    </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="popup popup-progress" id="my-progress-screen">
+      <div class="view">
+        <div class="page">
+          <div class="page-content upload-screen-content">
+              
+            <div class="login-screen-title">Uploading File</div>
+           
+
+              
+              <div class="block block-strong row">
+                <p>Upload Status: {{uploadedLines}}/{{uploadLines}}</p>
+                <div class="progressbar color-blue" data-progress="" id="uploadprogress">
+                  <span></span>
+                </div>
+
+              </div>
+              <div class="block block-strong row">
+               
+                
+                 
+              
+                <div class="col"><a href="#" class="col button button-fill popup-close" @click="invokecancel()">Cancel</a></div>
+               
+              </div> 
+              <div class="block block-strong row">
+              </div>
+               
+             
+  
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="popup popup-gaaconfirm" id="my-gaaconfirm-screen">
+      <div class="view">
+        <div class="page">
+          <div class="page-content gaaconfirm-screen-content">
+              
+               <div class="login-screen-title">Warning: Finalize GAA Import will delete previous data </div>
+           
+
+               <div class="block block-strong row">
+               
+                <div class="col"><a href="#" class="col button button-fill" @click="gaaconfirm()">Finalize GAA</a></div>
+                <div class="col"><a href="#" class="col button button-fill popup-close" @click="invokecancel()">Cancel</a></div>
+               
+              </div>
+                 
+              
+               
+          </div> 
+            
+             
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  fileitems : [],
+                  timelines : [],
+                  transferred: [],
+                  uploadedLines: 0,
+                  uploadLines: 0,
+                  wfedit: true,
+                  wdelete: true,
+                  completed: null,
+                  pages : null,
+                  filename : null,
+                  fundyear: null,
+                  uploadcomplete:null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                  ErrMsgs:[],
+                  UploadMsgs: null
+                }
+            },
+    currentid:null,
+
+    methods: {
+        invokecancel(){
+          var self = this;
+          var app = self.$app;
+          app.data.uploadCancel=true;
+        },
+        refreshpage(){
+          var self = this;
+          self.$setState({
+                      items : [],
+                      fileitems : [],
+                      timelines : [],
+                      pages: null,
+                      paging: null,
+                      wfedit: true,
+                      wdelete: true,
+                      completed: null,
+                      nextpage : null,
+                      lastpage: null,
+                      hasMoreItems: false,
+                      currentpage: null
+
+                                              
+                  });
+        },
+        fetchdata(schguid) {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var udata= { 
+            schguid:  schguid,
+            guser: app.data.userdata.guserid
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'mooerequests/read_paging.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                // var items = self.items.concat(rdata.records);
+                
+                var items = self.items.concat(rdata.records);
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.timelines) {
+              
+              var timelines = rdata.timelines;
+              self.$setState({
+                    timelines : timelines                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        //send and save form
+        // savedata(udata,file) {
+        //     var self = this;
+        //     var app = self.$app;
+        //     //append udata 
+        //     udata.schguid=app.data.userdata.schguid;
+        //     udata.schpayee=app.data.userdata.schpayee;
+        //     udata.schregid=app.data.userdata.schregid;
+        //     udata.guserid=app.data.userdata.guserid;
+
+        //     //
+        //     // console.log(udata);
+
+        //     //modified post for sending json and file upload
+        //     var FData = new FormData();
+        //     FData.append('file',file);                // this is main row
+        //     FData.append('data',JSON.stringify(udata));
+        //     var apipage="create.php";
+        //     if (udata.requestid!="") {
+        //       apipage="update.php";
+        //     }
+        //     app.preloader.show();
+        //     app.request({
+        //             url: $base_url+'mooerequests/'+apipage+$base_param, 
+        //             method: 'POST', 
+        //             data: FData,
+        //             cache: false, 
+        //             dataType: 'application/json',
+        //             crossDomain: true, 
+        //             contentType: 'multipart/form-data',
+        //             processData: true, 
+        //             success: function (data){
+        //                   result=JSON.parse(data);
+        //                   app.dialog.alert(result.message);
+        //                   $$('#my-upload-form')[0].reset(); 
+        //                   self.refreshpage();
+        //                   self.fetchdata(app.data.userdata.schguid);
+        //                   app.preloader.hide();
+        //                   app.popup.close('#my-upload-screen');
+        //               }
+        //     });
+
+
+        // },
+        //send and delete form
+        //send and delete form
+        finalize(){
+          app.popup.open("#my-gaaconfirm-screen");
+        },
+        gaaconfirm(){
+          var self = this;
+          var app = self.$app;
+         // var params = params.split('|');
+          // fundguid,filetypedesc,totalamount
+         // var fundyear=$$('#my-upload-form [name="fundyear"]')[0].value
+          var udata= { 
+            fundyear: self.fundyear
+          }
+          app.preloader.show();
+          app.request.post($base_url+'import/importgaa.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                      
+            app.dialog.alert("GAA for " + self.fundyear + " Finalized. \n " )
+                      
+            app.popup.close('#my-gaaconfirm-screen');
+            app.popup.close('#my-upload-screen');
+            app.preloader.hide();
+
+           });
+      
+        },
+        openpopup(params) {
+          var self = this;
+          var app = self.$app;
+          var params = params.split('|');
+          // fundguid,filetypedesc,totalamount
+          var udata= { 
+            requestid: params[0]
+          }
+          app.preloader.show();
+          app.request.post($base_url+'mooerequests/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                app.form.fillFromData('#my-upload-form',data);
+                self.fetchuploads(data.requestid);  
+                self.fetchtimelines(data.requestid);  
+                var transferred=true;
+               console.log(data.wfedit);
+                self.$setState({
+                      wfedit : data.wfedit,
+                      transferred: data.transferred,
+                      wdelete: true
+                                              
+                  });
+                
+                
+
+
+            });
+
+
+
+           
+           //update form data 
+        },
+        // fetchuploads(requestid) {
+        //   // var params = params.split('|');
+        //   // // fundguid,filetypedesc,totalamount
+        //   var self = this;
+        //   var app = self.$app;
+        //   var udata= { 
+        //     recowner: requestid
+        //   }
+        //   // app.preloader.show();
+        //   app.request.post($base_url+'fileuploads/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+        //         data=JSON.parse(data)
+        //         // app.form.fillFromData('#my-upload-form',data);
+        //         items = data.records
+        //         self.$setState({
+        //               fileitems : items
+
+                                              
+        //           })
+        //         app.popup.open("#my-upload-screen")
+        //         app.preloader.hide();
+        //     })
+
+
+
+           
+        //    //update form data 
+        // },
+        // fetchtimelines(requestid) {
+        //   // var params = params.split('|');
+        //   // // fundguid,filetypedesc,totalamount
+        //   var self = this;
+        //   var app = self.$app;
+        //   var udata= { 
+        //     recowner: requestid
+        //   }
+        //   // app.preloader.show();
+        //   app.request.post($base_url+'transactions/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+        //         data=JSON.parse(data)
+        //         // app.form.fillFromData('#my-upload-form',data);
+        //         items = data.records
+        //         self.$setState({
+        //               timelines : items
+
+                                              
+        //           })
+        //         app.popup.open("#my-upload-screen")
+        //         app.preloader.hide();
+        //     })
+
+
+
+           
+        //    //update form data 
+        // },
+        // deletedata(udata) {
+        //   var self = this;
+        //     var app = self.$app;
+        //     //append udata 
+        //     udata.schguid=app.data.userdata.schguid;
+        //     udata.schpayee=app.data.userdata.schpayee;
+        //     udata.schregid=app.data.userdata.schregid;
+        //     udata.guserid=app.data.userdata.guserid;
+
+        //     //
+        //     // console.log(udata);
+
+        //     //modified post for sending json and file upload
+        //     app.request.post($base_url+'mooerequests/delete.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+        //        data=JSON.parse(data)
+        //        // app.form.fillFromData('#my-upload-form',data);
+        //        self.refreshpage();
+        //       self.fetchdata(app.data.userdata.schguid);
+        //       app.preloader.hide();
+        //       app.popup.close('#my-upload-screen');
+        //    })
+
+
+
+        // },
+        // openfile(params) {
+
+        //   var self = this;
+        //   var app = self.$app;
+        //   var params = params.split('|');
+        //   // fundguid,filetypedesc,totalamount
+        //   var fileguid=params[0];
+
+        //   downloadfile=$base_url+"fileuploads/download.php?schregid="+app.data.userdata.schregid+"&fileguid="+fileguid
+
+        //   window.open(downloadfile);
+         
+          
+        // },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        // self.fetchdata($$('#schguid')[0].value)
+        self.fetchdata(app.data.userdata.schguid);
+
+
+        },
+        uploadfile(){
+              var self = this;
+              var app = self.$app;
+              app.data.curcomp=self;
+              var today = new Date();
+              var curryear = today.getFullYear();
+          
+              var self = this;
+              var app = self.$app;
+              var file = document.getElementById("fileupload").files[0];
+              var fundyear=$$('#my-upload-form [name="fundyear"]')[0].value
+              self.$setState({
+                            fundyear: fundyear                                   
+                            });
+              if (document.getElementById("fileupload").files.length==0){
+                app.dialog.alert("Please Select File. \n " )
+                return;
+              }
+
+              // if (fundyear==curryear){
+              //   app.dialog.alert("Please Select Upload Type. \n " )
+              //   return;
+              // } 
+              console.log(file);
+              var filedetails="File: "+ file.name  
+              app.data.uploadfilename= file.name;
+              self.$setState({
+                  UploadMsgs : filedetails ,  
+                  fundyear: fundyear                                   
+                      });
+              app.popup.close("#my-upload-screen");
+              app.popup.open("#my-progress-screen");
+              //delete records and upload 
+              var filetype='01fbf3c2-8d44-11eb-b958-00ff7ec7c7e9';
+              var udata= { 
+                filetype: filetype,
+                fundyear: fundyear, 
+                filename: file.name
+              }
+              app.request.post($base_url+'filetypes/delete_records.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                      
+                      data=JSON.parse(data)
+                      readXls(file,filetype,fundyear);
+                      
+
+
+           });
+      
+     
+      //start upload
+      
+
+
+    },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            
+            // console.log(self)
+            self.$setState({
+                  //  currentid: groupid   
+                });
+            //load requests
+            // self.fetchdata(app.data.userdata.schguid);
+            //create date picker 
+            app.methods.createdatepicker(today,'#request-date');
+            app.preloader.hide();   
+            //initialize date range 
+          
+            //initialize pap list 
+            app.methods.createfundyear2('#fundyear')
+            //app.methods.fetchfiletypes();
+            //inititalize save button
+            $$('.popup-upload').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-upload-form')[0].reset(); 
+                // $$('#my-upload-form [name="requestid"]')[0].value="";
+                $$('.delete-button').off('click')
+                self.$setState({
+                      fileitems : [],
+                      timelines : [],
+                      wfedit:true,
+                      wdelete: true,
+                      transferred: null,
+                      completed: null
+                      
+                                              
+                  })
+              // }
+            });
+            $$('.popup-upload').on('popup:open', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                // var wdelete=true;
+                // if ($$('#my-upload-form [name="requestid"]')[0].value=="") wdelete="";
+                // console.log($$('#my-upload-form [name="requestid"]')[0].value)
+                
+                self.$setState({
+                     
+                      // wfedit:true,
+                      // transferred: true,
+                      // wdelete: wdelete,
+                      completed: null
+                      
+                                              
+                  })
+              // }
+            });
+
+            
+
+              $$('#delete-button').on('click', function(){
+                  var formData = app.form.convertToData('#my-upload-form');
+                  console.log("delete Clicked")
+                  //confirm to user
+                  if (self.transferred=="N"){
+                    app.dialog.confirm("Confirm Delete ?", "Delete Request", function () {
+                        self.deletedata(formData);
+                      });
+                  } else {
+                    app.dialog.alert("Delete of Requests is not allowed. Fund was already be transferred. \n " )
+                  }
+                  
+              });
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

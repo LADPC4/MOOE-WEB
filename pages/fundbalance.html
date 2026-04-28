@@ -1,0 +1,756 @@
+<template>
+  <div class="page " data-name="schfundbalance">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">School Fund Balances</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-schfundbaldetails">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <button class="col button button-fill  zero-found-schfundbaldetails-button popup-open" data-popup=".popup-schfundbaldetails">Create Beg Balance</button>
+      </div>
+      <div class="subnavbar">
+        <form class="searchbar" id="searchschool-autocomplete">
+          <div class="searchbar-inner">
+            <div class="searchbar-input-wrap">
+              <input type="search" placeholder="Year" id="searchyear" name="searchyear" class="searchyear">
+            </div>
+            <div class="searchbar-input-wrap">
+              <input type="search" placeholder="Month" id="searchmonth" name="searchmonth" class="searchmonth">
+              <input type="hidden" id="srcmonth" name="srcmonth" class="srcmonth">
+            </div>
+           
+              
+            <div class="searchbar-input-wrap">
+              
+             
+
+              <input type="search" placeholder="Search School" id="srcschdescription" name="srcschdescription" class="srcschdescription">
+              <input type="hidden" id="srcschguid" name="srcschguid" class="srcschguid">
+              <span class="input-clear-button"></span>
+
+              <i class="searchbar-icon"></i>
+              <span class="input-clear-button"></span>
+            </div>
+            <span class="searchbar-disable-button">Cancel</span>
+          </div>
+        </form>
+      </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">School Fund Balances  </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">School</th>
+                    <th class="label-cell">Year</th>
+                    <th class="label-cell">Month</th>
+                    <th class="numeric-cell">Regular MOOE Total Amount</th>
+                    <th class="numeric-cell">ES Total Amount</th>
+                    <th class="numeric-cell">JHS Total Amount</th>
+                    <th class="numeric-cell">SHS Amount</th>
+                    <th class="numeric-cell">Other Fund Total Amount</th>
+                    
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{fbguid}}|{{fundyear}}');">
+                    <td class="label-cell">{{schdescription}}</td>
+                    <td class="label-cell">{{fundyear}}</td>
+                    <td class="label-cell">{{fundmonth}}</td>
+                    <td class="numeric-cell">{{fnumber regmooebegbal}}</td>
+                    <td class="numeric-cell">{{fnumber esbegbal}}</td>
+                    <td class="numeric-cell">{{fnumber jhsbegbal}}</td>
+                    <td class="numeric-cell">{{fnumber shsbegbal}}</td>
+                    <td class="numeric-cell">{{fnumber otherfundbegbal}}</td>
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer">
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-schfundbaldetails" id="my-schfundbaldetails-screen">
+      <div class="view">
+        <div class="page">
+          <div class="page-content schfundbaldetails-screen-content">
+              
+            <div class="login-screen-title">Fund Balance Details</div>
+            <form class="list" id="my-schfundbaldetails-form">
+                <div class="list">
+                    <ul >
+                      
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Select School</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="schdescription" name="schdescription" class="schdescription" required validate placeholder="Search your School Name then use up/down and press enter to select">
+                            <input type="hidden" id="schguid" name="schguid" class="schguid">
+                            <input type="hidden" id="fbguid" name="fbguid" class="fbguid">
+                            
+                          </div>
+                        </div>
+                      </li>
+                      
+                      <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Select Fund Year</div>
+                            <div class="item-input-wrap">
+                              <input type="text" placeholder="Select Fund Year" required  id="fundyear" name="fundyear"/>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Select Month</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="monthdesc" name="monthdesc"   placeholder="Select Month" class="monthdesc">
+                            <input type="hidden" id="dismonth" name="dismonth" class="dismonth">
+                            
+                          </div>
+                        </div>
+                      </li>
+                      
+                      
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Regular MOOE Beginning Balance</div>
+                            <div class="item-input-wrap">
+                              <input type="number" name="regmooebegbal" required validate step="0.01"  placeholder="Enter beginning balance amount without commas" id = "regmooebegbal">
+                            </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">ES Beginning Balance</div>
+                            <div class="item-input-wrap">
+                              <input type="number" name="esbegbal" required validate step="0.01"  placeholder="Enter beginning balance amount without commas" id = "regmooebegbal">
+                            </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">JHS Beginning Balance</div>
+                            <div class="item-input-wrap">
+                              <input type="number" name="jhsbegbal" required validate step="0.01"  placeholder="Enter beginning balance amount without commas" id = "regmooebegbal">
+                            </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">SHS Beginning Balance</div>
+                            <div class="item-input-wrap">
+                              <input type="number" name="shsbegbal" required validate step="0.01"  placeholder="Enter beginning balance amount without commas" id = "regmooebegbal">
+                            </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Other Funds Beginning Balance</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="otherfundbegbal" required validate step="0.01"  placeholder="Enter beginning balance amount without commas" id = "otherfundbegbal">
+                            </div>
+                        </div>
+                      </li>
+                     
+                            
+                    </ul>
+                </div>
+
+                <div class="list links-list">
+                    
+                    <ul>
+                        <li>
+                       
+                        <!--li><a href="/game/{{geventid}}/"></a></li--
+                        <td class="label-cell " >{{goptiondescription}}</td>
+                        <td class="label-cell  " >{{goptionvalue}}</td>
+                        <td class="label-cell numeric-cell " >{{goptionid}}</td-->
+                        </li>
+                     
+                     
+                    </ul>
+                   
+                  </div>  
+                
+              
+                
+  
+                <div class="list">
+                    <div class="block block-strong row">
+                        <div class="col"><a href="#" class="col button button-fill schfundbaldetails-button">Submit</a> </div>
+                      
+                        <div class="col"><a href="#" class="col button button-fill delete-button" id="delete-button" @click="delclick()">Delete</a> </div>
+                       
+                        <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+                      </div>
+                  
+                 
+                </div>
+              </form>
+            
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  fbguid: null,
+                  fundackid: null,
+                  fileitems : [],
+                  gameoptions : [],
+                  reqlist:[],
+                  pages : null,
+                  curryear: null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    currentid:null,
+    methods: {
+      refreshpage(){
+          var self = this;
+          self.$setState({
+                      items : [],
+                      pages: null,
+                      paging: null,
+                      fundackid: null,
+                      curryear: null,
+                      fbguid: null,
+                      nextpage : null,
+                      lastpage: null,
+                      hasMoreItems: false,
+                      currentpage: null
+
+                                              
+                  });
+        },
+      fetchdata(schdivid,schguid="") {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+
+          
+          var fundyear=$$('#searchyear')[0].value;
+          var fundmonth= $$('#searchmonth')[0].value;
+          // var schguid=$$('#srcschguid')[0].value;
+          var udata= { 
+            schdivid:  schdivid,
+            fundyear: fundyear,
+            fundmonth: fundmonth,
+            schguid: schguid
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'fundbalance/read_paging.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                var items = self.items.concat(rdata.records);
+                // var items =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            }  else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        //send and save form
+        //send and save form
+        savedata(udata) {
+            var self = this;
+            var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            
+            udata.schdivid=app.data.userdata.schdivid;
+            udata.guserid=app.data.userdata.guserid;
+            console.log(udata);
+            var apipage="create.php";
+            if (udata.fbguid!="") {
+              apipage="update.php";
+            }
+            app.preloader.show();
+            app.request.post($base_url+'fundbalance/'+apipage+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+                result=JSON.parse(data);
+                if (result.status==1){
+                  $$('#my-schfundbaldetails-form')[0].reset(); 
+                  $$('#srcmonth')[0].value="";
+                  $$('#searchmonth')[0].value="";
+                  app.popup.close('#my-schfundbaldetails-screen');
+                  self.refreshpage();
+                  
+                  self.fetchdata(app.data.userdata.schdivid,"")
+                }
+                app.preloader.hide();
+                app.dialog.alert(result.message);
+                
+            });
+            
+            
+        },
+        //send and delete form
+        deletedata(udata) {
+          var self = this;
+            var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            
+            udata.schdivid=app.data.userdata.schdivid;
+            udata.guserid=app.data.userdata.guserid;
+            console.log(udata);
+            var apipage="delete.php";
+            
+            app.preloader.show();
+            app.request.post($base_url+'fundbalance/'+apipage+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+                result=JSON.parse(data);
+                if (result.status==1){
+                  $$('#my-schfundbaldetails-form')[0].reset(); 
+                  $$('#srcmonth')[0].value="";
+                  $$('#searchmonth')[0].value="";
+                  app.popup.close('#my-schfundbaldetails-screen');
+                  self.refreshpage();
+                  self.fetchdata(app.data.userdata.schdivid,"")
+                }
+                app.preloader.hide();
+                app.dialog.alert(result.message);
+                
+            });
+            
+        },
+        delclick(){
+          var self = this;
+            var app = self.$app;
+          var formData = app.form.convertToData('#my-schfundbaldetails-form');
+                console.log("delete Clicked")
+                //confirm to user
+               
+                  app.dialog.confirm("Confirm Delete ?", "Delete Beg Balance", function () {
+                      self.deletedata(formData);
+                    });
+                
+        },
+        openpopup(params) {
+            
+          var self = this;
+          var app = self.$app;
+          var params = params.split('|');
+          // fbguid,papsdesc,totalamount
+          var udata= { 
+            fbguid: params[0]
+          }
+          app.preloader.show();
+          app.request.post($base_url+'fundbalance/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                app.form.fillFromData('#my-schfundbaldetails-form',data);
+
+                // $$("#monthdesc")[0].value=data.monthdesc;
+                $$("#dismonth")[0].value=data.fundmonth;
+                self.$setState({
+                  fbguid : data.fbguid
+
+                                              
+                  });
+                
+                app.popup.open("#my-schfundbaldetails-screen")
+                app.preloader.hide();
+            })
+          
+
+
+
+        },
+        fetchuploads(fbguid) {
+          // var params = params.split('|');
+          // // fbguid,papsdesc,totalamount
+          var self = this;
+          var app = self.$app;
+          var udata= { 
+            recowner: fbguid
+          }
+          // app.preloader.show();
+          app.request.post($base_url+'fileuploads/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                // app.form.fillFromData('#my-newrequest-form',data);
+                items = data.records
+                self.$setState({
+                      fileitems : items
+
+                                              
+                  })
+                app.popup.open("#my-schfundbaldetails-screen")
+                app.preloader.hide();
+            })
+
+
+
+           
+           //update form data 
+        },
+            fetchshools: function (schdivid,idel,descel) {
+          //continue to dashboard
+          app.preloader.show();
+          var udata= { 
+            "schdivid":schdivid,        
+          }
+          //
+          app.request.post($base_url+'schools/schools_by_div.php' ,  JSON.stringify(udata) , (data)=> {
+            data=JSON.parse(data)
+            // app.$setState({
+            //   sdolist: data   
+            // })
+            //  app.data.sdolist=data;
+            app.data.schlist=data;
+            var sdolistel = app.autocomplete.create({
+              inputEl: '.'+descel,
+              openIn: 'dropdown',
+              valueProperty: 'id',
+              textProperty: 'name',
+              closeOnSelect: true,
+              source: function (query, render) {
+                var results = [];
+                //  if (query.length === 0) {
+                //    render(results);
+                //    return;
+                //  }
+                
+                $$('#'+idel)[0].value="";
+                schlist=app.data.schlist.records;
+                //  console.log(schlist);  
+                for (var i = 0; i < schlist.length; i++) {
+                  if (schlist[i].schdescription.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+                    results.push({ "id": schlist[i].schguid,"name": schlist[i].schoolid +" | " + schlist[i].schdescription} ); //
+                      
+                    
+                  }
+                }
+                
+                render(results);
+              },
+              on: {
+                change: function (value) {
+                  var itemText = [],
+                      inputValue = [];
+                  for (var i = 0; i < value.length; i++) {
+                    // itemText.push(value[i].name);
+                    // inputValue.push(value[i].id);
+                    $$('#'+descel)[0].value=value[i].name;
+                    $$('#'+idel)[0].value=value[i].id;
+                    app.methods.fetchschrequests(value[i].id)
+                  }
+                  
+                },
+              },  
+              });
+            // console.log(sdolistel);
+            app.preloader.hide();
+          });
+          
+        },
+        
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        self.fetchdata(app.data.userdata.schdivid,"");
+
+
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            
+            // console.log(self)
+            self.$setState({
+              curryear: yyyy,  
+                });
+            //initialize fund years 
+            $$('#searchyear')[0].value=yyyy;
+            
+    
+            app.methods.createfundyear('#fundyear');
+            app.methods.createfundyear('#searchyear');
+            app.methods.createmonthlist('#searchmonth');
+            app.methods.createmonthlist('#monthdesc');
+            //initialize pap list
+            app.methods.fetchpaplist();
+            
+            //load schools menus 
+            self.fetchshools(app.data.userdata.schdivid,'schguid','schdescription');
+            //create date picker 
+            // app.methods.createdatepicker(today,'#transferdate');
+            
+            self.fetchdata(app.data.userdata.schdivid);
+
+            app.methods.fetchshools(app.data.userdata.schdivid,'srcschguid','srcschdescription');
+            $$('#srcschdescription').on("change",function(){
+              var value= $$('#srcschdescription')[0].value;
+              // var value=obj.value;
+              // return;
+              // change: function (value) {
+              var itemText = [],
+                  inputValue = [];
+              // console.log('change triggered' );
+              console.log("selected " + value);
+              
+             
+                
+              // }
+              // console.log($$('#schguid')[0].value);
+              // if (value!=""){
+                if (value!='') {
+                  self.refreshpage();
+                  self.fetchdata(app.data.userdata.schdivid,value);
+                }
+                
+
+              // }
+              
+              return;
+            })
+            
+            $$('.popup-schfundbaldetails').on('popup:close', function (e) {
+              // console.log($$('#my-schfundbaldetails-form [name="fbguid"]')[0].value);
+              // if ($$('#my-schfundbaldetails-form [name="fbguid"]')[0].value==""){
+                $$('#my-schfundbaldetails-form')[0].reset(); 
+                $$('#my-schfundbaldetails-form [name="fbguid"]')[0].value="";
+                self.$setState({
+                  fbguid : null,
+                  fundackid: null,
+                  reqlist:[],
+
+                                              
+                  });
+              // }
+            });
+            $$('.popup-schfundbaldetails').on('popup:open', function (e) {
+              // console.log($$('#my-schfundbaldetails-form [name="fbguid"]')[0].value);
+              // if ($$('#my-schfundbaldetails-form [name="fbguid"]')[0].value==""){
+                // $$('#my-schfundbaldetails-form')[0].reset(); 
+                if ($$('#my-schfundbaldetails-form [name="fbguid"]')[0].value==""){
+                  $$('#my-schfundbaldetails-form [name="monthdesc"]')[0].value="";
+                  $$('#my-schfundbaldetails-form [name="dismonth"]')[0].value="";
+                }
+                
+               
+              // }
+            });
+            // $$('#delete-button').on('click', function(){
+            //       var formData = app.form.convertToData('#my-schfundbaldetails-form');
+            //       console.log("delete Clicked")
+            //       //confirm to user
+            //       if (self.fundackid==null){
+            //         app.dialog.confirm("Confirm Delete ?", "Delete Transfer", function () {
+            //             self.deletedata(formData);
+            //           });
+            //       } else {
+            //         app.dialog.alert("Fund has already been confirmed by the school.\n " )
+            //       }
+                  
+            //   });
+
+            $$('.schfundbaldetails-button').on('click', function(){
+              var formData = app.form.convertToData('#my-schfundbaldetails-form');
+
+              var va1=$$('#my-schfundbaldetails-form [name="regmooebegbal"]')[0].checkValidity();
+              var va2=$$('#my-schfundbaldetails-form [name="otherfundbegbal"]')[0].checkValidity();
+              var va3=$$('#my-schfundbaldetails-form [name="monthdesc"]')[0].checkValidity();
+              var va4=$$('#my-schfundbaldetails-form [name="fundyear"]')[0].value!="";
+
+              var va5=$$('#my-schfundbaldetails-form [name="dismonth"]')[0].value!="";
+              var va6=$$('#my-schfundbaldetails-form [name="schguid"]')[0].value!="";
+
+              var va7=$$('#my-schfundbaldetails-form [name="esbegbal"]')[0].checkValidity();
+              var va8=$$('#my-schfundbaldetails-form [name="jhsbegbal"]')[0].checkValidity();
+              var va9=$$('#my-schfundbaldetails-form [name="shsbegbal"]')[0].checkValidity();
+
+              var ErrorMessage="";
+              
+
+              if (va1==false){
+                ErrorMessage=ErrorMessage + "Invalid Regular MOOE Total Amount<br>";
+              }
+              if (va2==false){
+                ErrorMessage=ErrorMessage + "Invalid Other Funds Amount<br>";
+              }
+              if (va3==false){
+                ErrorMessage=ErrorMessage + "Please Select Month<br>";
+              }
+              if (va4==false){
+                ErrorMessage=ErrorMessage + "Please Select Year<br>";
+              }
+              if (va5==false){
+                ErrorMessage=ErrorMessage + "Please Select Month<br>";
+              }
+              if (va6==false){
+                ErrorMessage=ErrorMessage + "Please Select School<br>";
+              }
+              
+              
+              if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9) {
+                self.savedata(formData);
+              } else {
+                app.dialog.alert(ErrorMessage);
+              }
+              
+              });
+
+              app.preloader.hide();
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

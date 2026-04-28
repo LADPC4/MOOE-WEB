@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#2196f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+  <title>Deped MOOE</title>
+  <link rel="stylesheet" href="framework7/css/framework7.bundle.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/framework7-icons">
+  <link rel="stylesheet" href="css/app.css">
+  
+  <style>
+    
+
+
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="panel panel-left panel-reveal panel-init theme-dark" data-visible-breakpoint="1024" data-collapsed-breakpoint="1">
+      <div class="view">
+        <div class="page">
+          <div class="list">
+            <ul>
+              <li>
+                <a href="#" class="item-content item-link active-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">square_grid_2x2_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Deped MOOE</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <ul>
+              <li>
+                <a href="#" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">folder_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Requests</div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">folder_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Liquidations</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- <div class="list">
+            <ul>
+              <li>
+                <a href="#" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">folder_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Categories</div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">cart_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Products</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div> -->
+
+          <div class="list">
+            <ul>
+              <!-- <li>
+                <a href="#" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">bag_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Sales</div>
+                  </div>
+                </a>
+              </li> -->
+              <li>
+                <a href="#" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">graph_circle_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Reports</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="block block-strong no-padding-horizontal padding-vertical-half">
+            <div class="treeview">
+              <div class="treeview-item">
+                <div class="treeview-item-root treeview-item-toggle">
+                  <div class="treeview-toggle"></div>
+                  <div class="treeview-item-content">
+                    <div class="treeview-item-label">Departments</div>
+                  </div>
+                </div>
+                <div class="treeview-item-children">
+                  <div class="treeview-item">
+                    <a href="#" class="treeview-item-root">
+                      <div class="treeview-item-content">
+                        <div class="treeview-item-label">New York</div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="treeview-item">
+                    <a href="#" class="treeview-item-root">
+                      <div class="treeview-item-content">
+                        <div class="treeview-item-label">London</div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="treeview-item">
+                    <a href="#" class="treeview-item-root">
+                      <div class="treeview-item-content">
+                        <div class="treeview-item-label">Beijing</div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="treeview-item">
+                    <a href="#" class="treeview-item-root">
+                      <div class="treeview-item-content">
+                        <div class="treeview-item-label">Tokyo</div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="view view-main view-init">
+      <div class="page">
+        <div class="navbar">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="left">
+              <a class="link panel-open icon-only" data-panel="left">
+                <i class="icon f7-icons">bars</i>
+              </a>
+            </div>
+            <div class="title">DEPED MOOE</div>
+            <div class="right">
+              <a class="link popover-open" data-popover=".profile-popover">
+                <span class="margin-right-half">Hi, <b>John</b></span>
+                <div class="item-media">
+                  <i class="icon f7-icons">person_circle_fill</i>
+                </div>
+              </a>
+            </div>
+            <div class="title-large">
+              <div class="title-large-text display-flex align-items-center">
+                <i class="icon f7-icons margin-right-half" style="font-size: 24px">square_grid_2x2_fill</i>
+                <span>DEPED MOOE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="popover profile-popover">
+          <div class="popover-inner">
+            <h3 class="text-align-center">John Doe</h3>
+            <div class="list no-hairlines no-hairlines-between">
+              <ul>
+                <li>
+                  <a href="#" class="item-link item-content">
+                    <div class="item-media">
+                      <i class="icon f7-icons">person_circle_fill</i>
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title">Profile</div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="item-link item-content">
+                    <div class="item-media">
+                      <i class="icon f7-icons">gear_fill</i>
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title">User Settings</div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="list no-hairlines no-hairlines-between margin-bottom">
+              <ul>
+                <li>
+                  <a href="#" class="item-link item-content">
+                    <div class="item-media">
+                      <i class="icon f7-icons">exit_fill</i>
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title">Logout</div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+        
+  
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/framework7/js/framework7.bundle.min.js"></script>
+  <!-- <script src="framework7/js/framework7.bundle.min.js"></script> -->
+  <!-- <script src="https://unpkg.com/chart.js"></script> -->
+  <!-- <script src="js/app.js"></script> -->
+
+  <!-- Load  -->
+  <script src="js/gc.js"></script>
+
+  <!-- App routes -->
+  <script src="js/routes.js"></script>
+
+  <!-- Your custom app scripts -->
+  <script src="js/app.js"></script>
+  <!-- Load Cordova FB Web SDK -->
+  <!-- <script src="cordova.js"></script>  -->
+
+
+
+
+  <script>
+    
+    // var $ = Dom7;
+ 
+    // var app = new Framework7({
+    //   root: '#app',
+    //   theme: 'aurora',
+    // });
+
+    // Sales chart
+    // var ctx = document.getElementById('sales-chart').getContext('2d');
+    // window.myLine = new Chart(ctx, {
+		// 	type: 'line',
+		// 	data: {
+		// 		labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+		// 		datasets: [{
+		// 			label: '',
+		// 			backgroundColor: 'rgb(255, 99, 132)',
+		// 			borderColor: 'rgb(255, 99, 132)',
+		// 			fill: true,
+		// 			data: [ 2000, 1000, 5000, 6000, 5500, 8000, 7700 ],
+		// 		}]
+		// 	},
+		// 	options: {
+    //     legend: {
+    //       display: false,
+    //     },
+		// 		responsive: true,
+		// 		tooltips: {
+		// 			mode: 'index',
+		// 			intersect: false,
+		// 		},
+		// 		hover: {
+		// 			mode: 'nearest',
+		// 			intersect: true
+		// 		},
+    //   }
+    // });
+
+    // Fix col sizes
+    
+
+  </script>
+</body>
+</html>

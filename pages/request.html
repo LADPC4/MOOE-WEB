@@ -1,0 +1,101 @@
+<template>
+  <div class="page " data-name="request">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">MOOE Request</div>
+        <!-- <div class="right">
+          <a class="link panel-open icon-only" data-panel="left">
+            <i class="icon f7-icons">bars</i>
+          </a>
+        </div> -->
+      </div>
+    </div>
+    <div class="page-content">
+        <form class="list form-store-data" id="my-form">
+          <ul>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title ">School Information </div>
+                  <div class="item-title ">
+                    School Name of Current User
+                  </div>
+                  <div class="item-title ">
+                    School ID
+                  </div>
+                  <div class="item-title ">
+                    School District
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Payee/Office</div>
+                  <div class="item-input-wrap">
+                    <input type="text" name="payee" placeholder="Payee/Office">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Period Covered</div>
+                  <div class="item-input-wrap">
+                    <input type="text" name="period" placeholder="Date covered">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Total Amount</div>
+                  <div class="item-input-wrap">
+                    <input type="text" name="totalamt" placeholder="Total Amount">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Attachments</div>
+                  <div class="item-input">
+                    <input class="button button-big button-fill" type="file" name="Select Attachment" placeholder="Upload Zip File">
+                  </div>
+                </div>
+              </div>
+            </li>
+            
+            <!-- <li>
+              <div class="item-content ">
+                <div class="item-inner">
+                  <div class="item-title">Save as Draft</div>
+                  <div class="item-after">
+                    <label class="toggle">
+                      <input type="checkbox" name="draft" value="yes"><i class="toggle-icon"></i>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </li> -->
+          </ul>
+          <div class="block block-strong row">
+            <div class="col"><a class="button  button-fill form-save-data" href="#">Continue</a></div>
+            <div class="col"><a class="button  button-fill form-cancel-data" href="back()">Back</a></div>
+          </div>
+        </form>
+    </div>
+  </div>
+</template>

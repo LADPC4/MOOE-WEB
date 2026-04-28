@@ -1,0 +1,515 @@
+<template>
+  <div class="page " data-name="schoolprofile">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">School Profile</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-schoolprofile">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <!-- <button class="col button button-fill  zero-found-schoolprofile-button popup-open" data-popup=".popup-schoolprofile">Create new Transfer</button> -->
+      </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="login-screen-title">School Details</div>
+          <form class="list" id="my-schoolprofile-form">
+              <div class="list">
+                  <ul >
+                    
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">School Address</div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="schaddress" name="schaddress" class="schaddress"  required validate  placeholder="Provide School Address">
+                          <input type="hidden" id="schguid" name="schguid" class="schguid">
+                        </div>
+                      </div>
+                    </li>
+                    <!-- <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Bank</div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="schbank" name="schbank" class="schbank"  required validate  placeholder="Provide School Bank Name">
+                          
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Account Number</div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="schaccount" name="schaccount" class="schaccount"  required validate  placeholder="Provide Bank Account Number">
+                          
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Bank Maintaining Balance</div>
+                        <div class="item-input-wrap">
+                          <input type="number" id="maintbal" name="maintbal" class="maintbal"  required validate step="0.01" placeholder="Provide Bank Maintaining balance amount">
+                          
+                        </div>
+                      </div>
+                    </li> -->
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">School Payee </div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="schpayee" name="schpayee" class="schpayee"  required validate  placeholder="Provide School Payee Name">
+                          
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Signatory ADAS </div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="signatory1" name="signatory1" class="signatory1"  required validate  placeholder="Provide School ADAS Signatory">
+                          
+                        </div>
+                      </div>
+                    </li>
+                    <!-- <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Signatory School Head </div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="signatory2" name="signatory2" class="signatory2"  required validate  placeholder="Provide School Head Signatory">
+                          
+                        </div>
+                      </div>
+                    </li> -->
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Admin Assistant 2 </div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="signatory3" name="signatory3" class="signatory3"  required validate  placeholder="Provide Admin Assistant 2 Signatory">
+                          
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Accountable Officer</div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="acctofficer" name="acctofficer" class="acctofficer"  required validate  placeholder="Provide Name of Accountable Officer">
+                          
+                        </div>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                          
+                  </ul>
+              </div>
+
+            
+              
+            
+              
+
+              <div class="list">
+                  <div class="block block-strong row">
+                      <div class="col"><a href="#" class="col button button-fill schoolprofile-button" @click="submitform()">Update</a> </div>
+                      
+                      <div class="col"><a href="#" class="col button button-fill back">Close</a></div>
+                    </div>
+                
+               
+              </div>
+            </form>
+          
+        </div>
+      </div>
+
+    </div>
+    
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  fundguid: null,
+                  fundackid: null,
+                  fileitems : [],
+                  gameoptions : [],
+                  reqlist:[],
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    currentid:null,
+    methods: {
+      refreshpage(){
+          var self = this;
+          self.$setState({
+                      items : [],
+                      pages: null,
+                      paging: null,
+                      fundackid: null,
+                      fundguid: null,
+                      nextpage : null,
+                      lastpage: null,
+                      hasMoreItems: false,
+                      currentpage: null
+
+                                              
+                  });
+        },
+      fetchdata() {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var udata= { 
+            schguid:  app.data.userdata.schguid
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'schools/read_one.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata) {
+                // var items = self.items.concat(rdata);
+                app.form.fillFromData('#my-schoolprofile-form',rdata);
+            }  else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+       
+        submitform(){
+          var self = this;
+          var app = self.$app;
+          var schguid=$$('#my-schoolprofile-form [name="schguid"]')[0].value;
+
+
+
+
+
+            var formData = app.form.convertToData('#my-schoolprofile-form');
+
+              var va1=$$('#my-schoolprofile-form [name="schaddress"]')[0].checkValidity();
+              var va2=$$('#my-schoolprofile-form [name="schpayee"]')[0].checkValidity();
+              // var va3=$$('#my-schoolprofile-form [name="schaccount"]')[0].checkValidity();
+              // var va4=$$('#my-schoolprofile-form [name="schbank"]')[0].checkValidity();
+
+              var schaddress=$$('#my-schoolprofile-form [name="schaddress"]')[0].value;
+              var schpayee=$$('#my-schoolprofile-form [name="schpayee"]')[0].value;
+              // var schaccount=$$('#my-schoolprofile-form [name="schaccount"]')[0].value;
+              // var schbank=$$('#my-schoolprofile-form [name="schbank"]')[0].value;
+              var ErrorMessage="";
+              if (va1==false){
+                ErrorMessage=ErrorMessage + "Please provide school address<br>";
+              }
+              if (va2==false){
+                ErrorMessage=ErrorMessage + "Please provide school payee <br>";
+              }
+              // if (va3==false){
+              //   ErrorMessage=ErrorMessage + "Please provide school account number<br>";
+              // }
+              // if (va4==false){
+              //   ErrorMessage=ErrorMessage + "Please provide school bank <br>";
+              // }
+           
+              
+              if (va1 && va2  ) {
+                //self.savedata(formData);
+              } else {
+                app.dialog.alert(ErrorMessage);
+                return;
+              }
+              
+          // var udata= { 
+          //   "schguid":app.data.userdata.schguid, 
+          //   "schaddress":schaddress, 
+          //   "schaccount":schaccount, 
+          //   "schpayee":schpayee, 
+          //   "schbank":schbank, 
+          // }
+          
+          app.request.post($base_url+'schools/updateprofile.php' ,  JSON.stringify(formData) , (data)=> {
+            data=JSON.parse(data);
+            // console.log(app.data.userdata.schdescription);
+            // app.data.userdata.schaccount=schaccount;
+            app.data.userdata.schaddress=schaddress;
+            // app.data.userdata.schbank=schbank;
+            // app.data.userdata.schdescription=data.schdescription;
+            // app.data.userdata.schguid=data.schguid;
+            // app.data.userdata.schoolid=data.schoolid;
+            app.data.userdata.schpayee=schpayee;
+            // app.data.userdata.schtype=data.schtype;
+            // app.data.userdata.schtypeiu=data.schtypeiu;
+            app.dialog.alert("Profile data has been saved.");
+            // console.log(app.data.userdata.schdescription);
+          })
+
+        },
+            fetchshoolassigns: function (idel,descel) {
+          //continue to dashboard
+          app.preloader.show();
+          var udata= { 
+            "schdivid":app.data.userdata.schdivid,   
+            "guserid": app.data.userdata.guserid
+          }
+          
+          app.request.post($base_url+'usertocluster/read_paging.php' ,  JSON.stringify(udata) , (data)=> {
+            data=JSON.parse(data)
+            // app.$setState({
+            //   sdolist: data   
+            // })
+            //  app.data.sdolist=data;
+            app.data.schlist=data;
+            var sdolistel = app.autocomplete.create({
+              inputEl: '.'+descel,
+              openIn: 'dropdown',
+              valueProperty: 'id',
+              textProperty: 'name',
+              closeOnSelect: true,
+              source: function (query, render) {
+                var results = [];
+                //  if (query.length === 0) {
+                //    render(results);
+                //    return;
+                //  }
+                
+                $$('#'+idel)[0].value="";
+                schlist=app.data.schlist.records;
+                //  console.log(schlist);
+                for (var i = 0; i < schlist.length; i++) {
+                  if (schlist[i].schdescription.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+                    results.push({ "id": schlist[i].schguid,"name": schlist[i].schdescription} ); //
+                      
+                    
+                  }
+                }
+                
+                render(results);
+              },
+              on: {
+                change: function (value) {
+                  var itemText = [],
+                      inputValue = [];
+                  for (var i = 0; i < value.length; i++) {
+                    // itemText.push(value[i].name);
+                    // inputValue.push(value[i].id);
+                    $$('#'+descel)[0].value=value[i].name;
+                    $$('#'+idel)[0].value=value[i].id;
+                    app.methods.fetchschrequests(value[i].id)
+                  }
+                  
+                },
+              },  
+              });
+            // console.log(sdolistel);
+            app.preloader.hide();
+          });
+          
+        },
+        
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        self.fetchdata(app.data.userdata.schdivid);
+
+
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            // var today = new Date();
+            // var dd = String(today.getDate()).padStart(2, '0');
+            // var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            // var yyyy = today.getFullYear();
+
+            // today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            
+            // console.log(self)
+            self.$setState({
+                  //  currentid: groupid   
+                });
+            //initialize fund years 
+    
+            // app.methods.createfundyear('#fundyear');
+            //initialize pap list
+            // app.methods.fetchpaplist();
+            
+            //load schools menus 
+            self.fetchdata();
+            //create date picker 
+            // app.methods.createdatepicker(today,'#transferdate');
+            
+            // self.fetchdata(app.data.userdata.schdivid);
+            
+            
+            // $$('#delete-button').on('click', function(){
+            //       var formData = app.form.convertToData('#my-schoolprofile-form');
+            //       console.log("delete Clicked")
+            //       //confirm to user
+            //       if (self.fundackid==null){
+            //         app.dialog.confirm("Confirm Delete ?", "Delete Transfer", function () {
+            //             self.deletedata(formData);
+            //           });
+            //       } else {
+            //         app.dialog.alert("Fund has already been confirmed by the school.\n " )
+            //       }
+                  
+            //   });
+
+            // $$('.schoolprofile-button').on('click', function(){
+            //   var formData = app.form.convertToData('#my-schoolprofile-form');
+
+            //   var va1=$$('#my-schoolprofile-form [name="totalamount"]')[0].checkValidity();
+            //   var va2=$$('#my-schoolprofile-form [name="papsdesc"]')[0].checkValidity();
+            //   var va3=$$('#my-schoolprofile-form [name="schdescription"]')[0].checkValidity();
+            //   var va4=$$('#my-schoolprofile-form [name="transferdate"]')[0].value!="";
+
+            //   var va5=$$('#my-schoolprofile-form [name="paps"]')[0].value!="";
+            //   var va6=$$('#my-schoolprofile-form [name="schguid"]')[0].value!="";
+            //   var va7=$$('#my-schoolprofile-form [name="fundyear"]')[0].value!="";
+            //   var ErrorMessage="";
+              
+
+            //   if (va1==false){
+            //     ErrorMessage=ErrorMessage + "Invalid Amount<br>";
+            //   }
+            //   if (va2==false){
+            //     ErrorMessage=ErrorMessage + "Select Program/Activities/Projects <br>";
+            //   }
+            //   if (va3==false){
+            //     ErrorMessage=ErrorMessage + "Please Select School<br>";
+            //   }
+            //   if (va4==false){
+            //     ErrorMessage=ErrorMessage + "Please provide Transfer/Bank Deposit Date<br>";
+            //   }
+            //   if (va5==false){
+            //     ErrorMessage=ErrorMessage + "Select Program/Activities/Projects <br>";
+            //   }
+            //   if (va6==false){
+            //     ErrorMessage=ErrorMessage + "Please Select School<br>";
+            //   }
+            //   if (va7==false){
+            //     ErrorMessage=ErrorMessage + "Please Select Fund Year<br><br>";
+            //   }
+              
+            //   if (va1 && va2 && va3 && va4) {
+            //     self.savedata(formData);
+            //   } else {
+            //     app.dialog.alert(ErrorMessage);
+            //   }
+              
+            //   });
+
+              app.preloader.hide();
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

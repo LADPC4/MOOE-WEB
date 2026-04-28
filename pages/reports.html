@@ -1,0 +1,122 @@
+<template>
+  <div class="page " data-name="group">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">Report</div>
+        <div class="right">
+          <a class="link panel-open icon-only" data-panel="left">
+            <i class="icon f7-icons">bars</i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="col-100 margin-top">
+        <div class="card data-table">
+          <div class="card-header">Utilization by Schools</div>
+          <div class="card-content">
+            <table>
+              <thead>
+                <tr>
+                  <th class="label-cell">School</th>
+                  <th class="numeric-cell">Downloaded</th>
+                  <th class="numeric-cell">Liquidated</th>
+                  <th class="numeric-cell">Utilization</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="label-cell">School 1</td>
+                  <td class="numeric-cell">300,000</td>
+                  <td class="numeric-cell">30,000</td>
+                  <td class="numeric-cell">
+                    <div
+                      class="gauge gauge-init"
+                      data-type="circle"
+                      data-value="0.10"
+                      data-value-text="10%"
+                      data-label-text=""
+                      data-value-font-size="10"
+                      data-value-text-color="#ff9800"
+                      data-border-color="#ff9800"
+                      data-border-width="5"
+                      data-size="50"
+                    ></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label-cell">School 2</td>
+                  <td class="numeric-cell">500,000</td>
+                  <td class="numeric-cell">100,000</td>
+                  <td class="numeric-cell">
+                    <div
+                      class="gauge gauge-init"
+                      data-type="circle"
+                      data-value="0.20"
+                      data-value-text="20%"
+                      data-label-text=""
+                      data-value-font-size="10"
+                      data-value-text-color="#ff9800"
+                      data-border-color="#ff9800"
+                      data-border-width="5"
+                      data-size="50"
+                    ></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label-cell">School 3</td>
+                  <td class="numeric-cell">1,500,000</td>
+                  <td class="numeric-cell">1,300,000</td>
+                  <td class="numeric-cell">
+                    <div
+                      class="gauge gauge-init"
+                      data-type="circle"
+                      data-value="0.87"
+                      data-value-text="87%"
+                      data-label-text=""
+                      data-value-font-size="10"
+                      data-value-text-color="#ff9800"
+                      data-border-color="#ff9800"
+                      data-border-width="5"
+                      data-size="50"
+                    ></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="data-table-footer">
+              <div class="data-table-rows-select">
+                Rows per page:
+                <div class="input input-dropdown input-with-value">
+                  <select class="input-with-value">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="all">All</option>
+                  </select>
+                </div>
+              </div>
+              <div class="data-table-pagination">
+                <span class="data-table-pagination-label">1-5 of 10</span>
+                <a href="#" class="link disabled">
+                  <i class="icon icon-prev color-gray"></i>
+                </a>
+                <a href="#" class="link">
+                  <i class="icon icon-next color-gray"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,513 @@
+<template>
+  <div class="page " data-name="sysrolewf">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">Role Worflow Assignments</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-sysrolewfdetails">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <button class="col button button-fill  zero-found-sysrolewfdetails-button popup-open" data-popup=".popup-sysrolewfdetails">Assign Workflow</button>
+      </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">Role Worflow Assignments </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">Role</th>
+                    <!-- <th class="label-cell">Description</th> -->
+                   
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <!-- wfguid, `type`, `status`, order, description, completed, rectimestamp -->
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{roleguid}}|{{roledescription}}');">
+                   
+                    <!-- <td class="label-cell">{{workflow}}</td> -->
+                    <td class="label-cell">{{roledescription}}</td>
+                    
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer"  >
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-sysrolewfdetails" id="my-sysrolewfdetails-screen" >
+      <div class="view">
+        <div class="page">
+          <div class="page-content sysrolewfdetails-screen-content">
+              
+            <div class="login-screen-title">Workflow Details</div>
+            <form class="list" id="my-sysrolewfdetails-form">
+                <div class="list">
+                    
+                  <div class="block block-strong row">
+                    <div class="col"><a href="#" class="col button button-fill sysrolewfdetails-button">Submit</a> </div>
+                    <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+                  </div>
+              
+                </div>
+                <div class="list">
+                    <ul >   
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">Name</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="roledescription" required validate  id = "roledescription" class="roledescription">
+                              <input type="hidden" id="roleguid" name="roleguid" class="roleguid">
+                            </div>
+                        </div>
+                      </li>
+                      {{#each workflowitems}}
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <label class="item-checkbox item-content">
+                            <input type="checkbox" name="wfguid" value="{{wfguid}}" >
+                            <i class="icon icon-checkbox"></i>
+                            <div class="item-title">{{name}}</div>
+                          </label>
+                        </div>
+                      </li>
+                      {{/each}  
+                    </ul>
+                </div>
+                
+                
+
+               
+                
+  
+                
+              </form>
+            
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  workflowitems: [],
+                  rolelist: [],
+                  wfitems: [],
+                  gameoptions : [],
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    methods: {
+          refreshpage(){
+            var self = this;
+            self.$setState({
+                        items : [],
+                        pages: null,
+                        paging: null,
+                        nextpage : null,
+                        lastpage: null,
+                        hasMoreItems: false,
+                        currentpage: null
+
+                                                
+                    });
+          },
+          fetchdata(schguid) {
+
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var udata= { 
+            schguid:  schguid,
+            guser: app.data.userdata.guserid
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'sysrolewf/read_paging.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                var items = self.items.concat(rdata.records);
+                // var items =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        fetchflowlist() {
+
+            var self = this;
+            var app = self.$app;
+            // var fetchpage = 0;
+            var udata= { 
+              
+              guser: app.data.userdata.guserid
+            }
+            app.preloader.show();
+            
+
+            //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+            app.request.post($base_url+'workflow/read_paging.php'+$base_param , JSON.stringify(udata), (rdata) => {
+              rdata=JSON.parse(rdata);
+
+              if (rdata.records) {
+                  var workflowitems =rdata.records;
+                  // var items =rdata.records;
+                 
+                  // console.log(items)
+                  self.$setState({
+                        workflowitems : workflowitems                            
+                    })
+                  // console.log(self.paging)
+              }
+              
+              
+              //get next page  
+            // console.log(self.workflowitems);
+            app.preloader.hide();
+            })  
+        },
+        fetchrolelist: function () {
+          // continue to dashboard
+          var udata= { 
+            
+            roleguid: app.data.userdata.roleguid   
+            
+          }
+          app.preloader.show();
+          app.request.post($base_url+'sysroles/read_roles.php',JSON.stringify(udata) ,(data)=> {
+            data=JSON.parse(data)
+            // app.$setState({
+            //   flowtypelist: data   
+            // })
+            self.rolelist=data;
+            var ftlistel = app.autocomplete.create({
+              inputEl: '.roledescription',
+              openIn: 'dropdown',
+              valueProperty: 'id',
+              textProperty: 'name',
+              closeOnSelect: true,
+              source: function (query, render) {
+                var results = [];
+                // if (query.length === 0) {
+                //   render(results);
+                //   return;
+                // }
+                // Find matched items
+                // $$('#divdescription')[0].value="";
+                $$('#roleguid')[0].value="";
+                list=self.rolelist.records;
+                for (var i = 0; i < list.length; i++) {
+                  if (list[i].roledescription.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+                    results.push({ "id": list[i].roleguid,"name": list[i].roledescription }); //
+                    
+                    
+                  }
+                }
+                // Render items by passing array with result items
+                //  console.log(results)
+                render(results);
+              },
+              on: {
+                change: function (value) {
+                  var itemText = [],
+                      inputValue = [];
+                  for (var i = 0; i < value.length; i++) {
+                    // itemText.push(value[i].name);
+                    // inputValue.push(value[i].id);
+                    $$('#roledescription')[0].value=value[i].name;
+                    $$('#roleguid')[0].value=value[i].id;
+                    // $$('#roletype')[0].value=value[i].tag;
+                    //populate schools 
+                  
+                  }
+                  
+                },
+              },  
+              });
+            // console.log(sdolistel);
+            app.preloader.hide();
+          });
+        },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        self.fetchdata(app.data.userdata.schguid);
+
+
+        },
+        //send and save form
+        savedata(udata) {
+            // return;
+            var self = this;
+            var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            
+            // udata.schdivid=app.data.userdata.schdivid;
+            udata.guserid=app.data.userdata.guserid;
+            udata.schguid=app.data.userdata.schguid;
+            console.log(udata);
+            apipage="update";
+            // if (udata.wfguid=="") {
+            //   apipage="create";
+            // }
+            app.preloader.show();
+            app.request.post($base_url+'sysrolewf/'+ apipage +'.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+                result=JSON.parse(data);
+                app.dialog.alert(result.message);
+
+                $$('#my-sysrolewfdetails-form')[0].reset(); 
+                self.refreshpage();
+                self.fetchdata(app.data.userdata.schguid);
+                app.preloader.hide();
+                app.popup.close('#my-sysrolewfdetails-screen');
+            });
+            
+        },
+        //send and delete form
+        openpopup(params) {
+          var params = params.split('|');
+          // {{id}}|{{name}}|{{order}}|{{show}}
+          var udata= { 
+            roleguid: params[0],
+            roledescription: params[1]
+          }
+          // console.log(udata);
+          app.preloader.show();
+          // console.log(self.workflowitems)
+          app.request.post($base_url+'sysrolewf/read_rolewflist.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+              
+              // return;
+              result=JSON.parse(data);
+              //iterate from records 
+              // console.log(result)
+              var list=result.records
+              for (var i = 0; i < list.length; i++) {
+                // Pre select saved data 
+                // console.log(list[i].wfguid)
+                // console.log($$('#my-sysrolewfdetails-form [value="'+list[i].wfguid+'"]')[0].checked);
+                $$('#my-sysrolewfdetails-form [value="'+list[i].wfguid+'"]')[0].checked=true;
+              }
+              app.form.fillFromData('#my-sysrolewfdetails-form',udata);
+              app.preloader.hide();
+              app.popup.open("#my-sysrolewfdetails-screen")
+          });
+          
+           
+           //update form data 
+        },
+        deletedata(udata) {
+           
+        },
+        CreateSubmitData(self) {
+          
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+
+
+            
+            self.fetchrolelist();
+            self.fetchflowlist();
+            self.fetchdata(app.data.userdata.schguid);
+           
+
+
+            $$('.popup-sysrolewfdetails').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-sysrolewfdetails-form')[0].reset(); 
+                $$('#my-sysrolewfdetails-form [name="roleguid"]')[0].value="";
+                // self.$setState({
+                //   workflowitems : []
+
+                                              
+                //   })
+              // }
+            });
+            
+            $$('.sysrolewfdetails-button').on('click', function(){
+              
+              var formData = app.form.convertToData('#my-sysrolewfdetails-form');
+              // var va1=$$('#my-sysrolewfdetails-form [name="name"]')[0].flowtype!="";
+              var va1=$$('#my-sysrolewfdetails-form [name="roledescription"]')[0].checkValidity();
+              var va2=$$('#my-sysrolewfdetails-form [name="roleguid"]')[0].value!="";
+              // var va4=$$('#my-sysrolewfdetails-form [name="status"]')[0].value!="";
+              // var va4=$$('#my-sysrolewfdetails-form [name="receivercontact"]')[0].value!="";
+
+
+              var ErrorMessage="";
+              
+              if (va1==false){
+                ErrorMessage=ErrorMessage + "Please Select Role<br>";
+              }
+              if (va2==false){
+                ErrorMessage=ErrorMessage + "Please ensure Role was selected correctly<br>";
+              }
+              
+
+              if ( va1 && va2 ) {
+                self.savedata(formData);
+              } else {
+                app.dialog.alert(ErrorMessage);
+              }
+              
+              });
+            
+
+            
+
+            app.preloader.hide();
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

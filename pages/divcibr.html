@@ -1,0 +1,250 @@
+<template>
+  <div class="page " data-name="Transfers">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">View CIBR</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-cibr">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <!-- <button class="col button button-fill  zero-found-cibr-button popup-open" data-popup=".popup-cibr">Create new Transfer</button> -->
+      </div>
+    
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="page-content cibr-screen-content">
+              
+            <div class="login-screen-title">School Cash In Bank Register Report</div>
+            <form class="list" id="my-cibr-form">
+                <div class="list">
+                    <ul >
+                      
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">Select School</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="schdescription" required validate  id = "schdescription" class="schdescription">
+                              <input type="hidden" id="schguid" value="" name="schguid">
+                              
+                            </div>
+                        </div>
+                      </li>
+                    
+                      <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Select Year</div>
+                            <div class="item-input-wrap">
+                              <input type="text" placeholder="Select Year" required  id="fundyear" name="fundyear"/>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">CIBR Month</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="monthdesc" required validate name="monthdesc" class="monthdesc">
+                            <input type="hidden" id="dismonth" name="dismonth" class="dismonth">
+                          </div>
+                        </div>
+                      </li>   
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Select Account</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="acctdesc" name="acctdesc" required validate placeholder="Type to search  then use up/down and press enter to select" class="acctdesc">
+                            <input type="hidden" id="schacctguid" name="schacctguid" class="schacctguid">
+                            <input type="hidden" id="acctsl" name="acctsl" class="acctsl">
+                          </div>
+                        </div>
+                      </li>
+                      
+                    </ul>
+                </div>
+
+                
+                
+              
+                
+  
+                <div class="list">
+                    <div class="block block-strong row">
+                        <div class="col"><a href="#" @click="openreport()" class="col button button-fill cibr-button">Generate Report</a> </div>
+                        
+                      </div>
+                  
+                 
+                </div>
+              </form>
+            
+  
+          </div>
+        </div>
+      </div>
+
+    </div>
+    
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  fundguid: null,
+                  fundackid: null,
+                  fileitems : [],
+                  gameoptions : [],
+                  reqlist:[],
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    currentid:null,
+    methods: {
+        refreshpage(){
+         
+        },
+     
+        savedata(udata) {
+           
+            
+            
+        },
+        //send and delete form
+        deletedata(udata) {
+         
+            
+        },
+        delclick(){
+         
+        },
+        openreport() {
+            
+          var self = this;
+          var app = self.$app;
+
+          // var schguid=app.data.userdata.schguid;
+          var va1=$$('#my-cibr-form [name="fundyear"]')[0].value!="";
+          var va2=$$('#my-cibr-form [name="dismonth"]')[0].value!="";
+          var va3=$$('#my-cibr-form [name="schguid"]')[0].value!="";
+          var va4=$$('#my-cibr-form [name="schacctguid"]')[0].value!="";
+          var valok=true;
+          var ErrorMessage="";
+          if (va1==false){
+                ErrorMessage=ErrorMessage + "Please Select Year<br>";
+                valok=false;
+          }
+          if (va2==false){
+            ErrorMessage=ErrorMessage + "Please Select Month<br>";
+            valok=false;
+          }
+          if (va3==false){
+            ErrorMessage=ErrorMessage + "Please Select School<br>";
+            valok=false;
+          }
+          if (va4==false){
+            ErrorMessage=ErrorMessage + "Please Select Account<br>";
+            valok=false;
+          }
+          var dismonth=$$('#my-cibr-form [name="dismonth"]')[0].value;
+          var fundyear=$$('#my-cibr-form [name="fundyear"]')[0].value
+          var schguid=$$('#my-cibr-form [name="schguid"]')[0].value;
+          var schacctguid=$$('#my-cibr-form [name="schacctguid"]')[0].value;
+          var udata= { 
+            schguid:  schguid,
+            fundyear: fundyear,
+            dismonth: dismonth,
+            schacctguid: schacctguid
+          } 
+          console.log(udata)
+          if ( valok) {
+               window.window.open("./forms/cibr/cibr.html?data=" + encodeURIComponent(JSON.stringify(udata)) , '_blank' ,"toolbar=no,scrollbars=yes,resizable=yes,fullscreen=yes,menubar=no,location=no");     
+          } else {
+            app.dialog.alert(ErrorMessage);
+          }
+
+          return;
+
+         
+
+
+        },
+       
+        
+        loadmore() {
+        
+    },
+  },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            // app.preloader.show();
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            
+            // console.log(self)
+            self.$setState({
+                  //  currentid: groupid   
+                });
+            //initialize fund years 
+            app.methods.fetchshools(app.data.userdata.schdivid,'schguid','schdescription');
+            app.methods.createfundyear('#fundyear');
+            app.methods.createmonthlist('#monthdesc');
+            app.methods.fetchaccounts();
+            //initialize pap list
+            // app.methods.fetchpaplist();
+            
+            //load schools menus           
+              }
+            }   
+    }
+  
+
+
+
+ 
+
+  
+  
+</script>

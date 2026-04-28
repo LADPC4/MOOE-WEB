@@ -1,0 +1,1146 @@
+<template>
+  <div class="page">
+    <div class="panel panel-left panel-cover panel-reveal panel-init theme-dark" >
+      <div class="view">
+        <div class="page">
+          <div class="list">
+            <ul>
+              <li>
+                <a href="#" class="item-content active-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">home</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Deped Mooe</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="list" >
+            <ul id="menulist">
+              
+              
+            </ul>
+          </div>
+
+          <div class="list">
+            <ul>
+              
+            </ul>
+          </div>
+
+         
+        </div>
+      </div>
+    </div>
+    <div class="view view-main view-init">
+      <div class="page">
+        <div class="navbar">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link panel-open" data-panel=".panel-left">
+                <i class="icon f7-icons">bars</i>
+              </a>
+            </div>
+            <div class="title">  MOOE </div>
+            <div class="right">
+              
+              <a class="link popover-open" data-popover=".profile-popover">
+                <span class="margin-right-half">Hi, <b id="greetname"></b></span>
+                <img src="" class="avatar" id="avatar">
+              </a>
+            </div>
+            <div class="title-large">
+              <div class="title-large-text display-flex align-items-center">
+                <i class="icon f7-icons margin-right-half" style="font-size: 24px">house</i>
+                <span>Home</span>
+              </div><datagrid></datagrid>
+            </div>
+          </div>
+        </div>
+        <div class="popover profile-popover">
+          <div class="popover-inner">
+            <h3 class="text-align-center" id="nickname"></h3>
+            <div class="list no-hairlines no-hairlines-between">
+              <ul>
+                <li>
+                  <a href="#" class="item-link item-content">
+                    <div class="item-media">
+                      <img src="" class="avatar" id="avatar2">
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title">Profile</div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="/settings/" class="item-link item-content" @click="closeProfile()">
+                    <div class="item-media">
+                      <i class="icon f7-icons">gear_fill</i>
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title">User Settings</div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="list no-hairlines no-hairlines-between margin-bottom">
+              <ul>
+                <li>
+                  <a href="#" class="item-link item-content" onclick="location.reload();">
+                    <div class="item-media">
+                      <i class="icon f7-icons">exit_fill</i>
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title">Logout</div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+        <div class="page-content">
+          <div class="dashboard-cards">
+            <div class="row margin-horizontal">
+              <div class="col-100 tablet-66 margin-top charts-col">
+                {{#with dashboardinfo}} 
+                <div class="row">
+                  <div class="col-33">
+                    <div class="card">
+                      <div class="card-header">Allocation and Transfers</div>
+                      <div class="card-content card-content-padding text-align-center">
+                        <div
+                          class="gauge gauge-init at-gauge"
+                          data-type="circle"
+                          data-value="{{TransferStatus}}"
+                          data-value-text="{{fnumber Transferred}}M"
+                          data-label-text="NEP/GAA {{fnumber Allocated}}M"
+                          data-value-text-color="#f44336"
+                          data-border-color="#f44336"
+                          data-border-width="30"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-33">
+                    <div class="card">
+                      <div class="card-header">{{UtilOblig1}}</div>
+                      <div class="card-content card-content-padding text-align-center">
+                        <div
+                          class="gauge gauge-init ut-gauge"
+                          data-type="circle"
+                          data-value="{{UtilizationStatus}}"
+                          data-value-text="{{fnumber Utilized}}M"
+                          data-label-text="Funds {{fnumber Transferred}}M"
+                          data-value-text-color="#ff9800"
+                          data-border-color="#ff9800"
+                          data-border-width="30"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-33">
+                    <div class="card">
+                      
+                      <div class="card-header">Liquidation</div>
+                     
+                      <div class="card-content card-content-padding text-align-center">
+                        <div
+                          class="gauge gauge-init lt-gauge"
+                          data-type="circle"
+                          data-value="{{LiquidatedStatus}}"
+                          data-value-text="{{LiquidatedStatus*100}}%"
+                          data-label-text="Liquidated {{fnumber Liquidated}}M"
+                          data-value-text-color="#4caf50"
+                          data-border-color="#4caf50"
+                          data-border-width="30"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {{/with}}
+               
+              </div>
+                
+              </div>
+              
+            </div>
+            
+
+            {{#if userdata.showsddb}}
+
+            <div class="row margin-horizontal">
+              <div class="col-100 margin-top">
+                <div class="card data-table">
+                  <div class="card-header">Top 10 {{unit}} High {{UtilOblig1}} (In Million Pesos)</div>
+                  <div class="card-content">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th class="label-cell">{{unit}}</th>
+                          <th class="numeric-cell">Allocated</th>
+                          <th class="numeric-cell">Transferred</th>
+                          <th class="numeric-cell">GAA Balance</th>
+                          <th class="numeric-cell">{{UtilOblig2}}</th>
+                          <th class="numeric-cell">Util/Transferred %</th>
+                          <th class="numeric-cell">Transfer Balance</th>
+                          <th class="numeric-cell">Liquidated</th>
+                          <th class="numeric-cell">Liquidation Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each itemsTHU}}
+                        <tr>
+                        <td class="label-cell">{{schdescription}}</td>
+                          <td class="numeric-cell">{{Allocated}}</td>
+                          <td class="numeric-cell">{{Transferred}}</td>
+                          
+                          <td class="numeric-cell">
+                            <div
+                              class="gauge gauge-init {{schguid}}TR"
+                              data-type="circle"
+                              data-value-font-size="10"
+                              data-value-text-color="#f44336"
+                              data-border-color="#f44336"
+                              data-border-width="5"
+                              data-size="50"class="gauge gauge-init at-gauge"
+                              data-value="{{GAABalance}}"
+                              data-label-text="{{fnumber GAABalance*100}}%"
+                              >
+                            </div>
+                          </td>
+                          <td class="numeric-cell">{{Utilized}}</td>
+                          <td class="numeric-cell">
+                            <div
+                              class="gauge gauge-init {{schguid}}UR"
+                              data-type="circle"
+                              data-value-font-size="10"
+                              data-value-text-color="#2596be"
+                              data-border-color="#2596be"
+                              data-border-width="5"
+                              data-size="50"class="gauge gauge-init at-gauge"
+                              data-value="{{UtilizationStatus}}"
+                              data-label-text="{{fnumber UtilizationStatus}}%"
+                              >
+                            </div>
+                          </td>
+                          <td class="numeric-cell">
+                            <div
+                              class="gauge gauge-init {{schguid}}UT"
+                              data-type="circle"
+                              data-value-font-size="10"
+                              data-value-text-color="#ff9800"
+                              data-border-color="#ff9800"
+                              data-border-width="5"
+                              data-size="50"class="gauge gauge-init at-gauge"
+                              data-value="{{FundBalance}}"
+                              
+                              data-label-text="{{fnumber FundBalance}}%"
+                            ></div>
+                          </td>
+                          <td class="numeric-cell">{{Liquidated}}</td>
+                            <td class="numeric-cell">
+                              <div
+                                class="gauge gauge-init {{schguid}}LT"
+                                data-type="circle"
+                                data-value-font-size="10"
+                                data-value-text-color="#4caf50"
+                                data-border-color="#4caf50"
+                                data-border-width="5"
+                                data-size="50"class="gauge gauge-init at-gauge"
+                                data-value="{{LiquidatedStatus/100}}"
+                                
+                                data-label-text="{{fnumber LiquidatedStatus}}%"
+                              ></div>
+                              
+                            </td>
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                    <div class="data-table-footer">
+                 
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="row margin-horizontal">
+              <div class="col-100 margin-top">
+                <div class="card data-table">
+                  <div class="card-header">Top 10 {{unit}} Low {{UtilOblig1}} (In Million Pesos)</div>
+                  <div class="card-content">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th class="label-cell">{{unit}}</th>
+                          <th class="numeric-cell">Allocated</th>
+                          <th class="numeric-cell">Transferred</th>
+                          <th class="numeric-cell">GAA Balance</th>
+                          <th class="numeric-cell">{{UtilOblig2}}</th>
+                          <th class="numeric-cell">Util/Transferred %</th>
+                          <th class="numeric-cell">Transfer Balance</th>
+                          <th class="numeric-cell">Liquidated</th>
+                          <th class="numeric-cell">Liquidation Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each itemsTLU}}
+                        <tr>
+                          <td class="label-cell">{{schdescription}}</td>
+                            <td class="numeric-cell">{{Allocated}}</td>
+                            <td class="numeric-cell">{{Transferred}}</td>
+                            
+                            <td class="numeric-cell">
+                              <div
+                                class="gauge gauge-init {{schguid}}TR"
+                                data-type="circle"
+                                data-value-font-size="10"
+                                data-value-text-color="#f44336"
+                                data-border-color="#f44336"
+                                data-border-width="5"
+                                data-size="50"class="gauge gauge-init at-gauge"
+                                data-value="{{GAABalance}}"
+                                data-label-text="{{fnumber GAABalance*100}}%"
+                                >
+                              </div>
+                            </td>
+                            <td class="numeric-cell">{{Utilized}}</td>
+                            <td class="numeric-cell">
+                              <div
+                                class="gauge gauge-init {{schguid}}UR"
+                                data-type="circle"
+                                data-value-font-size="10"
+                                data-value-text-color="#2596be"
+                                data-border-color="#2596be"
+                                data-border-width="5"
+                                data-size="50"class="gauge gauge-init at-gauge"
+                                data-value="{{UtilizationStatus}}"
+                                data-label-text="{{fnumber UtilizationStatus}}%"
+                                >
+                              </div>
+                            </td>
+                            <td class="numeric-cell">
+                              <div
+                                class="gauge gauge-init {{schguid}}UT"
+                                data-type="circle"
+                                data-value-font-size="10"
+                                data-value-text-color="#ff9800"
+                                data-border-color="#ff9800"
+                                data-border-width="5"
+                                data-size="50"class="gauge gauge-init at-gauge"
+                                data-value="{{FundBalance}}"
+                                
+                                data-label-text="{{fnumber FundBalance*100}}%"
+                              ></div>
+                              
+                            </td>
+                            <td class="numeric-cell">{{Liquidated}}</td>
+                            <td class="numeric-cell">
+                              <div
+                                class="gauge gauge-init {{schguid}}LT"
+                                data-type="circle"
+                                data-value-font-size="10"
+                                data-value-text-color="#4caf50"
+                                data-border-color="#4caf50"
+                                data-border-width="5"
+                                data-size="50"class="gauge gauge-init at-gauge"
+                                data-value="{{LiquidatedStatus/100}}"
+                                
+                                data-label-text="{{fnumber LiquidatedStatus}}%"
+                              ></div>
+                              
+                            </td>
+                          </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                    <div class="data-table-footer">
+                 
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            {{/if}}
+       
+            {{#if userdata.showcodb}}
+            <div class="row margin-horizontal">
+              <div class="col-100 margin-top">
+                <div class="card data-table">
+                  <div class="card-header">Top 10 {{unit}} High {{UtilOblig1}} (In Million Pesos)</div>
+                  <div class="card-content">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th class="label-cell">{{unit}}</th>
+                          <th class="numeric-cell">Allocated</th>
+                          <th class="numeric-cell">Transferred</th>
+                          <th class="numeric-cell">GAA Balance</th>
+                          <th class="numeric-cell">{{UtilOblig2}}</th>
+                          <th class="numeric-cell">Util/Transferred %</th>
+                          <th class="numeric-cell">Transfer Balance</th>
+                          <th class="numeric-cell">Liquidated</th>
+                          <th class="numeric-cell">Liquidation Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each itemsTHU}}
+                        <tr>
+                        <td class="label-cell">{{schdescription}}</td>
+                          <td class="numeric-cell">{{Allocated}}</td>
+                          <td class="numeric-cell">{{Transferred}}</td>
+                          
+                          <td class="numeric-cell">
+                            <div
+                              class="gauge gauge-init {{schguid}}TR"
+                              data-type="circle"
+                              data-value-font-size="10"
+                              data-value-text-color="#f44336"
+                              data-border-color="#f44336"
+                              data-border-width="5"
+                              data-size="50"class="gauge gauge-init at-gauge"
+                              data-value="{{GAABalance}}"
+                              data-label-text="{{fnumber GAABalance*100}}%"
+                              >
+                            </div>
+                          </td>
+                          <td class="numeric-cell">{{Utilized}}</td>
+                          <td class="numeric-cell">
+                            <div
+                              class="gauge gauge-init {{schguid}}UR"
+                              data-type="circle"
+                              data-value-font-size="10"
+                              data-value-text-color="#2596be"
+                              data-border-color="#2596be"
+                              data-border-width="5"
+                              data-size="50"class="gauge gauge-init at-gauge"
+                              data-value="{{UtilizationStatus}}"
+                              data-label-text="{{fnumber UtilizationStatus}}%"
+                              >
+                            </div>
+                          </td>
+                          <td class="numeric-cell">
+                            <div
+                              class="gauge gauge-init {{schguid}}UT"
+                              data-type="circle"
+                              data-value-font-size="10"
+                              data-value-text-color="#ff9800"
+                              data-border-color="#ff9800"
+                              data-border-width="5"
+                              data-size="50"class="gauge gauge-init at-gauge"
+                              data-value="{{FundBalance}}"
+                              
+                              data-label-text="{{fnumber FundBalance}}%"
+                            ></div>
+                          </td>
+                          <td class="numeric-cell">{{Liquidated}}</td>
+                            <td class="numeric-cell">
+                              <div
+                                class="gauge gauge-init {{schguid}}LT"
+                                data-type="circle"
+                                data-value-font-size="10"
+                                data-value-text-color="#4caf50"
+                                data-border-color="#4caf50"
+                                data-border-width="5"
+                                data-size="50"class="gauge gauge-init at-gauge"
+                                data-value="{{LiquidatedStatus/100}}"
+                                
+                                data-label-text="{{fnumber LiquidatedStatus}}%"
+                              ></div>
+                              
+                            </td>
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                    <div class="data-table-footer">
+                 
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            {{/if}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</template>
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  itemsTHU: [],
+                  itemsTLU: [],
+                  fileitems : [],
+                  dashboardinfo : [],
+                  userdata:[],
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                  UtilOblig1: null,
+                  UtilOblig2: null,
+                  unit:null
+                }
+            },
+    currentid:null,
+    methods: {
+        loadmenus(gsysuserid) {
+          var udata= { 
+            
+          "gsysuserid":gsysuserid
+          }
+          // app.preloader.show();
+          app.request.post($base_url+'sysmenus/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+          
+              var list =$$('#menulist')[0];
+              data=JSON.parse(data);
+              var menuitems=data.records;
+              // <li>
+              //   <a href="/request/" class="item-content item-link panel-close">
+              //     <div class="item-media">
+              //       <i class="icon f7-icons">folder_fill</i>
+              //     </div>
+              //     <div class="item-inner">
+              //       <div class="item-title">Requests</div>
+              //     </div>
+              //   </a>
+              // </li>
+              // console.log(data.records)
+              for (idx in menuitems) {
+                  
+                
+                  var node = document.createElement("li");   
+                  var ahrefnode= document.createElement("a");  
+
+                  var div1= document.createElement("div"); 
+                  div1.className="item-media";
+                  var div2= document.createElement("div"); 
+                  div2.className="item-inner";
+                  var div3= document.createElement("div"); 
+                  div3.className="item-title";
+                  var itag= document.createElement("i"); 
+                  itag.className="icon f7-icons";
+
+                  var icon = document.createTextNode("folder_fill"); 
+
+                  ahrefnode.href=menuitems[idx].gmenuroute;
+                  ahrefnode.className='item-content item-link panel-close';
+
+
+                  var textnode = document.createTextNode(menuitems[idx].gmenuname ); 
+                  div3.appendChild(textnode);
+                  // console.log(textnode)
+
+                  itag.appendChild(icon);
+                  div1.appendChild(itag); 
+                  div2.appendChild(div3); 
+
+                  ahrefnode.appendChild(div1);  
+                  ahrefnode.appendChild(div2);  
+                  
+                  node.appendChild(ahrefnode);                
+                  list.appendChild(node);     
+                
+                  
+              }
+              // app.preloader.hide();
+          });
+              
+        },
+        loaduserprofile(groupid) {
+            var profilepic=$$('#avatar')[0];
+            var profilename=$$('#nickname')[0];
+
+            var profilepic2=$$('#avatar2')[0];
+            var profilename2=$$('#greetname')[0];
+
+            profilepic.src=profile.getImageUrl();
+            profilename.innerText=profile.getGivenName();
+            profilepic2.src=profile.getImageUrl();
+            profilename2.innerText=profile.getGivenName();
+
+        },
+        fetchtophigh() {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var d = new Date();
+          var year = d.getFullYear();
+          var udata= { 
+            gaayear: year,
+            schdivid: app.data.userdata.schdivid
+
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+          app.preloader.show();
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'funds/read_tophighutils.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                // var items = self.items.concat(rdata.records);
+                var itemsTHU =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      itemsTHU : itemsTHU,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems,
+                      unit: "Schools"
+
+                                              
+                  })
+                // console.log(self.paging)
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        fetchtoplow() {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var d = new Date();
+          var year = d.getFullYear();
+          var udata= { 
+            gaayear: year,
+            schdivid: app.data.userdata.schdivid
+
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'funds/read_toplowutils.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                // var items = self.items.concat(rdata.records);
+                var itemsTLU =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      itemsTLU : itemsTLU,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems,
+                      unit: "Schools"
+
+                                              
+                  })
+                // console.log(self.paging)
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        fetchrotoputils() {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var d = new Date();
+          var year = d.getFullYear();
+          var udata= { 
+            fundyear: year,
+            schregid: app.data.userdata.schregid,
+            order: 'desc'
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+          app.preloader.show();
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'funds/read_rotoputils.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                // var items = self.items.concat(rdata.records);
+                var itemsTHU =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      itemsTHU : itemsTHU,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems,
+                      unit: "Divisions"                      
+                  })
+                // console.log(self.paging)
+            }
+            
+
+           
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+          var udata= { 
+              fundyear: year,
+              schregid: app.data.userdata.schregid,
+              order: 'asc'
+            }
+
+          app.request.post($base_url+'funds/read_rotoputils.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+              rdata=JSON.parse(rdata);
+              if (rdata.records) {
+                  // var items = self.items.concat(rdata.records);
+                  var itemsTLU =rdata.records;
+                  var lhasMoreItems=false;
+                  if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                  if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                  //console.log(items)
+                  self.$setState({
+                        itemsTLU : itemsTLU,
+                        pages: rdata.paging.pages,
+                        paging: rdata.paging,
+                        lastpage: rdata.paging.pages.length,
+                        hasMoreItems: lhasMoreItems,
+                        unit: "Divisions"                            
+                    })
+                  // console.log(self.paging)
+              }
+            });
+        },
+        fetchcotoputils() {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var d = new Date();
+          var year = d.getFullYear();
+          var udata= { 
+            fundyear: year,
+            order: 'desc'
+          }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+          app.preloader.show();
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'funds/read_cotoputils.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                // var items = self.items.concat(rdata.records);
+                var itemsTHU =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      itemsTHU : itemsTHU,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems,
+                      unit: "Regions"                      
+                  })
+                // console.log(self.paging)
+            }
+            
+
+           
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+          
+        },
+        fetchdata(groupid) {
+            
+        },
+        fetchdashboard() {
+
+          var self = this;
+          var app = self.$app;
+          // var params = params.split('|');
+          // fundguid,papsdesc,totalamount
+          var d = new Date();
+          var year = d.getFullYear();
+          var udata=[];
+          var apipage="";
+          if (app.data.userdata.rolegroup=='S'){
+            udata= { 
+              gaayear: year,
+              schguid: app.data.userdata.schguid, 
+              es: app.data.userdata.ES ,
+              jhs: app.data.userdata.JHS ,
+              shs: app.data.userdata.SHS 
+            }
+            apipage="read_schoolutils.php";
+          } 
+          if (app.data.userdata.rolegroup=='D'){
+            udata= { 
+              gaayear: year,
+              schdivid: app.data.userdata.schdivid
+            }
+            apipage="read_allocated_transferred.php";
+          }
+          if (app.data.userdata.rolegroup=='R'){
+            udata= { 
+              gaayear: year,
+              schregid: app.data.userdata.schregid 
+            }
+            apipage="read_regallocated_transferred.php";
+          }if (app.data.userdata.rolegroup=='H'){
+            udata= { 
+              gaayear: year,
+              schregid: app.data.userdata.schregid 
+            }
+            apipage="read_hoallocated_transferred.php";
+          }
+          app.preloader.show();
+          app.request.post($base_url+'funds/'+apipage+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                 data=JSON.parse(data)
+                
+                dashboardinfo = data
+                console.log(self)
+                dashboardinfo.UtilOblig1=self.UtilOblig1;
+                dashboardinfo.UtilOblig2=self.UtilOblig2;
+                self.$setState({
+                  dashboardinfo : dashboardinfo,       
+                            
+                  })
+                
+                  var gaugeat = app.gauge.get('.at-gauge');
+                  // class="gauge gauge-init at-gauge"
+                  //         data-type="circle"
+                  //         data-value="{{TransferStatus}}"
+                  //         data-value-text="{{Transferred}}M"
+                  //         data-label-text=
+                  //         data-value-text-color="#f44336"
+                  //         data-border-color="#f44336"
+                  //         data-border-width="30"
+
+
+                  gaugeat.update({
+                    value: dashboardinfo.TransferStatus,
+                    valueText: dashboardinfo.Transferred+"M",
+                    labelText: "NEP/GAA "+dashboardinfo.Allocated+"M",
+                  });
+                  var gaugeut = app.gauge.get('.ut-gauge');
+                  
+
+
+                  gaugeut.update({
+                    value: dashboardinfo.UtilizationStatus,
+                    valueText: dashboardinfo.Utilized+"M",
+                    labelText: "Funds "+dashboardinfo.Transferred+"M",
+                  });
+                  var gaugelt = app.gauge.get('.lt-gauge');
+                  
+                  
+
+                  gaugelt.update({
+                    value: dashboardinfo.LiquidatedStatus,
+                    valueText: (parseFloat(dashboardinfo.LiquidatedStatus*100).toFixed(2))+"%",
+                    labelText: "Liquidated "+dashboardinfo.Liquidated+"M",
+                  });
+
+
+                  // console.log(dashboardinfo)
+            })
+            app.preloader.hide();
+        },
+        //send and save form
+        savedata(udata) {
+            // var self = this;
+            // var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            // app.preloader.show();
+            
+            // if (this.currentid=='new') {
+            //   // console.log(self.currentid)
+            //    //append udata with group id for new record
+            //    //udata
+            //    udata.ggroup=app.root.userdata.groupid;
+            //    app.request.post($base_url+'gamegroups/create.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+            //       result=JSON.parse(data);
+            //       app.dialog.alert(result.message);
+            //       //console.log(group);
+                  
+            //       //preload form
+            //       app.preloader.hide();
+            //       app.views.main.router.back();
+            //   })
+            // } else {
+            //   // console.log(udata)
+            //    app.request.post($base_url+'gamegroups/update.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+            //       result=JSON.parse(data);
+            //       app.dialog.alert(result.message);
+            //       //console.log(group);
+                  
+            //       //preload form
+            //       app.preloader.hide();
+            //       app.views.main.router.back({force:true});
+            //   })
+            // }
+            
+        },
+        //send and delete form
+        deletedata(udata) {
+            // var self = this;
+            // var app = self.$app;
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            // app.preloader.show();
+            // app.request.post($base_url+'gamegroups/delete.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+              
+            //     result=JSON.parse(data);
+            //     app.dialog.alert(result.message);
+            //     //console.log(group);
+                
+            //     //preload form
+            //     app.preloader.hide();
+
+            //     app.views.main.router.back({force:true});
+
+            //     //self.$route.back();
+            //     //self.$route.refreshPage();
+            // })
+        },
+        closeProfile(){
+          app.popup.close('.profile-popover');
+          
+        },
+        
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            //self.fetchadminmenus(self.$route.params.id);
+
+            //labels 
+            
+            var UtilOblig1='Utilization/Obligation';
+            var UtilOblig2='Utilized';
+
+            if (app.data.userdata.schtypeiu){
+              UtilOblig1='Obligations';
+              UtilOblig2='Obligated';
+            } 
+            if (app.data.userdata.showsddb){
+              UtilOblig1='Utilization/Obligations';
+              UtilOblig2='Util/Obl';
+            } 
+            
+
+            self.$setState({
+              UtilOblig1: UtilOblig1,
+              UtilOblig2: UtilOblig2,   
+            });
+
+            
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            console.log('initializing page')
+            // console.log(self)
+            self.$setState({
+                userdata: app.data.userdata   
+                });
+
+            //load user menus 
+            self.loadmenus(app.data.userdata.guserid);
+            //load user profile 
+            self.loaduserprofile();
+            self.fetchdashboard();
+            if (app.data.userdata.showsddb){
+              if (app.data.userdata.rolegroup=='D'){
+                self.fetchtophigh();
+                self.fetchtoplow();
+              }
+             
+            } 
+            if (app.data.userdata.rolegroup=='R'){
+              app.data.userdata.showsddb=true;
+              self.fetchrotoputils();
+            }
+            if (app.data.userdata.rolegroup=='H'){
+              app.data.userdata.showcodb=true;
+              self.fetchcotoputils();
+            }
+           
+
+            // app.preloader.hide();
+
+              
+        },
+        pageReinit(e, page) {
+            var self = this;
+            var app = self.$app;
+            //self.fetchadminmenus(self.$route.params.id);
+            // app.preloader.show();
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            console.log('Reloading page')
+            // console.log(self)
+            self.$setState({
+                userdata: app.data.userdata   
+                });
+
+            //load user menus 
+            // self.loadmenus(app.data.userdata.guserid);
+            //load user profile 
+            // self.loaduserprofile();
+            self.fetchdashboard();
+            if (app.data.userdata.showsddb){
+              if (app.data.userdata.rolegroup=='D'){
+                self.fetchtophigh();
+                self.fetchtoplow();
+              }
+             
+            } 
+            if (app.data.userdata.rolegroup=='R'){
+              app.data.userdata.showsddb=true;
+              self.fetchrotoputils();
+            }
+            if (app.data.userdata.rolegroup=='H'){
+              app.data.userdata.showcodb=true;
+              self.fetchcotoputils();
+            }
+            // app.preloader.hide();
+
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

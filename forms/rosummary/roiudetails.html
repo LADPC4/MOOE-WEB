@@ -1,0 +1,282 @@
+﻿<template>
+
+
+  <table border=0 cellpadding=0 cellspacing=0 width=1079 style='border-collapse: 
+  collapse;table-layout:fixed;width:809pt'  id="rptoutput"  name="rptoutput">
+  <col class=x83 width=272 style='mso-width-source:userset;width:204pt'>
+  <col class=x83 width=272 style='mso-width-source:userset;width:204pt'>
+  <col class=x83 width=257 style='mso-width-source:userset;width:192.75pt'>
+  <col class=x83 width=249 style='mso-width-source:userset;width:186.75pt'>
+  <col class=x83 width=195 style='mso-width-source:userset;width:146.25pt'>
+  <tr height=19 style='mso-height-source:userset;height:14.25pt' id='r0'>
+   <td height=19 class=x83 style='height:14.25pt'></td>
+   <td class=x83></td>
+   <td class=x83></td>
+   <td class=x83></td>
+   <td class=x83></td>
+  </tr>
+  <tr height=22 style='mso-height-source:userset;height:16.9pt' id='r1'>
+ <td colspan=2 height=22 class=x85 style='mso-ignore:colspan;height:16.9pt;'>DEPARTMENT OF EDUCATION</td>
+ <td class=x84></td>
+ <td class=x84></td>
+ <td class=x84></td>
+  </tr>
+  <tr height=22 style='mso-height-source:userset;height:16.9pt' id='r2'>
+ <td height=22 class=x85 style='height:16.9pt;'>CONSOLIDATED STATUS OF FUND UTILIZATION OF MOOE ALLOCATIONS OF IU SECONDARY SCHOOLS<span style='mso-spacerun:yes'>&nbsp; </span>INCLUDING SCHOOLS OFFERING THE SENIOR HIGH PROGRAM</td>
+ <td class=x84></td>
+ <td class=x84></td>
+ <td class=x84></td>
+ <td class=x84></td>
+  </tr>
+  {{#with data}}
+  <tr height=22 style='mso-height-source:userset;height:16.9pt' id='r3'>
+ <td colspan=2 height=22 class=x85 style='mso-ignore:colspan;height:16.9pt;'>{{schregdescription}} </td>
+ <td class=x84></td>
+ <td class=x84></td>
+ <td class=x84></td>
+  </tr>
+ 
+  <tr height=22 style='mso-height-source:userset;height:16.9pt' id='r4'>
+ <td height=22 class=x85 align=left x:err="#REF!" x:fmla="=#REF!" style='height:16.9pt;'>CY {{year}}</td>
+ <td class=x84></td>
+ <td class=x84></td>
+ <td class=x84></td>
+ <td class=x84></td>
+  </tr>
+  <tr height=22 style='mso-height-source:userset;height:16.9pt' id='r5'>
+ <td height=22 class=x85 align=left x:err="#REF!" x:fmla="=#REF!" style='height:16.9pt;'>As of {{today}}</td>
+ <td class=x84></td>
+ <td class=x84></td>
+ <td class=x84></td>
+ <td class=x84></td>
+  </tr>
+  {{/with}}
+  <tr height=22 style='mso-height-source:userset;height:16.9pt' id='r6'>
+ <td height=22 class=x85 style='height:16.9pt;'></td>
+ <td class=x84></td>
+ <td class=x84></td>
+ <td class=x84></td>
+ <td class=x84></td>
+  </tr>
+  <tr height=19 style='mso-height-source:userset;height:14.65pt' id='r7'>
+ <td height=19 class=x83 style='height:14.65pt;'></td>
+ <td class=x83></td>
+ <td class=x83></td>
+ <td class=x83></td>
+ <td class=x83></td>
+  </tr>
+  <tr height=20 style='mso-height-source:userset;height:15.4pt' id='r8'>
+ <td rowspan=3 height=56 class=x86 style='border-right:1px solid windowtext;border-bottom:2px solid windowtext;height:42.05pt;'>School Divisions &nbsp;</td>
+ <td colspan=3 class=x87 style='border-right:2px solid windowtext;'>SECONDARY</td>
+ <td rowspan=3 height=57 class=x90 style='border-right:2px solid windowtext;border-bottom:2px solid windowtext;height:42.8pt;'>BALANCE</td>
+  </tr>
+  <tr height=19 style='mso-height-source:userset;height:14.25pt' id='r9'>
+ <td rowspan=2 height=35 class=x92 style='border-bottom:2px solid windowtext;height:26.65pt;'>TOTAL ALLOTMENT RECEIVED</td>
+ <td rowspan=2 height=35 class=x93 style='border-right:2px solid windowtext;border-bottom:2px solid windowtext;height:26.65pt;'>TOTAL AMOUNT OBLIGATED</td>
+ <td rowspan=2 height=35 class=x94 style='border-right:2px solid windowtext;border-bottom:2px solid windowtext;height:26.65pt;'>TOTAL AMOUNT DISBURSED</td>
+  </tr>
+  <tr height=19 style='mso-height-source:userset;height:14.65pt' id='r10'>
+  </tr>
+  {{#each cosummary}}
+  <tr height=20 style='mso-height-source:userset;height:15.4pt' id='r11'>
+ <td height=18 class=x101 style='height:13.9pt; word-wrap: normal; font-size:' width="100%">{{divdescription}}</td>
+ <td class=x102 align=right x:num="427465208.71000004" x:fmla="='c:\Users\USER\Downloads\[MOOE-as of December 2021 (1).xlsx]REGION I'!AJ24" style='text-align:right;'>{{fnumber TotalAllocation}}</td>
+ <td class=x102 align=right x:num="422280309.32999998" x:fmla="='c:\Users\USER\Downloads\[MOOE-as of December 2021 (1).xlsx]REGION I'!AK24" style='text-align:right;'>{{fnumber TotalTransferred}}</td>
+ <td class=x102 align=right x:num="417973372.67999995" x:fmla="='c:\Users\USER\Downloads\[MOOE-as of December 2021 (1).xlsx]REGION I'!AL24" style='text-align:right;'>{{fnumber TotalLiquid}}</td>
+ <td class=x103 align=right x:num="4306936.6500000358" x:fmla="=C12-D12">{{fnumber Balance}}</td>
+  </tr>
+  {{/each}}
+  <tr height=20 style='mso-height-source:userset;height:15.4pt' id='r12'>
+ <td height=18 class=x101 style='height:13.9pt;'></td>
+ <td class=x104></td>
+ <td class=x104></td>
+ <td class=x104></td>
+ <td class=x103></td>
+  </tr>
+  {{#with totals}}
+  <tr height=21 style='mso-height-source:userset;height:16.15pt' id='r13'>
+ <td height=19 class=x105 style='height:14.65pt;'>TOTAL</td>
+ <td class=x106 align=right x:num="427465208.71000004" x:fmla="=SUM(B12:B13)" style='text-align:right;'>{{fnumber TotalAllocation}}</td>
+ <td class=x106 align=right x:num="422280309.32999998" x:fmla="=SUM(C12:C13)" style='text-align:right;'>{{fnumber TotalTransferred}}</td>
+ <td class=x106 align=right x:num="417973372.67999995" x:fmla="=SUM(D12:D13)" style='text-align:right;'>{{fnumber TotalLiquid}}</td>
+ <td class=x106 align=right x:num="4306936.6500000358" x:fmla="=SUM(E12:E13)" style='text-align:right;'>{{fnumber Balance}}</td>
+  </tr>
+  {{/with}}
+  <tr height=19 style='mso-height-source:userset;height:14.25pt' id='r14'>
+ <td height=18 class=x107 style='height:13.5pt;'></td>
+ <td class=x83></td>
+ <td class=x83></td>
+ <td class=x83></td>
+ <td class=x83></td>
+  </tr>
+  <tr height=19 style='mso-height-source:userset;height:14.25pt' id='r15'>
+ <td height=19 class=x107 style='height:14.25pt;'></td>
+ <td class=x83></td>
+ <td class=x83></td>
+ <td class=x83></td>
+ <td class=x83></td>
+  </tr>
+  <tr height=19 style='mso-height-source:userset;height:14.25pt' id='r16'>
+ <td height=19 class=x107 style='height:14.25pt;'></td>
+ <td class=x83></td>
+ <td class=x83></td>
+ <td class=x83></td>
+ <td class=x83></td>
+  </tr>
+  <tr height=21 style='mso-height-source:userset;height:15.75pt' id='r17'>
+ <td height=21 class=x108 style='height:15.75pt;'></td>
+ <td class=x109></td>
+ <td class=x109></td>
+ <td class=x109></td>
+ <td class=x109></td>
+  </tr>
+  <tr height=21 style='mso-height-source:userset;height:15.75pt' id='r18'>
+ <td height=21 class=x110 style='height:15.75pt;'></td>
+ <td class=x111></td>
+ <td class=x111></td>
+ <td class=x111></td>
+ <td class=x111></td>
+  </tr>
+  <tr height=21 style='mso-height-source:userset;height:15.75pt' id='r19'>
+ <td height=21 class=x110 style='height:15.75pt;'></td>
+ <td class=x111></td>
+ <td class=x111></td>
+ <td class=x111></td>
+ <td class=x111></td>
+  </tr>
+  <tr height=21 style='mso-height-source:userset;height:15.75pt' id='r20'>
+ <td height=21 class=x110 style='height:15.75pt;'></td>
+ <td class=x111></td>
+ <td class=x111></td>
+ <td class=x111></td>
+ <td class=x111></td>
+  </tr>
+  <tr height=21 style='mso-height-source:userset;height:15.75pt' id='r21'>
+ <td height=21 class=x110 style='height:15.75pt;'></td>
+ <td class=x111></td>
+ <td class=x111></td>
+ <td class=x111></td>
+ <td class=x111></td>
+  </tr>
+  <tr height=21 style='mso-height-source:userset;height:15.75pt' id='r22'>
+ <td height=21 class=x110 style='height:15.75pt;'></td>
+ <td class=x111></td>
+ <td class=x111></td>
+ <td class=x111></td>
+ <td class=x111></td>
+  </tr>
+ <![if supportMisalignedColumns]>
+  <tr height=0 style='display:none'>
+   <td width=106 style='width:79.5pt'></td>
+   <td width=272 style='width:204pt'></td>
+   <td width=257 style='width:192.75pt'></td>
+   <td width=249 style='width:186.75pt'></td>
+   <td width=195 style='width:146.25pt'></td>
+  </tr>
+  <![endif]>
+ </table>
+
+
+</template>
+<script>
+ return {  
+      data() {
+                  return {
+                    cosummary : [],
+                    totals : [],
+                    data:[]
+                   
+                    
+                  }
+              },
+      methods: {
+        refreshpage(){
+            // var self = this;
+            // self.$setState({
+            //             items : [],
+            //             pages: null,
+            //             paging: null,
+            //             fundackid: null,
+            //             fundguid: null,
+             //             nextpage : null,
+            //             lastpage: null,
+            //             hasMoreItems: false,
+            //             currentpage: null
+  
+                                                
+            //         });
+          },
+        fetchdata(schregid,schtype,fundyear ) {
+            var self = this;
+            var app = self.$app;
+            var fetchpage = 0;
+            var udata= { 
+              schregid: schregid,
+                schtype:  schtype,
+                fundyear: fundyear
+            }
+            app.preloader.show();
+           
+  
+            //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+            app.request.post($base_url+'funds/read_rosummary.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+              rdata=JSON.parse(rdata);
+              if (rdata) {
+                  // console.log(rdata.schinfo.schacctinfo[0].schbank);
+                  self.$setState({
+                        
+                        cosummary: rdata.records,
+                        totals: rdata.totals
+  
+                                                
+                    })
+                  
+                  //  console.log(rdata)
+              }  else {
+              
+                
+              }
+              
+              
+            app.preloader.hide();
+            });  
+          },
+      },
+      on: {
+          pageInit(e, page) {
+            
+            console.log("ok here ")
+              var self = this;
+              var app = self.$app;
+              var today = new Date();
+              var dd = String(today.getDate()).padStart(2, '0');
+              var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+              var yyyy = today.getFullYear();
+  
+            //   getdata 
+            var SearchString = window.location.search.substring(1);
+            var arr = SearchString.split('&');
+            var param= decodeURIComponent(arr[0].split('=')[1]);
+            var data = JSON.parse(param);
+            console.log(data);
+            today = yyyy + '-' + mm + '-' + dd;
+            data.today=today
+            data.year=yyyy;
+            self.$setState({
+                        
+                        data: data,
+
+  
+                                                
+                    })
+              
+         
+              self.fetchdata( data.schregid, data.schtype, data.fundyear);
+              
+                
+          },
+      },
+    };
+  
+    
+</script>

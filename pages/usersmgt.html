@@ -1,0 +1,703 @@
+<template>
+  <div class="page " data-name="Users">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">MOOE Users</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-userdetails">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <!-- <button class="col button button-fill  zero-found-userdetails-button popup-open" data-popup=".popup-userdetails">Create new request</button> -->
+        </div>
+        <div class="subnavbar">
+          <form class="searchbar" id="searchschool-autocomplete">
+            <div class="searchbar-inner">
+              <div class="searchbar-input-wrap">
+                <input type="search" placeholder="Search" id="searchname" name="searchname" class="searchname" @blur="fetchdata(1)">
+                <i class="searchbar-icon"></i>
+                <span class="input-clear-button"></span>
+              </div>
+              <span class="searchbar-disable-button">Cancel</span>
+            </div>
+          </form>
+        </div>
+      </div> 
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">Manage Users </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">Full Name</th>
+                    <th class="numeric-cell">Division</th>
+                    <th class="numeric-cell">School</th>
+                    <th class="numeric-cell">Role</th>
+                    <th class="numeric-cell">Enabled</th>
+                    <th class="numeric-cell">Date Modified</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <tr class='clickable-row' data-href='#' @click="openpopup('{{ggmid}}|{{gsysuserid}}');">
+                    <td class="label-cell">{{fullname}}</td>
+                    <td class="label-cell">{{divdescription}}</td>
+                    <td class="label-cell">{{schdescription}}</td>
+                    <td class="label-cell">{{roledescription}}</td>
+                    <td class="label-cell">{{gstatus}}</td> 
+                    <td class="label-cell">{{gtimestamp}}</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer">
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-userdetails" id="my-userdetails-screen">
+      <div class="view">
+        <div class="page">
+          <div class="page-content userdetails-screen-content">
+              
+            <div class="login-screen-title">User Details</div>
+            <form class="list" id="my-userdetails-form">
+              <div class="list">
+                  <ul >
+                    <li>
+                      <div class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Fullname</div>
+                          <div class="item-input-wrap">
+                            <input type="text" placeholder="fullname" reaonly  id="fullname" name="fullname"/>
+                            <input type="hidden"   id="ggmid" name="ggmid"/>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Select Region</div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="schregdescription" name="schregdescription" placeholder="Search your Division Office then use up/down and press enter to select" class="schregdescription">
+                          <input type="hidden" id="schregid" name="schregid" class="schregid">
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Select Division</div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="divdescription" name="divdescription" placeholder="Search your Division Office then use up/down and press enter to select" class="divdescription">
+                          <input type="hidden" id="schdivid" name="schdivid" class="schdivid">
+                        </div>
+                      </div>
+                    </li>
+                    <!-- <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Division</div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="divdescription" name="divdescription" readonly placeholder="Division" class="divdescription">
+                          
+                        </div>
+                      </div>
+                    </li> -->
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">School</div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="schdescription" name="schdescription" class="schdescription" readonly placeholder="School">
+                          <input type="hidden" id="schguid" name="schguid"/>
+                          <input type="hidden" id="schguidES" name="schguidES" class="schguidES">
+                          <input type="hidden" id="schguidJHS" name="schguidJHS" class="schguidJHS">
+                          <input type="hidden" id="schguidSHS" name="schguidSHS" class="schguidSHS">
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Role</div>
+                        <div class="item-input-wrap">
+                          <input type="text" id="roledescription" name="roledescription" class="roledescription" required validate  placeholder="Select Role">
+                          <input type="hidden"   id="gsysrole" name="gsysrole"/>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item-content item-input">
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title">Enabled</div>
+                          <div class="item-after">
+                            <label class="toggle toggle-init">
+                              <input type="checkbox" name="gstatus"  >
+                              <span class="toggle-icon"></span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item-content item-input">
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title">Cluster User </div>
+                          <div class="item-after">
+                            <label class="toggle toggle-init">
+                              <input type="checkbox" name="cluster"  >
+                              <span class="toggle-icon"></span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    {{#if showschoolassign}}
+                    
+                   
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title">School Level Assignment</div>
+                      </div>
+                    </li>
+                    {{#if es}}
+                    <li class="item-content item-input" id="ESline">
+                      
+                        <div class="item-inner">
+                          <div class="item-title">Elementary</div>
+                          <div class="item-after">
+                            <label class="toggle toggle-init">
+                              <input type="checkbox" name="ES" id="ES"  >
+                              <span class="toggle-icon"></span>
+                            </label>
+                          </div>
+                        </div>
+                     
+                    </li>
+                    {{/if}}
+                    {{#if jhs}}
+                    <li class="item-content item-input" id="JHSline">
+                      
+                      <div class="item-inner">
+                        <div class="item-title">Junior High School</div>
+                        <div class="item-after">
+                          <label class="toggle toggle-init">
+                            <input type="checkbox" name="JHS"id="JHS"   >
+                            <span class="toggle-icon"></span>
+                          </label>
+                        </div>
+                      </div>
+                   
+                  </li>
+                  {{/if}}
+                  {{#if shs}}
+                  <li class="item-content item-input" id="SHSline">
+                      
+                    <div class="item-inner">
+                      <div class="item-title">Senior High School</div>
+                      <div class="item-after">
+                        <label class="toggle toggle-init">
+                          <input type="checkbox" name="SHS" id="SHS"   >
+                          <span class="toggle-icon"></span>
+                        </label>
+                      </div>
+                    </div>
+                 
+                  </li>
+                  {{/if}}
+                   
+                {{/if}}
+                  </ul>
+              </div>
+
+              <div class="list links-list">
+                  
+                  <ul>
+                      <li>
+                     
+                      <!--li><a href="/game/{{geventid}}/"></a></li--
+                      <td class="label-cell " >{{goptiondescription}}</td>
+                      <td class="label-cell  " >{{goptionvalue}}</td>
+                      <td class="label-cell numeric-cell " >{{goptionid}}</td-->
+                      </li>
+                   
+                   
+                  </ul>
+                 
+                </div>  
+              
+            
+              
+
+              <div class="list">
+                  <div class="block block-strong row">
+                      <div class="col"><a href="#" class="col button button-fill submit-button">Submit</a> </div>
+                      <div class="col"><a href="#" class="col button button-fill popup-close">Cancel</a></div>
+                    </div>
+                
+               
+              </div>
+            </form>
+          
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  fileitems : [],
+                  gameoptions : [],
+                  es: false,
+                  jhs: false,
+                  shs: false,
+                  showschoolassign: false,
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    currentid:null,
+    methods: {
+      refreshpage(){
+          var self = this;
+          self.$setState({
+                      items : [],
+                      pages: null,
+                      paging: null,
+                      nextpage : null,
+                      lastpage: null,
+                      hasMoreItems: false,
+                      currentpage: null
+
+                                              
+                  });
+        },
+        fetchdata(refreshpage) {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          var searchname=$$('#searchschool-autocomplete [name="searchname"]')[0].value;
+          if (refreshpage==1) self.refreshpage();
+          var udata=[];
+          if (app.data.userdata.roletype=='X') {
+            udata= { 
+              roleguid: app.data.userdata.roleguid,
+              roletype: app.data.userdata.roletype,
+              searchname: searchname
+            }
+          } else {
+            udata= { 
+              rolegroup: app.data.userdata.rolegroup,
+              schregid: app.data.userdata.schregid,
+              gdivision:  app.data.userdata.schdivid,
+              schguid: app.data.userdata.schguid,
+              roleguid: app.data.userdata.roleguid,
+              roletype: app.data.userdata.roletype,
+              searchname: searchname
+              
+            }
+          }
+          // var udata= { 
+          //   gdivision:  app.data.userdata.schdivid,
+          //   roleguid: app.data.userdata.roleguid
+          // }
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'sysdivusers/read_paging.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                var items = self.items.concat(rdata.records);
+                // var items =rdata.records;
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                  app.preloader.hide();
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+                  app.preloader.hide();
+            }
+            
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            if (rdata.gameoptions) {
+              
+              var gameoptions = rdata.gameoptions;
+              self.$setState({
+                    gameoptions : gameoptions                                               
+                  })
+              
+            }
+            //get next page  
+          //console.log(self.items);
+          
+          })  
+        },
+        //send and save form
+        savedata(udata) {
+            // console.log("Save data")
+            var self = this;
+            var app = self.$app;
+            //append udata 
+            // udata.schguid=app.data.userdata.schguid;
+            // udata.schpayee=app.data.userdata.schpayee;
+            // udata.schregid=app.data.userdata.schregid;
+            // udata.guserid=app.data.userdata.guserid;
+
+            //
+            // console.log(udata);
+
+            //modified post for sending json and file upload
+            app.preloader.show();
+            app.request.post($base_url+'sysdivusers/update.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+                  result=JSON.parse(data);
+                  app.dialog.alert(result.message);
+                  self.refreshpage();
+                  self.fetchdata();
+                  app.preloader.hide();
+                  app.popup.close('#my-userdetails-screen');
+              });
+
+
+
+
+            // //alert(app.root.userdata.groupid);
+            // //alert(JSON.stringify($udata));
+            // //return ;
+            // app.preloader.show();
+            
+            // if (this.currentid=='new') {
+            //   // console.log(self.currentid)
+            //    //append udata with group id for new record
+            //    //udata
+            //    udata.ggroup=app.root.userdata.groupid;
+              //  app.request.post($base_url+'mooerequests/create.php'+$base_param, udata ,(data)=> {
+                  
+              //     result=JSON.parse(data);
+              //     app.dialog.alert(result.message);
+              //     //console.log(group);
+                  
+              //     //preload form
+              //     app.preloader.hide();
+              //     app.views.main.router.back();
+              // })
+            // } else {
+            //   // console.log(udata)
+            //    app.request.post($base_url+'gamegroups/update.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                  
+            //       result=JSON.parse(data);
+            //       app.dialog.alert(result.message);
+            //       //console.log(group);
+                  
+            //       //preload form
+            //       app.preloader.hide();
+            //       app.views.main.router.back({force:true});
+            //   })
+            // }
+            
+        },
+        //send and delete form
+        //send and delete form
+        openpopup(params) {
+          var self = this;
+          var app = self.$app;
+          var params = params.split('|');
+          // fundguid,papsdesc,totalamount
+          var udata= { 
+            ggmid: params[0]
+          }
+          app.preloader.show();
+          app.request.post($base_url+'sysdivusers/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                app.form.fillFromData('#my-userdetails-form',data);
+                // self.fetchuploads(data.ggmid);
+                app.popup.open("#my-userdetails-screen")
+                
+                app.preloader.hide();
+            })
+
+
+
+           
+           //update form data 
+        },
+       
+        deletedata(udata) {
+           
+        },
+        openfile(params) {
+
+          var self = this;
+          var app = self.$app;
+          var params = params.split('|');
+          // fundguid,papsdesc,totalamount
+          var fileguid=params[0];
+
+          downloadfile=$base_url+"fileuploads/download.php?schregid="+app.data.userdata.schregid+"&fileguid="+fileguid
+
+          window.open(downloadfile);
+         
+          
+        },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        self.fetchdata(app.data.userdata.schdivid);
+
+
+        },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            app.preloader.show();
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            
+            // console.log(self)
+           
+            //load requests
+            var es=false;
+            var jhs=false;
+            var shs=false;
+            var showschoolassign=false;
+
+            if ((app.data.userdata.roletype=='D') || (app.data.userdata.roletype=='S') || (app.data.userdata.roletype=='X')){
+              showschoolassign=true;
+              var override=false;
+              if ( (app.data.userdata.roletype=='D') || (app.data.userdata.roletype=='X')) {
+                override=true;
+              }
+              if ((app.data.userdata.ES=='Y') || (override==true)){
+                es=true;
+              } 
+              if ((app.data.userdata.JHS=='Y') || (override==true)){
+                jhs=true;
+              } 
+              if ((app.data.userdata.SHS=='Y') || (override==true)){
+                shs=true;
+              } 
+              try {
+                if (es==true) {
+                $$('#ESline')[0].style.display='';
+                } else {
+                  $$('#ESline')[0].style.display='none';
+                }
+                if (jhs==true) {
+                  $$('#JHSline')[0].style.display='';
+                } else {
+                  $$('#JHSline')[0].style.display='none';
+                }
+                if (shs==true) {
+                  $$('#SHSline')[0].style.display='';
+                } else {
+                  $$('#SHSline')[0].style.display='none';
+                }
+              } catch (ex) {
+
+              }
+              
+            }
+            self.$setState({
+              showschoolassign: showschoolassign,
+              es: es,
+              jhs: jhs,
+              shs: shs  
+            });
+            app.methods.fetchroles(); 
+            //enable region
+            
+            if ((app.data.userdata.showscdb==true) || (app.data.userdata.roletype=='X')){
+              app.methods.fetchsreglist();
+              $$('#my-userdetails-form [name="schregdescription"]')[0].readOnly=false;
+            } else {
+              $$('#my-userdetails-form [name="schregdescription"]')[0].readOnly=true;
+            }
+            
+            //enable division
+            
+            if ((app.data.userdata.showsrdb==true) || (app.data.userdata.roletype=='X')){
+              app.methods.fetchsdolist(app.data.userdata.schregid);
+              $$('#my-userdetails-form [name="divdescription"]')[0].readOnly=false;
+            } else {
+              $$('#my-userdetails-form [name="divdescription"]')[0].readOnly=true;
+            }
+            //enable school
+
+            if ((app.data.userdata.showsddb==true) || (app.data.userdata.roletype=='X')){
+              app.methods.fetchshools(app.data.userdata.schdivid,'schguid','schdescription');
+              $$('#my-userdetails-form [name="schdescription"]')[0].readOnly=false;
+            } else {
+              $$('#my-userdetails-form [name="schdescription"]')[0].readOnly=true;
+            }
+            
+            self.fetchdata(app.data.userdata.schguid);
+            //Fill roles
+            
+            
+            // app.preloader.hide();   
+            //initialize date range 
+            var calendarRange = app.calendar.create({
+              // containerEl: "#my-daterange-screen",
+              inputEl: '#periodcovered',
+              dateFormat: 'yyyy-mm-dd',
+              rangePicker: true
+            });
+            //initialize pap list 
+
+            // app.methods.fetchpaplist();
+            //inititalize save button
+            $$('.popup-userdetails').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-userdetails-form')[0].reset(); 
+              // }
+            });
+
+            $$('.submit-button').on('click', function(){
+              var formData = app.form.convertToData('#my-userdetails-form');
+              // var file = Dom7('#my-userdetails-form').find('input[type="file"]')[0].files[0]
+
+              var va1=$$('#my-userdetails-form [name="gsysrole"]')[0].value!="";
+              var ErrorMessage="";
+              var va2=true;
+              var va3=true;
+
+              if (va1==false)  ErrorMessage="Please Select Role<br>";
+              // if ($$('#my-userdetails-form [name="periodcovered"]')[0].value.length!=23) {
+              //   $$('#my-userdetails-form [name="periodcovered"]')[0].className="input-invalid item-input-invalid";
+              //   va2=false;
+              //   ErrorMessage= ErrorMessage + "Select correct period range <br>";
+              // }
+              // if ($$('#my-userdetails-form [name="periodcovered"]')[0].value=="") {
+              //   va3=false;
+              //   ErrorMessage= ErrorMessage + "Select Program/Activities/Projects <br>";
+              // }
+              if (va1 ) {
+                self.savedata(formData);
+              } else {
+                app.dialog.alert(ErrorMessage);
+              }
+              
+              });
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

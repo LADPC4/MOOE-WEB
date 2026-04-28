@@ -1,0 +1,92 @@
+﻿<!doctype html public "-//w3c//dtd xhtml 1.0 transitional//en" "http://www.w3.org/tr/xhtml1/dtd/xhtml1-transitional.dtd">
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name=Generator content="Aspose.Cell ">
+<link rel=File-List href="aknyv-ry6f1_files/filelist.xml">
+<link rel=Edit-Time-Data href="aknyv-ry6f1_files/editdata.mso">
+<link rel=OLE-Object-Data href="aknyv-ry6f1_files/oledata.mso">
+<link rel="stylesheet" href="css/cononiu.css">
+
+</head>
+<body link=blue vlink=purple class=x23>
+
+   
+<div id="app">
+    <!-- view inside of panel -->
+    <div class="page">
+      <div class="view view-main view-init">
+      
+      </div>
+    </div>
+          
+        
+  </div>
+  <script src="../../framework7/js/framework7.bundle.min.js"></script>
+  <script src="../../js/gc.js"></script> 
+  <script src="./js/routes.js"></script> 
+  <script type="text/javascript" src="../../js/xlsx.full.min.js"></script> 
+
+ <script>
+
+var app = new Framework7({
+// App id
+id: 'mooe.reports.rononiu',
+// Enable swipe panel
+data: {
+    rononiudata: null
+},
+routes: routes,
+});
+
+var mainView = app.views.create('.view-main', {
+url: '/rononiudetails/'
+});
+// var self = this;
+// console.log(self);
+// this.app.$setState({
+//           data: "test"   
+//         })
+
+
+    
+Template7.registerHelper('fnumber',function(val){
+    if (val=="") return "";
+  val=parseFloat(val).toFixed(2);
+  return val.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+  // return val;
+  // return Number(val).toLocaleString('en');//val.split("").reverse().join("");
+});
+
+
+
+ function ChangeRowspanHiddenData()
+ {
+   var node;
+   var params=["r8","r9"];
+   for (var i = 0;i < params.length; i++)
+   {
+       node = document.getElementById(params[i]);
+       if (node != null)
+       {
+           node.style.display = "";
+       }
+   }
+ }
+ function ExportToExcel(type, fn, dl) {
+       var elt = document.getElementById('rptoutput');
+       var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+       return dl ?
+         XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+         XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+    }
+</script>
+<button onclick="ExportToExcel('xlsx')">Export table to excel</button>
+</body>
+
+</html>

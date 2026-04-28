@@ -1,0 +1,418 @@
+<template>
+  <div class="page " data-name="Transfers">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">Generate BIR 2307 Report</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-cibr">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <!-- <button class="col button button-fill  zero-found-cibr-button popup-open" data-popup=".popup-cibr">Create new Transfer</button> -->
+      </div>
+    
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="page-content cibr-screen-content">
+              
+            <div class="login-screen-title">BIR 2307 Report</div>
+            <form class="list" id="my-cibr-form">
+                <div class="list">
+                    <ul >
+                      
+                    
+                      <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Select Year</div>
+                            <div class="item-input-wrap">
+                              <input type="text" placeholder="Select Year" required  id="fundyear" name="fundyear" />
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Select Month</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="monthdesc" required validate name="monthdesc" class="monthdesc"   >
+                            <input type="hidden" id="dismonth" name="dismonth" class="dismonth" >
+                          </div>
+                        </div>
+                      </li>   
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Select Disbursement</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="disreferenceno" required validate name="disreferenceno" class="disreferenceno" @focusin="fetchdisb()" >
+                            <input type="hidden" id="mooedisid" name="mooedisid" class="mooedisid">
+                          </div>
+                        </div>
+                      </li>   
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Period</div>
+                          <div class="">
+                            <input type="text" name="cutoff-range" placeholder="Select date range" readonly="readonly" size="21"  id = "cutoff-range" required >
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Payee Address</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="payeeaddress" required validate name="payeeaddress" class="payeeaddress">
+                            
+                          </div>
+                        </div>
+                      </li>   
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Payee ZIP</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="payeezip" required validate name="payeezip" class="payeezip">
+                            
+                          </div>
+                        </div>
+                      </li>   
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">School TIN</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="payortin" required validate name="payortin" class="payortin">
+                            
+                          </div>
+                        </div>
+                      </li>   
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">School ZIP</div>
+                          <div class="item-input-wrap">
+                            <input type="text" id="payorzip" required validate name="payorzip" class="payorzip">
+                            
+                          </div>
+                        </div>
+                      </li>   
+                      
+                      
+                    </ul>
+                </div>
+
+                
+                
+              
+                
+  
+                <div class="list">
+                    <div class="block block-strong row">
+                        <div class="col"><a href="#" @click="openreport()" class="col button button-fill cibr-button">Generate Report</a> </div>
+                        
+                      </div>
+                  
+                 
+                </div>
+              </form>
+            
+  
+          </div>
+        </div>
+      </div>
+
+    </div>
+    
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  items : [],
+                  fundguid: null,
+                  fundackid: null,
+                  fileitems : [],
+                  gameoptions : [],
+                  reqlist:[],
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                }
+            },
+    currentid:null,
+    methods: {
+        refreshpage(){
+         
+        },
+     
+        savedata(udata) {
+           
+            
+            
+        },
+        //send and delete form
+        deletedata(udata) {
+         
+            
+        },
+        delclick(){
+         
+        },
+        valmy: function() {
+             //continue to dashboard
+          var dismonth=$$('#my-cibr-form [name="dismonth"]')[0].value;
+          var fundyear=$$('#my-cibr-form [name="fundyear"]')[0].value;
+
+          if ((dismonth=='') || (fundyear=='')) {
+            app.dialog.alert("Please provide Year and Month");
+            return ;
+
+          }
+        },
+        fetchdisb: function () {
+          //continue to dashboard
+          var dismonth=$$('#my-cibr-form [name="dismonth"]')[0].value;
+          var fundyear=$$('#my-cibr-form [name="fundyear"]')[0].value;
+
+          if ((dismonth=='') || (fundyear=='')) {
+           app.dialog.alert("Please provide Year and Month");
+            return ;
+
+          }
+
+          var udata= { 
+            schguid:  app.data.userdata.schguid,
+            fundyear: fundyear,
+            dismonth: dismonth,
+            es: app.data.userdata.ES,
+            jhs: app.data.userdata.JHS,
+            shs: app.data.userdata.SHS,
+
+          } 
+         
+          app.preloader.show();
+          app.request.post($base_url+'mooedisbursements/read_printed.php',JSON.stringify(udata) ,(data)=> {
+            data=JSON.parse(data)
+            // app.$setState({
+            //   sdolist: data   
+            // })
+            app.data.rolelist=data;
+            var rolelistel = app.autocomplete.create({
+              inputEl: '.disreferenceno',
+              openIn: 'dropdown',
+              valueProperty: 'id',
+              textProperty: 'name',
+              closeOnSelect: true,
+              source: function (query, render) {
+                var results = [];
+                // if (query.length === 0) {
+                //   render(results);
+                //   return;
+                // }
+                // Find matched items
+                // $$('#divdescription')[0].value="";
+                $$('#mooedisid')[0].value="";
+                list=app.data.rolelist.records;
+                for (var i = 0; i < list.length; i++) {
+                  if (list[i].disreferenceno.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+                    results.push({ "id": list[i].mooedisid,"name": list[i].disreferenceno }); //
+                    
+                    
+                  }
+                }
+                // Render items by passing array with result items
+                //  console.log(results)
+                render(results);
+              },
+              on: {
+                change: function (value) {
+                  var itemText = [],
+                      inputValue = [];
+                  for (var i = 0; i < value.length; i++) {
+                    // itemText.push(value[i].name);
+                    // inputValue.push(value[i].id);
+                    $$('#disreferenceno')[0].value=value[i].name;
+                    $$('#mooedisid')[0].value=value[i].id;
+                    // $$('#roletype')[0].value=value[i].tag;
+                    //populate schools 
+                  
+                  }
+                  
+                },
+              },  
+              });
+            // console.log(sdolistel);
+            $$('#my-cibr-form [name="dismonth"]').focus();
+            app.preloader.hide();
+          });
+        },
+        openreport() {
+            
+          var self = this;
+          var app = self.$app;
+
+          var schguid=app.data.userdata.schguid;
+          var va1=$$('#my-cibr-form [name="fundyear"]')[0].value!="";
+          var va2=$$('#my-cibr-form [name="dismonth"]')[0].value!="";
+
+          var va3=$$('#my-cibr-form [name="mooedisid"]')[0].value!="";
+          var va4=$$('#my-cibr-form [name="payeeaddress"]')[0].value!="";
+          var va5=$$('#my-cibr-form [name="payeezip"]')[0].value!="";
+          var va6=$$('#my-cibr-form [name="payorzip"]')[0].value!="";
+
+          var va7=$$('#my-cibr-form [name="cutoff-range"]')[0].value!="";
+          var va8=$$('#my-cibr-form [name="payortin"]')[0].value!="";
+
+          var valok=true;
+          var ErrorMessage="";
+          if (va1==false){
+                ErrorMessage=ErrorMessage + "Please Select Year<br>";
+                valok=false;
+          }
+          if (va2==false){
+            ErrorMessage=ErrorMessage + "Please Select Month<br>";
+            valok=false;
+          }
+          if (va3==false){
+            ErrorMessage=ErrorMessage + "Please Select Disbursement<br>";
+            valok=false;
+          }
+          if (va4==false){
+            ErrorMessage=ErrorMessage + "Please Provide Payee Address<br>";
+            valok=false;
+          }
+          if (va5==false){
+            ErrorMessage=ErrorMessage + "Please Provide Payee ZIP<br>";
+            valok=false;
+          }
+          if (va6==false){
+            ErrorMessage=ErrorMessage + "Please Provide School ZIP<br>";
+            valok=false;
+          } 
+          if (va7==false){
+            ErrorMessage=ErrorMessage + "Please Provide Period dates<br>";
+            valok=false;
+          }
+          if (va8==false){
+            ErrorMessage=ErrorMessage + "Please Provide School TIN<br>";
+            valok=false;
+          }
+
+          var dismonth=$$('#my-cibr-form [name="dismonth"]')[0].value;
+          var fundyear=$$('#my-cibr-form [name="fundyear"]')[0].value;
+
+          var mooedisid=$$('#my-cibr-form [name="mooedisid"]')[0].value;
+          var payeeaddress=$$('#my-cibr-form [name="payeeaddress"]')[0].value;
+          var payeezip=$$('#my-cibr-form [name="payeezip"]')[0].value;
+          var payorzip=$$('#my-cibr-form [name="payorzip"]')[0].value;
+          
+          var payortin=$$('#my-cibr-form [name="payortin"]')[0].value;
+          var daterange=$$('#my-cibr-form [name="cutoff-range"]')[0].value
+
+          datearr=daterange.split(" - ");
+
+          var udata= { 
+            schguid:  schguid,
+            fundyear: fundyear,
+            dismonth: dismonth,
+
+            mooedisid:  mooedisid,
+            payeeaddress: payeeaddress,
+            payeezip: payeezip,
+            payortin: payortin,
+            payorzip: payorzip,
+
+            periodstart: datearr[0],
+            periodend: datearr[1]
+          } 
+          console.log(udata)
+          if ( valok) {
+               window.window.open("./forms/bir2307f/bir2307f.html?data=" + encodeURIComponent(JSON.stringify(udata)) , '_blank' ,"toolbar=no,scrollbars=yes,resizable=yes,fullscreen=yes,menubar=no,location=no");     
+          } else {
+            app.dialog.alert(ErrorMessage);
+          }
+
+          return;
+
+         
+
+
+        },
+       
+        
+        loadmore() {
+        
+    },
+  },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            // app.preloader.show();
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            
+            // console.log(self)
+            self.$setState({
+                  //  currentid: groupid   
+                });
+            //initialize fund years 
+    
+            app.methods.createfundyear('#fundyear');
+            app.methods.createmonthlist('#monthdesc');
+            var calendarRange = app.calendar.create({
+              // containerEl: "#my-daterange-screen",
+              inputEl: '#cutoff-range',
+              dateFormat: 'yyyy-mm-dd',
+              rangePicker: true
+            });
+            //initialize pap list
+            // app.methods.fetchpaplist();
+            
+            //load schools menus           
+              }
+            }   
+    }
+  
+
+
+
+ 
+
+  
+  
+</script>

@@ -1,0 +1,718 @@
+<template>
+  <div class="page " data-name="Requests">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        
+        <div class="title">Code Table Maintenance</div>
+        <div class="right">
+          <!--a class="link popup-open " href="#" data-popup=".popup-upload">+</a-->
+          <!--a class="link" href="/viewgame//place/">+</a-->
+          <!-- <button class="col button button-fill  zero-found-upload-button popup-open" data-popup=".popup-upload">Upload new file</button> -->
+      </div>
+      </div> 
+    </div>
+    <div class="page-content">
+      <div class="row margin-horizontal">
+        <div class="col-100 margin-top">
+          <div class="card data-table">
+            <div class="card-header">Search </div>
+            <div class="card-content">
+            <form class="list" id="my-upload-form" enctype="multipart/form-data"  class="form-ajax-submit">
+              <ul>
+               
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Select Code Table</div>
+                    <div class="item-input-wrap">
+                      <input type="text" id="ctabledesc" name="ctabledesc" required validate placeholder="Type to search  then use up/down and press enter to select" class="ctabledesc">
+                      <input type="hidden" id="ctable" name="ctable" class="ctable">
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Column Name</div>
+                    <div class="item-input-wrap">
+                      <input type="text" id="colname" name="colname" required validate placeholder="Type to search  then use up/down and press enter to select" class="colname">
+                      <input type="hidden" id="colid" name="colid" class="colid">
+                    </div>
+                  </div>
+                </li>
+                
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Column Value</div>
+                      <div class="item-input-wrap">
+                        
+                        <input type="text" name="colvalue"  validate placeholder="colvalue" id="colvalue" >
+                        <input type="text" name="coldaterange"  validate placeholder="coldaterange" id="coldaterange" style="display: none;">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+              </ul>
+              
+
+            
+
+              <div class="block block-strong row">
+               
+                
+                <div class="col"><a href="#" class="col button button-fill submit-button" @click="fetchdata(1)" >Search</a> </div>
+              
+                
+               
+              </div>
+
+            
+              <div class="block block-strong row">
+
+               
+                
+                
+              </div>
+             
+              </form>
+            </div>
+
+
+
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    {{#each collist}}
+                    <th class="label-cell">{{colname}}</th>
+                   
+                    {{/each}}
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                  <tr >
+                    {{savetemp this}}
+                    {{#each @root.collist}}
+
+                    
+                    <td class="label-cell">{{showrec colname}}</td>
+                   
+                    {{/each}}
+
+                    
+                      
+                     
+                   
+                  
+                    
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <div class="data-table-footer"  >
+                {{#if hasMoreItems}}
+                <div class="block">
+                  <button class="col button button-fill  button-small " @click="loadmore()" >Show More</button>
+                </div>
+                {{/if}}
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="popup popup-upload" id="my-upload-screen">
+      <div class="view">
+        <div class="page">
+          <div class="page-content upload-screen-content">
+          
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="popup popup-progress" id="my-progress-screen">
+      <div class="view">
+        <div class="page">
+          <div class="page-content upload-screen-content">
+              
+            <div class="login-screen-title">Uploading File</div>
+           
+
+              
+              <div class="block block-strong row">
+                <p>Upload Status: {{uploadedLines}}/{{uploadLines}}</p>
+                <div class="progressbar color-blue" data-progress="" id="uploadprogress">
+                  <span></span>
+                </div>
+
+              </div>
+              <div class="block block-strong row">
+               
+                
+                 
+              
+                <div class="col"><a href="#" class="col button button-fill popup-close" @click="invokecancel()">Cancel</a></div>
+               
+              </div> 
+              <div class="block block-strong row">
+               
+                
+              </div>
+             
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  return {  
+    data() {
+                return {
+                  collist: [],
+                  items : [],
+                  fileitems : [],
+                  timelines : [],
+                  transferred: [],
+                  uploadedLines: 0,
+                  uploadLines: 0,
+                  wfedit: true,
+                  wdelete: true,
+                  completed: null,
+                  pages : null,
+                  paging: function() {
+                                //var geventid=self.$route.params.geventid;
+                                //var udata= { 
+                                //  geventid:  geventid
+                                //}
+                                //app.request.post($base_url+'gameevents/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+                                //    //create datepickers
+                                //    
+                                //    data=JSON.parse(data)
+                                //    console.log(data);
+                                  return {
+                                    paging: null,
+                                          };
+                                //})
+                                },
+                  currentpage : null,
+                  nextpage : null,
+                  lastpage : null,
+                  hasMoreItems : false,
+                  ErrMsgs:[],
+                  UploadMsgs: null
+                }
+            },
+    currentid:null,
+
+    methods: {
+        
+        invokecancel(){
+          var self = this;
+          var app = self.$app;
+          app.data.uploadCancel=true;
+        },
+        refreshpage(){
+          var self = this;
+          self.$setState({
+                      items : [],
+                      fileitems : [],
+                      timelines : [],
+                      pages: null,
+                      paging: null,
+                      wfedit: true,
+                      wdelete: true,
+                      completed: null,
+                      nextpage : null,
+                      lastpage: null,
+                      hasMoreItems: false,
+                      currentpage: null
+
+                                              
+                  });
+        },
+        fetchdata(refresh) {
+          var self = this;
+          var app = self.$app;
+          var fetchpage = 0;
+          
+          if (refresh==1) {
+            console.log('refreshed:' +refresh );
+            self.refreshpage();
+          } 
+
+          
+
+          app.preloader.show();
+          if (self.currentpage==null) {
+            fetchpage=1;
+            self.currentpage=fetchpage;
+          } else {
+            fetchpage=self.nextpage;
+            self.currentpage=fetchpage;
+          }
+
+          var valok=true;
+          var ErrorMessage=""
+          //validate form 
+          if ($$('#ctable')[0].style.display=='') {
+             if ( $$('#ctable')[0].value=='') {
+              ErrorMessage=ErrorMessage+"Please select Table to view. \n " ;
+              valok=false;
+             } 
+          }
+          // if ($$('#colvalue')[0].style.display=='') {
+          //    if ( $$('#colvalue')[0].value=='') {
+          //     ErrorMessage=ErrorMessage+"Please provide column value. \n " ;
+          //     valok=false;
+          //    } else {
+
+          //    }
+          // }
+          // if ($$('#coldaterange')[0].style.display=='') {
+          //    if ( $$('#coldaterange')[0].value=='') {
+          //     ErrorMessage=ErrorMessage+"Please provide date range value. \n ";
+          //     valok=false;
+          //    }  else {
+               
+          //    }
+          // }
+
+          if (valok==false){
+            app.preloader.hide();
+            app.dialog.alert(ErrorMessage );
+            
+            return;
+          }
+
+          //set date 
+          var ctable =  $$('#ctable')[0].value ;
+          var colname = $$('#colname')[0].value ;
+          var colvalue = $$('#colvalue')[0].value ;
+          if ($$('#coldaterange')[0].style.display==''){
+            var daterange=$$('#coldaterange')[0].value;
+              datearr=daterange.split(" - ");
+              var cutoffstart = datearr[0]+' 00:00:00';
+              var cutoffend= datearr[1]+' 23:59:59';
+              var udata= { 
+                filetype : filetype,
+                colname: colname,
+                cutoffstart: cutoffstart,
+                cutoffend: cutoffend
+            }
+          } else {
+            var udata= { 
+                ctable : ctable,
+                colname: colname,
+                colvalue: colvalue
+            }
+
+          }
+
+          
+          //$base_param = $base_param + '&groupid=' + app.root.userdata.groupid;
+          app.request.post($base_url+'base/read_ct_data_paging.php'+$base_param + '&page=' + fetchpage, JSON.stringify(udata), (rdata) => {
+            rdata=JSON.parse(rdata);
+            if (rdata.records) {
+                // var items = self.items.concat(rdata.records);
+                
+                var items = self.items.concat(rdata.records);
+                var lhasMoreItems=false;
+                if (rdata.paging.pages.length>1) lhasMoreItems=true;
+                // console.log(rdata.paging.pages.length);
+                if (self.currentpage==self.lastpage) lhasMoreItems=false;
+                //console.log(items)
+                self.$setState({
+                      items : items,
+                      collist : app.data.collist.records,
+                      pages: rdata.paging.pages,
+                      paging: rdata.paging,
+                      lastpage: rdata.paging.pages.length,
+                      hasMoreItems: lhasMoreItems
+
+                                              
+                  })
+                // console.log(self.paging)
+            } else {
+              self.$setState({
+                      
+                      hasMoreItems: false
+
+                                              
+                  });
+            }
+            
+            if (rdata.gameinfo) {
+              var gameinfo = rdata.gameinfo;
+              self.$setState({
+                    gameinfo : gameinfo                                            
+                  })
+              
+            }
+            
+            //get next page  
+          //console.log(self.items);
+          app.preloader.hide();
+          })  
+        },
+        //send and save form
+        // savedata(udata,file) {
+        //     var self = this;
+        //     var app = self.$app;
+        //     //append udata 
+        //     udata.schguid=app.data.userdata.schguid;
+        //     udata.schpayee=app.data.userdata.schpayee;
+        //     udata.schregid=app.data.userdata.schregid;
+        //     udata.guserid=app.data.userdata.guserid;
+
+        //     //
+        //     // console.log(udata);
+
+        //     //modified post for sending json and file upload
+        //     var FData = new FormData();
+        //     FData.append('file',file);                // this is main row
+        //     FData.append('data',JSON.stringify(udata));
+        //     var apipage="create.php";
+        //     if (udata.requestid!="") {
+        //       apipage="update.php";
+        //     }
+        //     app.preloader.show();
+        //     app.request({
+        //             url: $base_url+'mooerequests/'+apipage+$base_param, 
+        //             method: 'POST', 
+        //             data: FData,
+        //             cache: false, 
+        //             dataType: 'application/json',
+        //             crossDomain: true, 
+        //             contentType: 'multipart/form-data',
+        //             processData: true, 
+        //             success: function (data){
+        //                   result=JSON.parse(data);
+        //                   app.dialog.alert(result.message);
+        //                   $$('#my-upload-form')[0].reset(); 
+        //                   self.refreshpage();
+        //                   self.fetchdata(app.data.userdata.schguid);
+        //                   app.preloader.hide();
+        //                   app.popup.close('#my-upload-screen');
+        //               }
+        //     });
+
+
+        // },
+        //send and delete form
+        //send and delete form
+        openpopup(params) {
+          var self = this;
+          var app = self.$app;
+          var params = params.split('|');
+          // fundguid,ctabledesc,totalamount
+          var udata= { 
+            requestid: params[0]
+          }
+          app.preloader.show();
+          app.request.post($base_url+'mooerequests/read_one.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+                data=JSON.parse(data)
+                app.form.fillFromData('#my-upload-form',data);
+                self.fetchuploads(data.requestid);  
+                self.fetchtimelines(data.requestid);  
+                var transferred=true;
+               console.log(data.wfedit);
+                self.$setState({
+                      wfedit : data.wfedit,
+                      transferred: data.transferred,
+                      wdelete: true
+                                              
+                  });
+                
+                
+
+
+            });
+
+
+
+           
+           //update form data 
+        },
+        // fetchuploads(requestid) {
+        //   // var params = params.split('|');
+        //   // // fundguid,ctabledesc,totalamount
+        //   var self = this;
+        //   var app = self.$app;
+        //   var udata= { 
+        //     recowner: requestid
+        //   }
+        //   // app.preloader.show();
+        //   app.request.post($base_url+'fileuploads/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+        //         data=JSON.parse(data)
+        //         // app.form.fillFromData('#my-upload-form',data);
+        //         items = data.records
+        //         self.$setState({
+        //               fileitems : items
+
+                                              
+        //           })
+        //         app.popup.open("#my-upload-screen")
+        //         app.preloader.hide();
+        //     })
+
+
+
+           
+        //    //update form data 
+        // },
+        // fetchtimelines(requestid) {
+        //   // var params = params.split('|');
+        //   // // fundguid,ctabledesc,totalamount
+        //   var self = this;
+        //   var app = self.$app;
+        //   var udata= { 
+        //     recowner: requestid
+        //   }
+        //   // app.preloader.show();
+        //   app.request.post($base_url+'transactions/read_paging.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+        //         data=JSON.parse(data)
+        //         // app.form.fillFromData('#my-upload-form',data);
+        //         items = data.records
+        //         self.$setState({
+        //               timelines : items
+
+                                              
+        //           })
+        //         app.popup.open("#my-upload-screen")
+        //         app.preloader.hide();
+        //     })
+
+
+
+           
+        //    //update form data 
+        // },
+        // deletedata(udata) {
+        //   var self = this;
+        //     var app = self.$app;
+        //     //append udata 
+        //     udata.schguid=app.data.userdata.schguid;
+        //     udata.schpayee=app.data.userdata.schpayee;
+        //     udata.schregid=app.data.userdata.schregid;
+        //     udata.guserid=app.data.userdata.guserid;
+
+        //     //
+        //     // console.log(udata);
+
+        //     //modified post for sending json and file upload
+        //     app.request.post($base_url+'mooerequests/delete.php'+$base_param, JSON.stringify(udata) ,(data)=> {
+               
+        //        data=JSON.parse(data)
+        //        // app.form.fillFromData('#my-upload-form',data);
+        //        self.refreshpage();
+        //       self.fetchdata(app.data.userdata.schguid);
+        //       app.preloader.hide();
+        //       app.popup.close('#my-upload-screen');
+        //    })
+
+
+
+        // },
+        // openfile(params) {
+
+        //   var self = this;
+        //   var app = self.$app;
+        //   var params = params.split('|');
+        //   // fundguid,ctabledesc,totalamount
+        //   var fileguid=params[0];
+
+        //   downloadfile=$base_url+"fileuploads/download.php?schregid="+app.data.userdata.schregid+"&fileguid="+fileguid
+
+        //   window.open(downloadfile);
+         
+          
+        // },
+        loadmore() {
+        var self = this;
+        var app = self.$app;
+        var schguid=app.data.userdata.schguid;
+        var udata= { 
+          schguid:  schguid
+        }
+        var nextpage=null;
+
+        // console.log(self.hasMoreItems);
+        if (self.hasMoreItems==false) return;
+        for (idx in self.pages) {
+          page=self.pages[idx];
+          if (nextpage==null){
+            //console.log(page)
+            if (page.current_page=='yes'){
+              nextpage=0;
+            }
+          } else {
+            nextpage=page.page;
+            self.$setState({
+              nextpage : nextpage                                            
+            })
+            self.nextpage=nextpage;
+          
+            
+            if (nextpage==self.lastpage) { 
+              self.hasMoreItems = false
+              self.$setState({
+                hasMoreItems : false                                            
+              })
+            }
+            break;
+          }
+          
+        } 
+        // self.fetchdata($$('#schguid')[0].value)
+        self.fetchdata(0);
+
+
+        },
+        uploadfile(){
+      var self = this;
+      var app = self.$app;
+      app.data.curcomp=self;
+     
+   
+      var self = this;
+      var app = self.$app;
+      var file = document.getElementById("fileupload").files[0];
+      var filetype=$$('#my-upload-form [name="ctable"]')[0].value
+      if (filetype==""){
+        app.dialog.alert("Please Select Upload Type. \n " )
+        return;
+      } 
+      if (document.getElementById("fileupload").files.length==0){
+        app.dialog.alert("Please Select File. \n " )
+        return;
+      }
+      console.log(file);
+      var filedetails="File: "+ file.name  
+      self.$setState({
+          UploadMsgs : filedetails                                            
+              });
+      app.popup.close("#my-upload-screen");
+      app.popup.open("#my-progress-screen");
+      readXls(file,filetype);
+     
+      //start upload
+      
+
+
+    },
+    },
+    on: {
+        pageInit(e, page) {
+            var self = this;
+            var app = self.$app;
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = yyyy + '-' + mm + '-' + dd;
+            // console.log(today);
+            self.collist =app.data.collist.records;
+            app.preloader.show();
+            // console.log(self.$route.previousRoute);
+            //check if create param
+            
+            // console.log(self)
+            self.$setState({
+                  //  currentid: groupid   
+                });
+            //load requests
+            // self.fetchdata(app.data.userdata.schguid);
+            //create date picker 
+            app.methods.createdatepicker(today,'#request-date');
+            app.preloader.hide();   
+            //initialize date range 
+          
+            //initialize pap list 
+            var calendarRange = app.calendar.create({
+                    // containerEl: "#my-daterange-screen",
+                    inputEl: '#coldaterange',
+                    dateFormat: 'yyyy-mm-dd',
+                    rangePicker: true
+                  });
+
+            app.methods.fetchcodetables();
+            //inititalize save button
+            $$('.popup-upload').on('popup:close', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                $$('#my-upload-form')[0].reset(); 
+                // $$('#my-upload-form [name="requestid"]')[0].value="";
+                $$('.delete-button').off('click')
+                self.$setState({
+                      fileitems : [],
+                      timelines : [],
+                      wfedit:true,
+                      wdelete: true,
+                      transferred: null,
+                      completed: null
+                      
+                                              
+                  })
+              // }
+            });
+            $$('.popup-upload').on('popup:open', function (e) {
+              // console.log($$('#my-newtransfer-form [name="fundguid"]')[0].value);
+              // if ($$('#my-newtransfer-form [name="fundguid"]')[0].value==""){
+                // var wdelete=true;
+                // if ($$('#my-upload-form [name="requestid"]')[0].value=="") wdelete="";
+                // console.log($$('#my-upload-form [name="requestid"]')[0].value)
+                
+                self.$setState({
+                     
+                      // wfedit:true,
+                      // transferred: true,
+                      // wdelete: wdelete,
+                      completed: null
+                      
+                                              
+                  })
+              // }
+            });
+
+            
+
+              $$('#delete-button').on('click', function(){
+                  var formData = app.form.convertToData('#my-upload-form');
+                  console.log("delete Clicked")
+                  //confirm to user
+                  if (self.transferred=="N"){
+                    app.dialog.confirm("Confirm Delete ?", "Delete Request", function () {
+                        self.deletedata(formData);
+                      });
+                  } else {
+                    app.dialog.alert("Delete of Requests is not allowed. Fund was already be transferred. \n " )
+                  }
+                  
+              });
+              
+        },
+    },
+  };
+
+ 
+
+  
+  
+</script>

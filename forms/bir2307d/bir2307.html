@@ -1,0 +1,101 @@
+﻿<!doctype html public "-//w3c//dtd xhtml 1.0 transitional//en" "http://www.w3.org/tr/xhtml1/dtd/xhtml1-transitional.dtd">
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Aspose.Cell ">
+<link rel=File-List href="ac9k1-rbm9n_files/filelist.xml">
+<link rel=Edit-Time-Data href="ac9k1-rbm9n_files/editdata.mso">
+<link rel=OLE-Object-Data href="ac9k1-rbm9n_files/oledata.mso">
+<link rel="stylesheet" href="css/bir2307.css">
+</head>
+<body link=blue vlink=purple class=x51>
+
+   
+  <div id="app">
+    <!-- view inside of panel -->
+    <div class="page">
+      <div class="view view-main view-init">
+      
+      </div>
+    </div>
+          
+        
+  </div>
+  <script src="../../framework7/js/framework7.bundle.min.js"></script>
+  <script src="../../js/gc.js"></script> 
+  <script src="./js/routes.js"></script> 
+
+  <script>
+
+    var app = new Framework7({
+    // App id
+    id: 'mooe.reports.bir2307',
+    // Enable swipe panel
+    data: {
+        cibrdata: null
+    },
+    routes: routes,
+    });
+    
+    var mainView = app.views.create('.view-main', {
+    url: '/bir2307details/'
+    });
+    // var self = this;
+    // console.log(self);
+    // this.app.$setState({
+    //           data: "test"   
+    //         })
+    
+    
+        
+    Template7.registerHelper('fnumber',function(val){
+        if (val=="") return "";
+      val=parseFloat(val).toFixed(2);
+      return val.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+      // return val;
+      // return Number(val).toLocaleString('en');//val.split("").reverse().join("");
+    });
+    
+    
+    
+     </script>
+<script language = 'javascript' type='text/javascript'>
+  function ChangeColspanHiddenData()
+  {
+    var node;
+    var params=["c0","t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13","t14","t15","t16","t17","t18","t19","t20","t21","t22","t23","t24","t25","t26","t27","t28","t29","t30"];
+    for (var i = 0;i < params.length; i++)
+    {
+        node = document.getElementById(params[i]);
+        if (node != null)
+        {
+            node.style.display = "none";
+        }
+    }
+  }
+  ChangeColspanHiddenData();
+ </script>
+ <script language = 'javascript' type='text/javascript'>
+  function ChangeRowspanHiddenData()
+  {
+    var node;
+    var params=["r5"];
+    for (var i = 0;i < params.length; i++)
+    {
+        node = document.getElementById(params[i]);
+        if (node != null)
+        {
+            node.style.display = "";
+        }
+    }
+  }
+  ChangeRowspanHiddenData();
+ </script>
+</body>
+
+</html>
