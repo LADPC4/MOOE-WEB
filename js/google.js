@@ -1,26 +1,33 @@
 // STAGING - Google Auth Bypass
 function handleClientLoad() {
-  var authorizeButton = $$('button#authorize-button')[0];
-  var continueButton = $$('button#continue-button')[0];
-  var signoutButton = $$('a#signout-button')[0];
-  var loginheading = $$('#login-heading')[0];
+  // wait for Framework7 to finish rendering the login page
+  setTimeout(function() {
+    var authorizeButton = $$('button#authorize-button')[0];
+    var continueButton = $$('button#continue-button')[0];
+    var signoutButton = $$('a#signout-button')[0];
+    var loginheading = $$('#login-heading')[0];
 
-  if (!authorizeButton) return;
+    if (!authorizeButton) {
+      // try again after another second
+      setTimeout(handleClientLoad, 1000);
+      return;
+    }
 
-  loginheading.textContent = 'MOOE Login';
-  authorizeButton.style.display = 'block';
-  continueButton.style.display = 'none';
-  signoutButton.style.display = 'none';
+    loginheading.textContent = 'MOOE Login';
+    authorizeButton.style.display = 'block';
+    continueButton.style.display = 'none';
+    signoutButton.style.display = 'none';
 
-  authorizeButton.onclick = function() {
-    app.data.googleprofile = {
-      getEmail: function() { return 'lance.depasion@deped.gov.ph'; },
-      getId: function() { return '000000000000000000000'; },
-      getFamilyName: function() { return 'De Pasion'; },
-      getGivenName: function() { return 'Lance Adrian'; },
-      getImageUrl: function() { return ''; }
+    authorizeButton.onclick = function() {
+      app.data.googleprofile = {
+        getEmail: function() { return 'lance.depasion@deped.gov.ph'; },
+        getId: function() { return '000000000000000000000'; },
+        getFamilyName: function() { return 'De Pasion'; },
+        getGivenName: function() { return 'Lance Adrian'; },
+        getImageUrl: function() { return ''; }
+      };
+      app.data.googletoken = 'staging-bypass-token';
+      app.methods.signin();
     };
-    app.data.googletoken = 'staging-bypass-token';
-    app.methods.signin();
-  };
+  }, 2000);
 }
