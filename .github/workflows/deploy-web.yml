@@ -1,0 +1,32 @@
+name: Deploy frontend to Azure Web App (staging)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Uncomment if you need Node.js build
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '18'
+      #
+      # - name: Install dependencies
+      #   run: npm install
+      #
+      # - name: Build project
+      #   run: npm run build
+
+      - name: Deploy to Azure Web App (staging slot)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'mooe-prod-middleware'
+          slot-name: 'mooe-staging'
+          package: ./dist
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_WEB }}
