@@ -1,3 +1,4 @@
+// File Location: MOOE-WEB/js/googleoauth.js
 var GoogleAuth;
   var SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
   function handleClientLoad() {

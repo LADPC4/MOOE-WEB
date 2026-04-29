@@ -1,4 +1,5 @@
 // Dom7
+// File Location : MOOE-WEB/js/app.js
 var $$ = Dom7;
     // Framework7 App main instance
 var app  = new Framework7({
