@@ -3,13 +3,23 @@
 
 var clientId = '346900031154-3quutp1o887iu7866db1qr9d0hnrqkhs.apps.googleusercontent.com';
 var profile = null;
+var tokenClient = null;
 
 function handleClientLoad() {
-  google.accounts.id.initialize({
+  tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: clientId,
-    callback: handleCredentialResponse,
-    auto_select: false,
-    ux_mode: 'popup'
+    scope: 'profile email',
+    callback: function(tokenResponse) {
+      if (tokenResponse.error) return;
+      // fetch user info using access token
+      fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { Authorization: 'Bearer ' + tokenResponse.access_token }
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(userInfo) {
+        handleUserInfo(userInfo, tokenResponse.access_token);
+      });
+    }
   });
 
   var authorizeButton = $$('button#authorize-button')[0];
@@ -25,29 +35,17 @@ function handleClientLoad() {
   signoutButton.style.display = 'none';
 
   authorizeButton.onclick = function() {
-    google.accounts.id.cancel();
-    google.accounts.id.initialize({
-      client_id: clientId,
-      callback: handleCredentialResponse,
-      auto_select: false,
-      ux_mode: 'popup'
-    });
-    setTimeout(function() {
-      google.accounts.id.prompt();
-    }, 200);
+    tokenClient.requestAccessToken({ prompt: 'select_account' });
   };
 
   signoutButton.onclick = function() {
-    google.accounts.id.disableAutoSelect();
+    google.accounts.oauth2.revoke(profile ? profile.getEmail() : '');
     location.reload();
   };
 }
 
-function handleCredentialResponse(response) {
-  var id_token = response.credential;
-  var payload = JSON.parse(atob(id_token.split('.')[1]));
-
-  var email = payload.email;
+function handleUserInfo(userInfo, accessToken) {
+  var email = userInfo.email;
 
   if (validateDepedEmail(email) == false) {
     app.preloader.hide();
@@ -56,13 +54,13 @@ function handleCredentialResponse(response) {
   }
 
   app.data.googleprofile = {
-    getEmail: function() { return payload.email; },
-    getId: function() { return payload.sub; },
-    getFamilyName: function() { return payload.family_name || ''; },
-    getGivenName: function() { return payload.given_name || ''; },
-    getImageUrl: function() { return payload.picture || ''; }
+    getEmail: function() { return userInfo.email; },
+    getId: function() { return userInfo.sub; },
+    getFamilyName: function() { return userInfo.family_name || ''; },
+    getGivenName: function() { return userInfo.given_name || ''; },
+    getImageUrl: function() { return userInfo.picture || ''; }
   };
-  app.data.googletoken = id_token;
+  app.data.googletoken = accessToken;
   profile = app.data.googleprofile;
 
   var loginheading = $$('#login-heading')[0];
@@ -72,9 +70,9 @@ function handleCredentialResponse(response) {
   var continueButton = $$('button#continue-button')[0];
   var signoutButton = $$('a#signout-button')[0];
 
-  loginheading.textContent = 'You are signed in as ' + payload.name;
-  loginemail.textContent = payload.email;
-  loginimage.src = payload.picture || '';
+  loginheading.textContent = 'You are signed in as ' + userInfo.name;
+  loginemail.textContent = userInfo.email;
+  loginimage.src = userInfo.picture || '';
   authorizeButton.style.display = 'none';
   continueButton.style.display = 'block';
   signoutButton.style.display = 'block';
