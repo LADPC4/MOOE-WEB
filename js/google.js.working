@@ -8,8 +8,7 @@ function handleClientLoad() {
   google.accounts.id.initialize({
     client_id: clientId,
     callback: handleCredentialResponse,
-    auto_select: false,
-    ux_mode: 'popup'
+    auto_select: false
   });
 
   var authorizeButton = $$('button#authorize-button')[0];
@@ -25,16 +24,7 @@ function handleClientLoad() {
   signoutButton.style.display = 'none';
 
   authorizeButton.onclick = function() {
-    google.accounts.id.cancel();
-    google.accounts.id.initialize({
-      client_id: clientId,
-      callback: handleCredentialResponse,
-      auto_select: false,
-      ux_mode: 'popup'
-    });
-    setTimeout(function() {
-      google.accounts.id.prompt();
-    }, 200);
+    google.accounts.id.prompt();
   };
 
   signoutButton.onclick = function() {
