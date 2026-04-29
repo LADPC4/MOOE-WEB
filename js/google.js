@@ -53,6 +53,7 @@ function handleCredentialResponse(response) {
     getImageUrl: function() { return payload.picture || ''; }
   };
   app.data.googletoken = id_token;
+  profile = app.data.googleprofile;
 
   var loginheading = $$('#login-heading')[0];
   var loginemail = $$('#login-email')[0];
